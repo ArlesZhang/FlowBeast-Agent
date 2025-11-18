@@ -1,0 +1,600 @@
+
+except Exception as e:
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2099  # 确保在 venv 激活状态下，并且在以下目录：
+ 2100  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2101  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2102  # 确保在 datacody-agent-project/datacody-agent 目录下
+ 2103  cd ~/datacody-agent-project/datacody-agent
+ 2104  nano cody_agent/agent/compiler.py
+ 2105  # 确保在 venv 激活状态下，并且在以下目录：
+ 2106  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2107  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2108  nano cody_agent/agent/compiler.py
+ 2109  # 确保在 venv 激活状态下，并且在以下目录：
+ 2110  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2111  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2112  # 确保在 venv 激活状态下，并且在以下目录：
+ 2113  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2114  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2115  curl https://api.openai.com/v1/models   -H "Authorization: Bearer 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"
+ 2116  # 确保在 datacody-agent-project/datacody-agent 目录下
+ 2117  cd ~/datacody-agent-project/datacody-agent
+ 2118  nano cody_agent/agent/compiler.py
+ 2119  # 确保在 datacody-agent-project/datacody-agent 目录下
+ 2120  cd ~/datacody-agent-project/datacody-agent
+ 2121  nano cody_agent/agent/compiler.py
+ 2122  # 将 127.0.0.1:7890 替换为您实际的代理地址和端口
+ 2123  export HTTP_PROXY="http://127.0.0.1:7890"
+ 2124  export HTTPS_PROXY="http://127.0.0.1:7890"
+ 2125  # 确认设置成功（可选）
+ 2126  echo $HTTPS_PROXY
+ 2127  # 确保在 venv 激活状态下，并且在以下目录：
+ 2128  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2129  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2130  # 确保在 datacody-agent-project/datacody-agent 目录下
+ 2131  cd ~/datacody-agent-project/datacody-agent
+ 2132  nano cody_agent/agent/compiler.py
+ 2133  cat cody_agent/agent/compiler.py
+ 2134  nano cody_agent/agent/compiler.py
+ 2135  # 确保在 venv 激活状态下，并且在以下目录：
+ 2136  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2137  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2138  nano cody_agent/agent/compiler.py
+ 2139  cat cody_agent/agent/compiler.py
+ 2140  export HTTP_PROXY="http://127.0.0.1:7890"
+ 2141  export HTTPS_PROXY="http://127.0.0.1:7890"
+ 2142  python3 -c "
+import os
+import pandas as pd
+import structlog
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 确保 structlog 正确配置，以便看到代理日志 ---
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+        structlog.processors.JSONRenderer(indent=2)
+    ]
+)
+log = structlog.get_logger()
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    code = generate_code(wf)
+
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2143  # 确保在 venv 激活状态下，并且在以下目录：
+ 2144  # (datacody-venv) arleszhang@arleszhang-Inspiron:~/datacody-agent-project/datacody-agent$
+ 2145  python3 -c "
+import os
+import pandas as pd
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    # 调用 compile_workflow (使用 gpt-4o-mini)
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    
+    # --- 3. 代码生成 (Codegen) ---
+    code = generate_code(wf)
+    
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    # --- 4. (可选) 保存生成的代码 ---
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    # 简化错误处理，避免 SyntaxError
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2146  cd ~/datacody-agent-project/datacody-agent
+ 2147  nano cody_agent/agent/compiler.py
+ 2148  export HTTP_PROXY="http://127.0.0.1:7890"
+ 2149  export HTTPS_PROXY="http://127.0.0.1:7890"
+ 2150  python3 -c "
+import os
+import pandas as pd
+import structlog
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 确保 structlog 正确配置，以便看到代理日志 ---
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+        structlog.processors.JSONRenderer(indent=2)
+    ]
+)
+log = structlog.get_logger()
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    code = generate_code(wf)
+
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2151  nano cody_agent/agent/compiler.py
+ 2152  cat cody_agent/agent/compiler.py
+ 2153  python3 -c "
+import os
+import pandas as pd
+import structlog
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 确保 structlog 正确配置，以便看到代理日志 ---
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+        structlog.processors.JSONRenderer(indent=2)
+    ]
+)
+log = structlog.get_logger()
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    code = generate_code(wf)
+
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2154  # 1. 设置 ALL_PROXY 使用 SOCKS5 协议和您的本地端口 7897
+ 2155  # ALL_PROXY 会覆盖所有 HTTP/S/SOCKS 流量
+ 2156  export ALL_PROXY="socks5://127.0.0.1:7897"
+ 2157  # 2. 移除旧的 HTTP/S 代理，防止冲突
+ 2158  unset HTTP_PROXY
+ 2159  unset HTTPS_PROXY
+ 2160  # 3. 检查是否设置成功
+ 2161  echo $ALL_PROXY
+ 2162  python3 -c "
+import os
+import pandas as pd
+import structlog
+from cody_agent.agent.compiler import compile_workflow
+from cody_agent.agent.codegen import generate_code
+
+# --- 确保 structlog 正确配置 ---
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+        structlog.processors.JSONRenderer(indent=2)
+    ]
+)
+log = structlog.get_logger()
+
+# --- 1. 准备测试数据 ---
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = \"\"\"name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+\"\"\"
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+
+print('✅ 临时测试数据 cody_agent/data/input.csv 已创建。')
+
+# --- 2. 真实编译 (调用 LLM) ---
+test_prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+
+print('-------------------- 核心编译 (调用 LLM) --------------------')
+try:
+    wf = compile_workflow(test_prompt, model='gpt-4o-mini')
+    code = generate_code(wf)
+
+    print('\n✅ 代码生成成功！')
+    print('-------------------- 生成代码 (Pandas) --------------------')
+    print(code)
+    print('-----------------------------------------------------------')
+
+    script_path = 'generated_workflow.py'
+    with open(script_path, 'w') as f:
+        f.write(code)
+    print(f'✅ 已将生成代码保存到 {script_path}')
+
+except Exception as e:
+    print(f'\n❌ 编译或验证失败: {e}')
+"
+ 2163  cd ..
+ 2164  tree -L 3
+ 2165  history 600 > cody_compiler_v2-my_bash_history_$(date +%F_%H%M).txt
+ 2166  tree -L 3
+ 2167  rm cody_compiler_v2-my_bash_history_2025-11-08_1759.txt
+ 2168  tree -L 3
+ 2169  history 600 > dev_logs/cody_compiler_v2-my_bash_history_$(date +%F_%H%M).txt
+ 2170  tree -L 3
+ 2171  batcat cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2172  head -n 5 dev_logs/cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2173  history 300 > dev_logs/cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2174  head -n 5 dev_logs/cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2175  batcat dev_logs/dev_logs/cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2176  batcat dev_logs/cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2177  wc -l dev_logs/cody_compiler_v2-my_bash_history_2025-11-08_1803.txt
+ 2178  history | wc -l
+ 2179  history | tail -n 600 > dev_logs/cody_compiler_v2-my_bash_history_$(date +%F_%H%M).txt
