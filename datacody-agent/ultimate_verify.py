@@ -1,25 +1,83 @@
-import pandas as pd, json, os
-from openai import OpenAI
-client = OpenAI(api_key=os.getenv("DASHSCOPE_API_KEY"), base_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+import os
+import pandas as pd
+import structlog
+import time 
+import sys
+import importlib.util # 用于导入动态生成的文件
 
-prompt = "请以JSON格式输出：加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合 age 平均值命名为 avg_age，amount 总和命名为 total_sales，保存为 cody_agent/data/top_sales.parquet"
+# 确保能找到 cody_agent 模块
+sys.path.append(os.getcwd()) 
 
-resp = client.chat.completions.create(model="qwen-turbo", temperature=0, messages=[{"role":"user","content":prompt}], response_format={"type":"json_object"})
-steps = json.loads(resp.choices[0].message.content)["steps"]
+try:
+    from cody_agent.agent.compiler import compile_workflow
+    from cody_agent.agent.codegen import generate_code
+except ImportError as e:
+    print(f"❌ 导入失败: {e}")
+    print("请确保 cody_agent/agent/compiler.py 和 codegen.py 存在且语法正确。")
+    sys.exit(1)
 
-code = "import pandas as pd\ndf=pd.read_csv('cody_agent/data/input.csv')\n"
-for s in steps:
-    n = s.get("name","").lower()
-    p = s.get("params",{})
-    if "filter" in n: code += f'df=df.query("{p.get("condition","amount>1000")}")\n'
-    if "group" in n or "agg" in n:
-        rename = p.get("rename", p.get("renames", {}))
-        aggs = p.get("aggregations", {"age":"mean","amount":"sum"})
-        parts = [f'{rename.get(k,k)}=("{k}","{v}")' for k,v in aggs.items()]
-        by = p.get("group_by") or p.get("columns") or ["department"]
-        code += f'df=df.groupby({by}).agg({",".join(parts)}).reset_index()\n'
-    if "save" in n: code += f'df.to_parquet("cody_agent/data/top_sales.parquet",index=False)\nprint("成功！文件已保存")\n'
+# 配置 structlog
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+        structlog.processors.JSONRenderer(indent=2)
+    ]
+)
+log = structlog.get_logger()
 
-print("生成代码：\n", code)
-exec(code)
-print(pd.read_parquet("cody_agent/data/top_sales.parquet"))
+# 1. 准备数据
+os.makedirs('cody_agent/data', exist_ok=True)
+csv_content = '''name,age,department,amount
+Alice,28,Engineering,900
+Bob,35,Sales,1500
+Charlie,42,Engineering,2200
+David,25,Sales,1200
+Eve,50,HR,800
+'''
+with open('cody_agent/data/input.csv', 'w') as f:
+    f.write(csv_content)
+print('✅ 数据已创建。')
+
+# 2. 编译 (Qwen Turbo)
+prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+print('-------------------- 编译 (Qwen Turbo) --------------------')
+try:
+    wf = compile_workflow(prompt, model='qwen-turbo')
+    code = generate_code(wf)
+    print('\n✅ 生成成功！')
+    print('-------------------- Pandas 代码 --------------------')
+    print(code)
+    
+    # 3. 保存
+    workflow_file = 'generated_workflow.py'
+    with open(workflow_file, 'w') as f:
+        f.write(code)
+    print(f'\n✅ 已保存到 {workflow_file}')
+    
+    # 4. 终极修复：不再使用 exec()，而是导入并运行
+    print('-------------------- 执行验证 --------------------')
+    try:
+        # 动态导入刚刚生成的 .py 文件
+        spec = importlib.util.spec_from_file_location("generated_workflow", workflow_file)
+        workflow_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(workflow_module)
+        
+        # 调用函数
+        workflow_module.run_workflow() 
+        print('✅ 执行成功！')
+        
+    except Exception as e:
+        print(f'❌ 执行异常: {e}')
+    
+    # 5. 验证输出 (现在不再需要 time.sleep)
+    output_path = 'cody_agent/data/top_sales.parquet'
+    if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+        print(f'\n🎉🎉🎉 项目闭环成功！{output_path} 已生成。')
+        df = pd.read_parquet(output_path)
+        print(f'输出预览:\n{df.head()}')
+    else:
+        print(f'❌ 未找到 {output_path} 或文件为空。')
+        
+except Exception as e:
+    log.error('Compile failed', error=str(e))
+    print(f'\n❌ 失败: {e}')

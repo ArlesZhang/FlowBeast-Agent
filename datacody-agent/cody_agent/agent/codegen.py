@@ -1,69 +1,62 @@
-from cody_agent.ir.models import DataWorkflow, StepType
-import json
+from cody_agent.ir.models import DataWorkflow
+import os
 
 def generate_code(workflow: DataWorkflow) -> str:
-    code = ["import pandas as pd\n", "def run_workflow():"]
+    code = ["import pandas as pd", "import os\n", "def run_workflow():"]
     df = "df"
 
     for step in workflow.steps:
+        # 修复：直接比较 step_type (它是一个继承了 str 的 Enum/Literal)
+        step_type = step.step_type 
+
         # LOAD_DATA
-        if step.step_type == "LOAD_DATA":
-            path = (step.params.get("path") or 
-                   step.params.get("file_path") or 
-                   step.params.get("source") or 
-                   "cody_agent/data/input.csv")
+        if step_type == "load_data":
+            path = step.params.get("path", "cody_agent/data/input.csv")
+            code.append(f'    # 1. LOAD_DATA: {path}')
             code.append(f'    {df} = pd.read_csv("{path}")')
 
         # FILTER_ROWS
-        elif step.step_type == "FILTER_ROWS":
-            cond = step.params.get("condition", "amount > 0")
+        elif step_type == "filter_rows":
+            cond = step.params.get("condition", "True")
+            code.append(f'    # 2. FILTER_ROWS: {cond}')
             code.append(f'    {df} = {df}.query("{cond}")')
 
-        # GROUP_AGGREGATE
-        elif step.step_type == "GROUP_AGGREGATE":
-            # group_by
-            group_by = (step.params.get("group_by") or 
-                       step.params.get("columns") or 
-                       step.params.get("by") or 
-                       ["department"])
+        # GROUP_AGGREGATE (最终修复的关键)
+        elif step_type == "group_aggregate":
+            group_by = step.params.get("group_by", ["department"])
             if not isinstance(group_by, list):
                 group_by = [group_by]
+            
+            # compiler.py 已经将 aggregations 修复为 {'new_name': ('old_col', 'func')}
+            agg_dict = step.params.get("aggregations", {})
+            
+            parts = []
+            # 确保 agg_dict 是一个字典 (compiler.py 应该已经保证了)
+            if isinstance(agg_dict, dict):
+                for new_name, (old_col, func) in agg_dict.items():
+                    # 核心修复：生成正确的 Pandas agg 参数: new_name=('old_col', 'func')
+                    parts.append(f'{new_name}=("{old_col}", "{func}")') 
+            
+            agg_str = ", ".join(parts)
+            
+            code.append(f'    # 3. GROUP_AGGREGATE by {group_by!r}')
+            if agg_str:
+                code.append(f'    {df} = {df}.groupby({group_by!r}).agg({agg_str}).reset_index()')
+            else:
+                code.append(f'    # 警告：未找到聚合函数，跳过聚合步骤。')
 
-            # aggregations
-            agg_dict = {}
-            raw = step.params.get("aggregations", {})
-            rename = step.params.get("rename", {})
-
-            if isinstance(raw, dict):
-                for col, func in raw.items():
-                    new = rename.get(col, col)
-                    agg_dict[new] = (col, func)
-            elif isinstance(raw, list):
-                for item in raw:
-                    col = item.get("column") or item.get("col")
-                    func = item.get("function") or item.get("func") or "sum"
-                    new = (item.get("rename") or 
-                           item.get("new_name") or 
-                           item.get("new_col") or 
-                           col)
-                    if col:
-                        agg_dict[new] = (col, func)
-
-            if agg_dict:
-                parts = [f'{new}=("{old}", "{func}")' for new, (old, func) in agg_dict.items()]
-                agg_str = ", ".join(parts)
-                code.append(f'    {df} = {df}.groupby({group_by}).agg({agg_str}).reset_index()')
 
         # SAVE_DATA
-        elif step.step_type == "SAVE_DATA":
-            path = (step.params.get("path") or 
-                   step.params.get("file_path") or 
-                   step.params.get("target") or 
-                   "cody_agent/data/output.parquet")
+        elif step_type == "save_data":
+            path = step.params.get("path", "cody_agent/data/top_sales.parquet") 
+            code.append(f'    # 4. SAVE_DATA to {path}')
+            # 添加 os.makedirs 确保执行环境能创建目录
+            code.append(f'    os.makedirs(os.path.dirname("{path}"), exist_ok=True)')
             code.append(f'    {df}.to_parquet("{path}", index=False)')
             code.append(f'    print("保存成功 → {path}")')
 
-    code.append('    print("Workflow 完成！")')
+    code.append('    print("任务完成！")')
+    code.append('    return df')
     code.append('if __name__ == "__main__":')
     code.append('    run_workflow()')
     return "\n".join(code)
