@@ -1,0 +1,23 @@
+{
+  "name": "datacody-agent",
+  "displayName": "DataCody Compiler",
+  "description": "数据工作流编译器 VSCode 插件",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Programming Languages"],
+  "activationEvents": ["onCommand:datacody.compile"],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [{"command": "datacody.compile", "title": "DataCody: Compile Task"}],
+    "configuration": {
+      "title": "DataCody",
+      "properties": {
+        "datacody.token": {"type": "string", "default": "", "description": "DataCody API Token"}
+      }
+    }
+  },
+  "dependencies": {"axios": "^1.6.0"},
+  "devDependencies": {"typescript": "^5.0.0"}
+}

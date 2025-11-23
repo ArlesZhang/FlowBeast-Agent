@@ -1,0 +1,7 @@
+{
+  "tiers": [
+    {"name": "Developer", "price": "Free", "units": 200, "features": ["Basic Compile", "Community Support"]},
+    {"name": "Team", "price": "$99/mo", "units": 5000, "features": ["Advanced Optimization", "Team Collaboration"]},
+    {"name": "Enterprise", "price": "Custom", "units": "Unlimited", "features": ["Private Deployment", "Dedicated Support"]}
+  ]
+}

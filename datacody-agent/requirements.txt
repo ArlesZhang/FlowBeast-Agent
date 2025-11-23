@@ -22,3 +22,4 @@ pre-commit>=3.0.0
 # 文档
 mkdocs>=1.5.0
 mkdocs-material>=9.0.0
+slowapi
