@@ -23,3 +23,11 @@ pre-commit>=3.0.0
 mkdocs>=1.5.0
 mkdocs-material>=9.0.0
 slowapi
+slowapi
+limits
+stripe
+python-jose[cryptography]
+passlib[bcrypt]
+structlog
+rich
+tenacity>=8.2.3
