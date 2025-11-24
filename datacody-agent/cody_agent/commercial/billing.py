@@ -1,3 +1,4 @@
+import os
 import stripe
 import hashlib
 from reportlab.lib.pagesizes import letter

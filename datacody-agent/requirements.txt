@@ -31,3 +31,13 @@ passlib[bcrypt]
 structlog
 rich
 tenacity>=8.2.3
+reportlab>=4.0.0
+sqlalchemy>=2.0.0
+sqlmodel>=0.0.14
+sqlmodel>=0.0.18
+sqlalchemy>=2.0.0
+reportlab>=4.0.0
+psycopg2-binary>=2.9.9
+sqlmodel>=0.0.18
+sqlalchemy>=2.0.0
+reportlab>=4.0.0

@@ -31,14 +31,16 @@ class Login(BaseModel):
 
 # ==================== Routes ====================
 @app.post("/v1/auth/login")
-@limiter.limit("5/minute")
+# @limiter.limit("5/minute")  # 本地调试关闭限流，生产再打开
+    request: Request
 async def login(form: Login):
     # 模拟登录，直接返回 token（生产环境请接入真实用户系统）
     token = create_access_token({"sub": form.email, "tier": "team"})
     return {"access_token": token, "token_type": "bearer"}
 
 @app.post("/v1/compile")
-@limiter.limit("20/minute")
+# @limiter.limit("20/minute")  # 本地调试关闭限流，生产再打开
+    request: Request
 async def compile(task: Task, user = Depends(get_current_user)):
     result = await compiler.compile_with_billing(
         task=task.task,
