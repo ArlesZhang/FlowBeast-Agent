@@ -31,16 +31,12 @@ class Login(BaseModel):
 
 # ==================== Routes ====================
 @app.post("/v1/auth/login")
-# @limiter.limit("5/minute")  # 本地调试关闭限流，生产再打开
-    request: Request
 async def login(form: Login):
     # 模拟登录，直接返回 token（生产环境请接入真实用户系统）
     token = create_access_token({"sub": form.email, "tier": "team"})
     return {"access_token": token, "token_type": "bearer"}
 
 @app.post("/v1/compile")
-# @limiter.limit("20/minute")  # 本地调试关闭限流，生产再打开
-    request: Request
 async def compile(task: Task, user = Depends(get_current_user)):
     result = await compiler.compile_with_billing(
         task=task.task,
@@ -63,8 +59,8 @@ async def checkout(user = Depends(get_current_user)):
     return {"url": session.url}
 
 @app.post("/stripe/webhook")
-async def webhook(request: Request):
-    payload = await request.body()
+async def stripe_webhook(request: Request): # <-- 关键：添加函数定义和 request 参数
+    payload = await request.body()         # <-- 关键：修复缩进为 4 个空格
     sig_header = request.headers.get("stripe-signature")
     try:
         event = stripe.Webhook.construct_event(
