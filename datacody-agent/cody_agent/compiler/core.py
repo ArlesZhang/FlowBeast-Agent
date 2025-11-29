@@ -9,6 +9,6 @@ class CommercialCompiler:
 
     async def compile_with_billing(self, task: str, user_id: str, tier: str = "developer", project_id: str = None) -> Dict:
         # 记录用量（商业版核心）
-       await self.billing.record_usage(user_id, USAGE_COST, task)
+        await self.billing.record_usage(user_id, USAGE_COST, task)
         # 直接调用你原有的编译逻辑
         return compile_workflow(task).model_dump()
