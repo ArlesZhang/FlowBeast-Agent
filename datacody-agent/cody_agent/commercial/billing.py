@@ -29,7 +29,7 @@ class BillingManager:
         )
         db.add(record)
         user = db.query(User).filter(User.id == user_id).first()
-        user.monthly_usage += cost
+        user.monthly_usage += float(cost)
         db.commit()
 
     async def check_and_get_remaining(self, user_id: str) -> dict:
