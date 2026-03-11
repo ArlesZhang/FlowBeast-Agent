@@ -1,145 +1,41 @@
 [project]
-name = "FlowBeast"
-version = "0.1.0"
-description = "Add your description here"
+name = "flowbeast"
+version = "0.2.0"
+description = "FlowBeast: 高性能 AI 数据编排与智能体框架"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "annotated-doc==0.0.3",
-    "annotated-types==0.7.0",
-    "anyio==4.11.0",
-    "asttokens==3.0.1",
-    "attrs==25.4.0",
-    "babel==2.17.0",
-    "backcall==0.2.0",
-    "backrefs==5.9",
-    "bcrypt==5.0.0",
-    "beautifulsoup4==4.14.2",
-    "black==25.9.0",
-    "bleach==6.3.0",
-    "certifi==2025.10.5",
-    "cffi==2.0.0",
-    "cfgv==3.4.0",
-    "charset-normalizer==3.4.4",
-    "click==8.3.0",
-    "colorama==0.4.6",
-    "cryptography==46.0.3",
-    "decorator==5.2.1",
-    "defusedxml==0.7.1",
-    "deprecated==1.3.1",
-    "distlib==0.4.0",
-    "distro==1.9.0",
-    "docopt==0.6.2",
-    "ecdsa==0.19.1",
-    "executing==2.2.1",
-    "fastapi==0.121.0",
-    "fastjsonschema==2.21.2",
-    "filelock==3.20.0",
-    "flake8==7.3.0",
-    "ghp-import==2.1.0",
-    "greenlet==3.2.4",
-    "h11==0.16.0",
-    "httpcore==1.0.9",
-    "httptools==0.7.1",
-    "httpx==0.28.1",
-    "identify==2.6.15",
-    "idna==3.11",
-    "iniconfig==2.3.0",
-    "ipython==8.12.3",
-    "jedi==0.19.2",
-    "jinja2==3.1.6",
-    "jiter==0.11.1",
-    "jsonschema==4.25.1",
-    "jsonschema-specifications==2025.9.1",
-    "jupyter-client==8.6.3",
-    "jupyter-core==5.9.1",
-    "jupyterlab-pygments==0.3.0",
-    "limits==5.6.0",
-    "markdown==3.10",
-    "markupsafe==3.0.3",
-    "matplotlib-inline==0.2.1",
-    "mccabe==0.7.0",
-    "mergedeep==1.3.4",
-    "mistune==3.1.4",
-    "mkdocs==1.6.1",
-    "mkdocs-get-deps==0.2.0",
-    "mkdocs-material==9.6.23",
-    "mkdocs-material-extensions==1.3.1",
-    "mypy-extensions==1.1.0",
-    "nbclient==0.10.2",
-    "nbconvert==7.16.6",
-    "nbformat==5.10.4",
-    "nodeenv==1.9.1",
-    "numpy==2.3.4",
-    "openai==2.7.1",
-    "packaging==25.0",
-    "paginate==0.5.7",
-    "pandas==2.3.3",
-    "pandocfilters==1.5.1",
-    "parso==0.8.5",
-    "passlib==1.7.4",
-    "pathspec==0.12.1",
-    "pexpect==4.9.0",
-    "pickleshare==0.7.5",
-    "pillow==12.0.0",
-    "pipreqs==0.5.0",
-    "platformdirs==4.5.0",
-    "pluggy==1.6.0",
-    "pre-commit==4.3.0",
-    "prompt-toolkit==3.0.52",
-    "ptyprocess==0.7.0",
-    "pure-eval==0.2.3",
-    "pyarrow==22.0.0",
-    "pyasn1==0.6.1",
-    "pycodestyle==2.14.0",
-    "pycparser==2.23",
-    "pydantic==2.12.4",
-    "pydantic-core==2.41.5",
-    "pyflakes==3.4.0",
-    "pygments==2.19.2",
-    "pymdown-extensions==10.16.1",
-    "pypdf2==3.0.1",
-    "pytest==8.4.2",
-    "python-dateutil==2.9.0.post0",
-    "python-dotenv==1.2.1",
-    "python-jose==3.5.0",
-    "pytokens==0.3.0",
-    "pytz==2025.2",
-    "pyyaml==6.0.3",
-    "pyyaml-env-tag==1.1",
-    "pyzmq==27.1.0",
-    "referencing==0.37.0",
-    "reportlab==4.4.5",
-    "requests==2.32.5",
-    "rpds-py==0.29.0",
-    "rsa==4.9.1",
-    "six==1.17.0",
-    "slowapi==0.1.9",
-    "sniffio==1.3.1",
-    "socksio==1.0.0",
-    "soupsieve==2.8",
-    "sqlalchemy==2.0.44",
-    "stack-data==0.6.3",
-    "starlette==0.49.3",
-    "stripe==14.0.1",
-    "structlog==25.5.0",
-    "tenacity==9.1.2",
-    "tinycss2==1.4.0",
-    "tornado==6.5.2",
-    "tqdm==4.67.1",
-    "traitlets==5.14.3",
-    "typing-extensions==4.15.0",
-    "typing-inspection==0.4.2",
-    "tzdata==2025.2",
-    "urllib3==2.5.0",
-    "uvicorn==0.38.0",
-    "uvloop==0.22.1",
-    "virtualenv==20.35.4",
-    "watchdog==6.0.0",
-    "watchfiles==1.1.1",
-    "wcwidth==0.2.14",
-    "webencodings==0.5.1",
-    "websockets==15.0.1",
-    "wrapt==2.0.1",
-    "yarg==0.1.9",
+    # --- 01 FOUNDATION & FEATURE (感知层) ---
+    "pandas>=2.2.0",
+    "pyarrow",                # 处理 Parquet 必选
+    "numpy>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "qdrant-client",          # 向量数据库 (比 Milvus 更轻量好上手)
+    
+    # --- 02 & 03 INFERENCE (推理与执行层) ---
+    "openai>=1.0.0",          # 兼容 Qwen/DeepSeek/OpenAI
+    "langgraph",              # 架构图中的多 Agent 编排核心
+    "langchain-openai",       # 工具调用集成
+    
+    # --- 04 & 05 OBSERVABILITY (观测与反馈) ---
+    "structlog",              # 结构化日志
+    "loguru",                 # 极致易用的日志辅助
+    "ragas",                  # RAG 效果评估基准
+    
+    # --- INFRASTRUCTURE (基础设施) ---
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "sqlmodel",               # 结合了 SQLAlchemy 和 Pydantic 的数据库利器
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "black",                  # 代码格式化
+    "ipython",                # 交互式调试
+]
+
+[tool.uv]
+# 确保 uv 同步时更加严格
+managed = true

@@ -1,84 +1,61 @@
-from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import Limiter
-from slowapi.util import get_remote_address
-from flowbeast.api.middleware.auth import get_current_user, create_access_token
-from flowbeast.compiler.core import CommercialCompiler
-from flowbeast.commercial.billing import BillingManager
+from flowbeast.agent.compiler import compile_workflow  # 对应重构的编译器
+from flowbeast.agent.codegen import generate_code      # 对应重构的生成器
+from flowbeast.config import Config                    # 对应环境治理
 from pydantic import BaseModel
-from datetime import datetime
-import stripe
-import os
+from loguru import logger
 
-# ==================== FastAPI App ====================
-app = FastAPI(title="DataCody Commercial API", version="2.0.0")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+# ==================== 初始化 ====================
+app = FastAPI(title="FlowBeast Intelligent API", version="0.2.0")
 
-limiter = Limiter(key_func=get_remote_address)
-app.state.limiter = limiter
+# 保持竞争力：跨域支持
+app.add_middleware(
+    CORSMiddleware, 
+    allow_origins=["*"], 
+    allow_methods=["*"], 
+    allow_headers=["*"]
+)
 
-compiler = CommercialCompiler()
-billing = BillingManager()
+# ==================== 模型定义 ====================
+class TaskRequest(BaseModel):
+    prompt: str
+    stream: bool = False
 
-# ==================== Models ====================
-class Task(BaseModel):
-    task: str
-    project_id: str = None
+# ==================== 核心路由 ====================
 
-class Login(BaseModel):
-    email: str
-    password: str
-
-# ==================== Routes ====================
-@app.post("/v1/auth/login")
-async def login(form: Login):
-    # 模拟登录，直接返回 token（生产环境请接入真实用户系统）
-    token = create_access_token({"sub": form.email, "tier": "team"})
-    return {"access_token": token, "token_type": "bearer"}
-
-@app.post("/v1/compile")
-async def compile(task: Task, user = Depends(get_current_user)):
-    result = await compiler.compile_with_billing(
-        task=task.task,
-        user_id=user["sub"],
-        tier=user.get("tier", "developer"),
-        project_id=task.project_id
-    )
-    return result
-
-@app.post("/v1/billing/checkout")
-async def checkout(user = Depends(get_current_user)):
-    session = stripe.checkout.Session.create(
-        customer_email=user["sub"],
-        payment_method_types=["card"],
-        line_items=[{"price": "price_1Q...", "quantity": 1}],  # 替换成你的 Price ID
-        mode="subscription",
-        success_url="https://datacody.ai/success",
-        cancel_url="https://datacody.ai/cancel"
-    )
-    return {"url": session.url}
-
-@app.post("/stripe/webhook")
-async def stripe_webhook(request: Request): # <-- 关键：添加函数定义和 request 参数
-    payload = await request.body()         # <-- 关键：修复缩进为 4 个空格
-    sig_header = request.headers.get("stripe-signature")
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, os.getenv("STRIPE_WEBHOOK_SECRET")
-        )
-        if event["type"] == "checkout.session.completed":
-            print("Payment succeeded!")
-        return {"status": "success"}
-    except Exception as e:
-        print(e)
-        return {"status": "error"}, 400
-
-@app.get("/v1/billing/invoice")
-async def invoice(month: str = None, user = Depends(get_current_user)):
-    month_str = month or datetime.now().strftime("%Y-%m")
-    pdf_path = await billing.generate_invoice_pdf(user["sub"], month_str)
-    return {"invoice_url": f"/invoices/{pdf_path}"}
+@app.post("/v1/execute")
+async def execute_task(request: TaskRequest):
+    """
+    MVP 核心：接收自然语言，返回 IR 和生成的 Python 代码
+    """
+    logger.info(f"Received NL Task: {request.prompt}")
+    
+    # 1. 编译 (NL -> IR)
+    ir = compile_workflow(request.prompt)
+    
+    # 2. 生成 (IR -> Python)
+    generated_python = generate_code(ir)
+    
+    return {
+        "status": "success",
+        "model": Config.MODEL_NAME,
+        "payload": {
+            "ir": ir,
+            "code": generated_python
+        }
+    }
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "service": "DataCody Commercial API"}
+    return {
+        "status": "healthy", 
+        "service": "FlowBeast Engine",
+        "device": "Düsseldorf-Node-01" # 增加点个性
+    }
+
+# ==================== 商业占位 (未来扩展) ====================
+# 这里可以留一个接口，但暂时不加 Depends 鉴权，方便你现在调试
+@app.get("/v1/user/info")
+async def get_user_placeholder():
+    return {"tier": "architect_preview", "status": "active"}

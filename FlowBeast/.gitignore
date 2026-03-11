@@ -19,9 +19,18 @@ ENV/
 env.bak/
 venv.bak/
 
-# Data (不 push Git，用云备份)
-data/*
-!data/.gitkeep  # 空 placeholder
+# --- Data & Artifacts (FlowBeast 精确忽略) ---
+test_data/
+flowbeast/data/*.csv
+flowbeast/data/*.parquet
+flowbeast/data/*.json
+# 彻底封锁数据文件夹但保留目录结构
+flowbeast/data/*
+!flowbeast/data/.gitkeep
+
+# 忽略生成的代码中间产物
+flowbeast/tmp/
+generated_workflow.py
 
 # Logs/Caches
 logs/
