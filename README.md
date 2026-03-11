@@ -1,10 +1,10 @@
-# DataCody Agent  
->**The Data Workflow Compiler for Data Engineers**
+# FlowBeast-Agent  
+>**The Data Workflow Compiler for LLMops**
 
 ---
 
 ## Overview
-**DataCody Agent** is an intelligent agent that automates and optimizes data workflows — from raw data ingestion to transformation and deployment — acting like a **compiler** for data engineering tasks.It converts high-level workflow descriptions into executable, efficient pipelines.
+**FlowBeast Agent** is an intelligent agent that automates and optimizes data workflows — from raw data ingestion to transformation and deployment — acting like a **compiler** for data engineering tasks.It converts high-level workflow descriptions into executable, efficient pipelines.
 
 ```mermaid
 flowchart TB
