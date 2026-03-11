@@ -239,8 +239,8 @@ class Goal goal
 ## Installation
 
 ```bash
-git clone https://github.com/ArlesZhang/DataCody-Agent.git
-cd DataCody-Agent
+git clone https://github.com/ArlesZhang/FlowBeast.git
+cd FlowBeast-p1/FlowBeast
 pip install -r requirements.txt
 ```
 
