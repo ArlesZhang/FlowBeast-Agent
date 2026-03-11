@@ -1,6 +1,6 @@
 import pytest
-from cody_agent.agent.compiler import compile_workflow
-from cody_agent.agent.codegen import generate_code
+from flowbeast.agent.compiler import compile_workflow
+from flowbeast.agent.codegen import generate_code
 
 TEST_PROMPT = (
     "加载 ./data/input.csv，"
@@ -22,7 +22,7 @@ def test_full_pipeline(tmp_path, monkeypatch):
             {"id": "s4", "step_type": "save_data", "params": {"path": "./data/output.parquet", "format": "parquet"}, "input_df_id": "df3", "output_df_id": "df4"}
         ]
     }
-    with patch("cody_agent.agent.compiler._call_llm", return_value=mock_resp):
+    with patch("flowbeast.agent.compiler._call_llm", return_value=mock_resp):
         wf = compile_workflow(TEST_PROMPT)
         code = generate_code(wf)
         assert "pd.read_csv" in code

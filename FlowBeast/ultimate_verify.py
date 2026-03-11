@@ -5,15 +5,15 @@ import time
 import sys
 import importlib.util # 用于导入动态生成的文件
 
-# 确保能找到 cody_agent 模块
+# 确保能找到 flowbeast 模块
 sys.path.append(os.getcwd()) 
 
 try:
-    from cody_agent.agent.compiler import compile_workflow
-    from cody_agent.agent.codegen import generate_code
+    from flowbeast.agent.compiler import compile_workflow
+    from flowbeast.agent.codegen import generate_code
 except ImportError as e:
     print(f"❌ 导入失败: {e}")
-    print("请确保 cody_agent/agent/compiler.py 和 codegen.py 存在且语法正确。")
+    print("请确保 flowbeast/agent/compiler.py 和 codegen.py 存在且语法正确。")
     sys.exit(1)
 
 # 配置 structlog
@@ -26,7 +26,7 @@ structlog.configure(
 log = structlog.get_logger()
 
 # 1. 准备数据
-os.makedirs('cody_agent/data', exist_ok=True)
+os.makedirs('flowbeast/data', exist_ok=True)
 csv_content = '''name,age,department,amount
 Alice,28,Engineering,900
 Bob,35,Sales,1500
@@ -34,12 +34,12 @@ Charlie,42,Engineering,2200
 David,25,Sales,1200
 Eve,50,HR,800
 '''
-with open('cody_agent/data/input.csv', 'w') as f:
+with open('flowbeast/data/input.csv', 'w') as f:
     f.write(csv_content)
 print('✅ 数据已创建。')
 
 # 2. 编译 (Qwen Turbo)
-prompt = '加载 cody_agent/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 cody_agent/data/top_sales.parquet'
+prompt = '加载 flowbeast/data/input.csv，过滤 amount>1000，按 department 聚合求 age 的平均值 (rename 为 avg_age) 和 amount 的总和 (rename 为 total_sales)，最后保存到 flowbeast/data/top_sales.parquet'
 print('-------------------- 编译 (Qwen Turbo) --------------------')
 try:
     wf = compile_workflow(prompt, model='qwen-turbo')
@@ -70,7 +70,7 @@ try:
         print(f'❌ 执行异常: {e}')
     
     # 5. 验证输出 (现在不再需要 time.sleep)
-    output_path = 'cody_agent/data/top_sales.parquet'
+    output_path = 'flowbeast/data/top_sales.parquet'
     if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
         print(f'\n🎉🎉🎉 项目闭环成功！{output_path} 已生成。')
         df = pd.read_parquet(output_path)

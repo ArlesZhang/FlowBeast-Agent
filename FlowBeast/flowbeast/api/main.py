@@ -2,9 +2,9 @@ from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from cody_agent.api.middleware.auth import get_current_user, create_access_token
-from cody_agent.compiler.core import CommercialCompiler
-from cody_agent.commercial.billing import BillingManager
+from flowbeast.api.middleware.auth import get_current_user, create_access_token
+from flowbeast.compiler.core import CommercialCompiler
+from flowbeast.commercial.billing import BillingManager
 from pydantic import BaseModel
 from datetime import datetime
 import stripe

@@ -1,6 +1,6 @@
 USAGE_COST = 0.01
-from cody_agent.commercial.billing import BillingManager
-from cody_agent.agent.compiler import compile_workflow
+from flowbeast.commercial.billing import BillingManager
+from flowbeast.agent.compiler import compile_workflow
 from typing import Dict
 
 class CommercialCompiler:

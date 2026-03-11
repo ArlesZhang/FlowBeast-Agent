@@ -1,7 +1,7 @@
 import pytest
 import json
-from cody_agent.ir.models import DataWorkflow
-from cody_agent.agent.codegen import generate_code
+from flowbeast.ir.models import DataWorkflow
+from flowbeast.agent.codegen import generate_code
 
 # 模拟一个经过验证的 DataWorkflow IR
 mock_workflow_data = {

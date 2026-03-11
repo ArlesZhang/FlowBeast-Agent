@@ -1,4 +1,4 @@
-from cody_agent.ir.models import DataWorkflow
+from flowbeast.ir.models import DataWorkflow
 import os
 
 def generate_code(workflow: DataWorkflow) -> str:
@@ -11,7 +11,7 @@ def generate_code(workflow: DataWorkflow) -> str:
 
         # LOAD_DATA
         if step_type == "load_data":
-            path = step.params.get("path", "cody_agent/data/input.csv")
+            path = step.params.get("path", "flowbeast/data/input.csv")
             code.append(f'    # 1. LOAD_DATA: {path}')
             code.append(f'    {df} = pd.read_csv("{path}")')
 
@@ -48,7 +48,7 @@ def generate_code(workflow: DataWorkflow) -> str:
 
         # SAVE_DATA
         elif step_type == "save_data":
-            path = step.params.get("path", "cody_agent/data/top_sales.parquet") 
+            path = step.params.get("path", "flowbeast/data/top_sales.parquet") 
             code.append(f'    # 4. SAVE_DATA to {path}')
             # 添加 os.makedirs 确保执行环境能创建目录
             code.append(f'    os.makedirs(os.path.dirname("{path}"), exist_ok=True)')

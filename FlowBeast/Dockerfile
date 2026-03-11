@@ -5,4 +5,4 @@ RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.
 COPY . .
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
-CMD ["uvicorn", "cody_agent.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "flowbeast.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

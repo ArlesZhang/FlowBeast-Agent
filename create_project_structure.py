@@ -1,5 +1,7 @@
 import os
 
+# run this .sh will build complete directory structure of the project + initial file content 
+
 project_structure = {
     "datacody-agent": {
         "requirements.txt": "",

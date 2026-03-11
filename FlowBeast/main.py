@@ -1,6 +1,6 @@
-from cody_agent.agent.compiler import CompilerAgent
-from cody_agent.codegen.pandas_generator import PandasCodeGenerator
-from cody_agent.execution.runner import PipelineRunner
+from flowbeast.agent.compiler import CompilerAgent
+from flowbeast.codegen.pandas_generator import PandasCodeGenerator
+from flowbeast.execution.runner import PipelineRunner
 
 def test_full_pipeline():
     print("=== DataCody Agent 端到端测试 ===\n")
