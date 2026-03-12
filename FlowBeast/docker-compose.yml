@@ -1,0 +1,22 @@
+services:
+  flowbeast:
+    build: .
+    container_name: flowbeast-engine
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app  # 热重载：宿主机代码修改，容器同步生效
+      - /app/.venv  # 这一行极其重要，防止宿主机覆盖容器环境
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # 关键：让容器能通过这个域名访问宿主机的 Ollama
+    environment:
+      - WATCHFILES_FORCE_POLLING=true # 确保 Docker 下的热重载灵敏
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    networks:
+      - flowbeast-net
+
+networks:
+  flowbeast-net:
+    driver: bridge

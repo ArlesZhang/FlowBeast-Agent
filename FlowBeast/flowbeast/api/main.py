@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from flowbeast.agent.compiler import compile_workflow  # 对应重构的编译器
 from flowbeast.agent.codegen import generate_code      # 对应重构的生成器
-from flowbeast.config import Config                    # 对应环境治理
+from flowbeast.config import settings                    # 对应环境治理
 from pydantic import BaseModel
 from loguru import logger
 
@@ -39,7 +39,7 @@ async def execute_task(request: TaskRequest):
     
     return {
         "status": "success",
-        "model": Config.MODEL_NAME,
+        "model": settings.MODEL_NAME,
         "payload": {
             "ir": ir,
             "code": generated_python
