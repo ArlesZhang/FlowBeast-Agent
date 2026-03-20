@@ -60,3 +60,9 @@ api_keys.json
 *.zip
 *.tar.gz
 *.db  # 如 DuckDB 文件
+
+# 忽略 market_material/raw_data 下的所有文件
+flowbeast/market_material/raw_data/*
+
+# 但不要忽略 .gitkeep 文件（前面的感叹号表示排除忽略）
+!flowbeast/market_material/raw_data/.gitkeep
