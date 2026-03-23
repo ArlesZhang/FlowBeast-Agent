@@ -11,22 +11,21 @@ dependencies = [
     "numpy>=2.0.0",
     "python-dotenv>=1.0.0",
     "qdrant-client",          # 向量数据库 (比 Milvus 更轻量好上手)
-    
     # --- 02 & 03 INFERENCE (推理与执行层) ---
     "openai>=1.0.0",          # 兼容 Qwen/DeepSeek/OpenAI
     "langgraph",              # 架构图中的多 Agent 编排核心
     "langchain-openai",       # 工具调用集成
-    
     # --- 04 & 05 OBSERVABILITY (观测与反馈) ---
     "structlog",              # 结构化日志
     "loguru",                 # 极致易用的日志辅助
     "ragas",                  # RAG 效果评估基准
-    
     # --- INFRASTRUCTURE (基础设施) ---
     "fastapi",
     "uvicorn[standard]",
-    "httpx",
+    "httpx[socks]",
     "sqlmodel",               # 结合了 SQLAlchemy 和 Pydantic 的数据库利器
+    "elevenlabs>=2.39.0",
+    "edge-tts>=7.2.8",
 ]
 
 [dependency-groups]
