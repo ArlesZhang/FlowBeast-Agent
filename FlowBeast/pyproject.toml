@@ -26,6 +26,7 @@ dependencies = [
     "sqlmodel",               # 结合了 SQLAlchemy 和 Pydantic 的数据库利器
     "elevenlabs>=2.39.0",
     "edge-tts>=7.2.8",
+    "google-generativeai>=0.8.6",
 ]
 
 [dependency-groups]

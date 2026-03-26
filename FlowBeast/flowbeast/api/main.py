@@ -1,3 +1,4 @@
+import flowbeast.core.config
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from flowbeast.agent.compiler import compile_workflow  # 对应重构的编译器

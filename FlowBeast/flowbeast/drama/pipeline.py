@@ -1,56 +1,122 @@
 import json
-import os
 from datetime import datetime
+from pathlib import Path
+
+from loguru import logger
+
+from flowbeast.core.config import settings
 from flowbeast.drama.generator import generate_script
 from flowbeast.drama.audio import generate_audio
 
-# --- 全局配置：在这里一键切换配音引擎 ---
-# "edge" 为免费微软音色，"elevenlabs" 为高质付费音色
-AUDIO_PROVIDER = "edge" 
+# ====================== 全局配置 ======================
+AUDIO_PROVIDER = "edge"
 
+
+# ====================== 主流水线 ======================
 def run_full_pipeline(topic: str):
-    print(f"\n🚀 === FlowBeast 启动：【{topic}】 ===")
+    run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # 1. 大脑生成：从 LLM 获取结构化剧本
+    logger.info(f"🚀 FlowBeast 启动 | topic={topic} | run_id={run_id}")
+
+    # ====================== 1. 大脑（IP2）======================
     try:
-        script = generate_script(topic)
+       result = generate_script(topic) 
+       script = result["script"]   
+       meta = result["meta"]            
+    
+       logger.success(f"✅ 剧本生成成功 | Model: {meta['model']}")
+
     except Exception as e:
-        print(f"❌ 剧本生成失败: {e}")
+        logger.exception(f"❌ 剧本生成失败: {e}")
         return
 
-    # 2. 剧本持久化：存入 data/outputs 以备后续人工查阅或剪辑参考
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # 确保输出目录存在
-    os.makedirs("flowbeast/data/outputs", exist_ok=True)
-    
-    script_filename = f"flowbeast/data/outputs/script_{timestamp}.json"
-    with open(script_filename, "w", encoding="utf-8") as f:
-        json.dump(script, f, ensure_ascii=False, indent=2)
-    print(f"✅ 剧本已存: {script_filename}")
+    # ====================== 2. 存储（统一路径）======================
+    base_path = Path(settings.DATA_SAVE_PATH) / run_id
+    audio_path = base_path / "audio"
 
-    # 3. 产能闭环：自动化批量配音
-    print(f"🎬 正在使用 [{AUDIO_PROVIDER.upper()}] 引擎进行配音任务...")
-    
+    base_path.mkdir(parents=True, exist_ok=True)
+    audio_path.mkdir(parents=True, exist_ok=True)
+
+    script_file = base_path / "script.json"
+
+    with open(script_file, "w", encoding="utf-8") as f:
+        json.dump(script, f, ensure_ascii=False, indent=2)
+
+    logger.success(f"📦 剧本已存储: {script_file}")
+
+    # ====================== 3. 产能（音频生成）======================
+    logger.info(f"🎬 开始配音 | provider={AUDIO_PROVIDER}")
+
+    success_count = 0
+    fail_count = 0
+
     for scene in script.get("scenes", []):
         scene_id = scene.get("id", 0)
+
         for line_id, line in enumerate(scene.get("dialogue", [])):
             try:
-                # 注意：这里的参数名必须与你的 audio.py 定义严格对应
-                path = generate_audio(
+                output_path = generate_audio(
                     text=line["text"],
                     scene_id=scene_id,
                     line_id=line_id,
                     speaker=line["speaker"],
-                    provider=AUDIO_PROVIDER
+                    provider=AUDIO_PROVIDER,
+                    output_dir=str(audio_path),
+                    emotion=line.get("emotion"),
+                    intensity=line.get("intensity"),
                 )
-                print(f"   -> 已生成: {os.path.basename(path)}")
+
+                logger.info(f"🎧 S{scene_id}-L{line_id} -> {Path(output_path).name}")
+                success_count += 1
+
             except Exception as e:
-                print(f"   ❌ [S{scene_id}-L{line_id}] 配音失败: {e}")
+                logger.error(f"❌ S{scene_id}-L{line_id} 失败: {e}")
+                fail_count += 1
 
-    print(f"✨ 闭环完成！主题【{topic}】所有资产已就绪。")
+    # ====================== 4. 总结（为未来数据回流准备）======================
+    logger.success(
+        f"""
+✨ Pipeline 完成
+-------------------------
+topic       : {topic}
+run_id      : {run_id}
+script_path : {script_file}
+audio_dir   : {audio_path}
+success     : {success_count}
+failed      : {fail_count}
+-------------------------
+"""
+    )
 
+# ====================== 5. 生产报告（为 FP2/自进化准备） ======================
+    report = {
+        "run_id": run_id,
+        "topic": topic,
+        "model": meta.get("model"),
+        "status": "completed" if fail_count == 0 else "partial",
+        
+        # --- 核心指标回流 ---
+        "analytics": {
+            "total_scenes": len(script.get("scenes", [])),
+            "audio_assets": success_count,
+            "core_hook": script.get("core_hook", ""),
+            "global_emotion_curve": script.get("emotion_curve_global", []),
+        },
+        
+        # --- 时间线 ---
+        "created_at": meta.get("timestamp"),
+        "finished_at": datetime.now().isoformat()
+    }
+
+    report_file = base_path / "production_report.json"
+    with open(report_file, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+
+    logger.success(f"📊 生产报告已生成: {report_file}")
+
+
+# ====================== 批量入口（测试 / 数据采集）======================
 if __name__ == "__main__":
-    # 批量测试：收集“直觉数据”，验证爽感逻辑
     test_topics = [
         "逆袭：被开除后的百亿首富",
         "校园：穷小子获得神豪系统",

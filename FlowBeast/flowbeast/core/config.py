@@ -1,41 +1,65 @@
 import os
 from pathlib import Path
+
 from pydantic_settings import BaseSettings
 from loguru import logger
 from dotenv import load_dotenv
 
-# 1. 确保在 Pydantic 加载前，.env 已经进入环境变量
+# ====================== 项目路径与 .env 加载 ======================
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-load_dotenv(dotenv_path=BASE_DIR / ".env")
+ENV_FILE = BASE_DIR / ".env"
 
+# 提前手动加载 .env（保证 os.getenv 和 pydantic 都能读到）
+load_dotenv(dotenv_path=ENV_FILE, override=True)
+
+if not ENV_FILE.exists():
+    logger.warning(f"⚠️ .env 文件不存在！路径: {ENV_FILE}")
+
+# ====================== 配置类 ======================
 class Settings(BaseSettings):
     # --- 基础配置 ---
-    APP_NAME: str = os.getenv("APP_NAME", "FlowBeast-Agent")
-    APP_ENV: str = os.getenv("APP_ENV", "development")
+    APP_NAME: str = "FlowBeast-Agent"
+    APP_ENV: str = "development"
 
-    # --- 模型治理 (融合了你之前的逻辑) ---
-    # 优先读取 ACTIVE_VENDOR，如果没有则回退到 MODEL_PROVIDER
-    MODEL_PROVIDER: str = os.getenv("ACTIVE_VENDOR", os.getenv("MODEL_PROVIDER", "gemini"))
-    MODEL_NAME: str = os.getenv("ACTIVE_MODEL", os.getenv("MODEL_NAME", "gemini-1.5-flash"))
+    # --- 模型相关 ---
+    MODEL_PROVIDER: str = "qwen"
+    MODEL_NAME: str = "qwen-turbo"
 
-    # --- 算力地址与 API Keys ---
-    OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
-    GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
-    DASHSCOPE_API_KEY: str = os.getenv("DASHSCOPE_API_KEY", "")
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    
-    # --- 路径管理 ---
-    DATA_SAVE_PATH: str = os.getenv("DATA_SAVE_PATH", "/app/market_material/raw_data")
+    # --- API Keys ---
+    OPENAI_API_KEY: str = ""
+    QWEN_API_KEY: str = ""
+    GOOGLE_API_KEY: str = ""
+    DASHSCOPE_API_KEY: str = ""
 
-    # --- 环境治理 (保留你的核心逻辑) ---
+    # --- 其他配置 ---
+    OLLAMA_BASE_URL: str = "http://host.docker.internal:11434"
+
+    # --- 路径配置（动态，推荐） ---
+    DATA_SAVE_PATH: str = str(BASE_DIR / "flowbeast/data/outputs")
+
+    # ====================== Pydantic v2 推荐写法 ======================
+    model_config = {
+        "env_file": ENV_FILE,
+        "env_file_encoding": "utf-8",
+        "extra": "ignore",           # 忽略 .env 中未声明的字段
+        "case_sensitive": False,
+    }
+
     @classmethod
     def sanitize(cls):
-        """一次性清理，解决容器内外的代理冲突"""
-        proxies = ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"]
+        """清理代理环境变量，防止干扰本地 LLM 调用"""
+        proxies = ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY",
+                   "http_proxy", "https_proxy", "all_proxy"]
         removed = [p for p in proxies if os.environ.pop(p, None)]
         if removed:
-            logger.warning(f"Detected and cleared proxy envs: {removed} to ensure local LLM handshake.")
+            logger.warning(f"🛡️ Cleared proxy envs: {removed} to ensure local LLM handshake.")
         return cls()
 
-# 在容器启动时初始化
+
+# ====================== 全局实例 ======================
 settings = Settings.sanitize()
+
+# ====================== 导出常用变量（保持兼容） ======================
+OPENAI_API_KEY = settings.OPENAI_API_KEY
+QWEN_API_KEY = settings.QWEN_API_KEY
+DATA_SAVE_PATH = settings.DATA_SAVE_PATH

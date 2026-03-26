@@ -66,3 +66,73 @@ flowbeast/market_material/raw_data/*
 
 # 但不要忽略 .gitkeep 文件（前面的感叹号表示排除忽略）
 !flowbeast/market_material/raw_data/.gitkeep
+
+# ==================== AI漫剧生成输出文件（最重要） ====================
+# 生成的最终媒体文件
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.webm
+
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.aac
+*.m4a
+
+# 中间生成文件和缓存
+*.temp
+*.tmp
+*.cache
+*.partial
+
+# 输出目录（建议把所有生成物统一放这里）
+output/
+outputs/
+generated/
+render/
+media/
+videos/
+audio/
+frames/
+temp/
+tmp/
+
+# Manim / Blender / AE / Kling / 即梦 等工具的默认输出
+*/media/
+*/videos/
+*/animations/
+ManimCache/
+.blender/
+__pycache__/
+
+# ==================== 脚本和临时脚本 ====================
+# 如果你用脚本批量生成，生成的 .sh / .py / .bat 等临时脚本也建议忽略（除非是核心模板）
+*.generated.sh
+*.generated.py
+run_*.sh
+temp_*.sh
+*.tmp.sh
+
+# --- FlowBeast Generated Assets ---
+
+# 忽略所有生成的剧本 JSON 文件
+flowbeast/data/outputs/*.json
+
+# 忽略所有配音音频文件
+flowbeast/data/outputs/audio/
+
+# 忽略所有生成的剧照图片 (为下一步做准备)
+flowbeast/data/outputs/images/
+
+# 忽略所有合成的视频文件
+flowbeast/data/outputs/videos/
+*.mp4
+
+# 忽略临时的音频/文本拆分片段 (对应你之前的 script_to_audio 逻辑)
+audio_clips/
+
+# 忽略可能产生的日志文件
+flowbeast/data/outputs/logs/
