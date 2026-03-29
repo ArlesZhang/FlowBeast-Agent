@@ -29,66 +29,24 @@
 ## Project Structure
 ```bash
 .
-├── create_project_structure.py
-├── FlowBeast
-│   ├── deployments
-│   │   ├── docker
-│   │   ├── k8s
-│   │   └── terraform
-│   ├── Dockerfile
-│   ├── docs
-│   │   ├── DEVELOPMENT.md
-│   │   └── README.md
-│   ├── flowbeast
-│   │   ├── agent
-│   │   ├── api
-│   │   ├── codegen
-│   │   ├── commercial
-│   │   ├── compiler
-│   │   ├── data
-│   │   ├── execution
-│   │   ├── __init__.py
-│   │   ├── ir
-│   │   └── __pycache__
-│   ├── generated_workflow.py
-│   ├── __init__.py
-│   ├── main.py
-│   ├── market_material
-│   │   ├── case_studies
-│   │   ├── docs
-│   │   └── pricing
-│   ├── pyproject.toml
-│   ├── README.md
-│   ├── requirements.txt
-│   ├── run.py
-│   ├── start_dev.sh
-│   ├── start_production.sh
-│   ├── test_data
-│   │   └── input.csv
-│   ├── tests
-│   │   ├── conftest.py
-│   │   ├── __init__.py
-│   │   ├── test_codegen.py
-│   │   └── test_compiler.py
-│   ├── ultimate_verify.py
-│   ├── uv.lock
-│   ├── verify_cody.py
-│   ├── verify.py
-│   └── vs_code_extension
-│       ├── media
-│       ├── package.json
-│       ├── src
-│       ├── test
-│       └── tsconfig.json
-├── logs
-│   ├── dev
-│   └── prod
-│       ├── flowdeastr_v2-bash_history_2025-11-08_1819.log
-│       ├── flowdeast_v2-bash_history_2025-11-08_0958.log
-│       └── flowdeast_v2-bash_history_2025-11-25_1501.log
-└── start.sh
+├── archive
+├── deployments
+├── docker-compose.yml
+├── Dockerfile
+├── docs
+├── flowbeast
+├── __init__.py
+├── market_material
+├── pyproject.toml
+├── README.md
+├── requirements.txt
+├── setup_docker_identity.sh
+├── test_data
+├── tests
+├── uv.lock
+└── vs_code_extension
 
-30 directories, 29 files
+9 directories, 8 files
 ````
 
 ## Quick Start (To Be Completed)
