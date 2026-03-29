@@ -1,22 +1,69 @@
+version: "3.9"
+
 services:
   flowbeast:
     build: .
     container_name: flowbeast-engine
+
+    # ======================
+    # 🌐 端口
+    # ======================
     ports:
       - "8000:8000"
+
+    # ======================
+    # 👤 权限穿透（关键！解决 /app Permission denied）
+    # ======================
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+
+    # ======================
+    # 📦 环境变量
+    # ======================
     env_file:
       - .env
-    volumes:
-      - .:/app  # 热重载：宿主机代码修改，容器同步生效
-      - /app/.venv  # 这一行极其重要，防止宿主机覆盖容器环境
-    extra_hosts:
-      - "host.docker.internal:host-gateway" # 关键：让容器能通过这个域名访问宿主机的 Ollama
+      - .env.docker   # ← setup 脚本生成
+
     environment:
-      - WATCHFILES_FORCE_POLLING=true # 确保 Docker 下的热重载灵敏
+      - WATCHFILES_FORCE_POLLING=true
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
+
+      # ✅ 数据分层（核心）
+      - FLOWBEAST_OUTPUT_DIR=/app/flowbeast/data/outputs
+      - FLOWBEAST_MARKET_DIR=/app/flowbeast/market_material/raw_data
+      - FLOWBEAST_VECTOR_DIR=/app/flowbeast/data/vector_store
+      
+      # ✅ ⭐ 关键修复（uv 权限问题）
+      - UV_CACHE_DIR=/tmp/uv-cache
+        
+    # ======================
+    # 📁 Volume 映射（核心中的核心）
+    # ======================
+    volumes:
+      # 代码热更新
+      - .:/app
+
+      # 🎬 内容输出（强绑定）
+      - ./flowbeast/data/outputs:/app/flowbeast/data/outputs
+
+      # 📊 商业数据（强隔离）
+      - ./flowbeast/market_material/raw_data:/app/flowbeast/market_material/raw_data
+
+      # 🧠 向量库（FP2）
+      - ./flowbeast/data/vector_store:/app/flowbeast/data/vector_store
+
+    # ======================
+    # 🧠 网络（Ollama 必备）
+    # ======================
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
     networks:
       - flowbeast-net
 
+
+# ======================
+# 🌐 网络定义
+# ======================
 networks:
   flowbeast-net:
     driver: bridge

@@ -18,7 +18,7 @@ dependencies = [
     # --- 04 & 05 OBSERVABILITY (观测与反馈) ---
     "structlog",              # 结构化日志
     "loguru",                 # 极致易用的日志辅助
-    "ragas",                  # RAG 效果评估基准
+    # "ragas",                  # RAG 效果评估基准
     # --- INFRASTRUCTURE (基础设施) ---
     "fastapi",
     "uvicorn[standard]",
@@ -27,6 +27,7 @@ dependencies = [
     "elevenlabs>=2.39.0",
     "edge-tts>=7.2.8",
     "google-generativeai>=0.8.6",
+    "pydantic-settings>=2.13.1",
 ]
 
 [dependency-groups]

@@ -13,6 +13,7 @@ build/
 # Environments
 .env
 .venv
+.env.docker
 env/
 venv/
 ENV/
@@ -128,7 +129,7 @@ flowbeast/data/outputs/audio/
 flowbeast/data/outputs/images/
 
 # 忽略所有合成的视频文件
-flowbeast/data/outputs/videos/
+flowbeast/data/outputs/*
 *.mp4
 
 # 忽略临时的音频/文本拆分片段 (对应你之前的 script_to_audio 逻辑)
