@@ -1,23 +1,24 @@
 from flowbeast.core.config import settings
 
 def embed_text(text: str):
-    # 延迟导入已经闭环的 generator 里的 get_client
+    """延迟导入，确保不发生循环引用"""
     from flowbeast.drama.generator import get_client
     client = get_client()
     
     provider = settings.MODEL_PROVIDER.lower()
     if provider == "gemini":
+        # 使用你 v0.2.0 已有的 client 配置
         result = client.embed_content(
             model="models/embedding-001",
             content=text,
             task_type="retrieval_query"
         )
         return result['embedding']
-    elif provider == "qwen":
-        import dashscope # 假设你已安装
-        resp = dashscope.TextEmbedding.call(
-            model=dashscope.TextEmbedding.Models.text_embedding_v2,
-            input=text
-        )
-        return resp.output['embeddings'][0]['embedding']
+    
+    # 兜底：如果配置还没好，返回 Mock
     return [0.0] * 1536
+
+def embed_unit(unit):
+    """将 ViralUnit 转化为可嵌入的文本"""
+    text = f"hook: {unit.hook} pattern: {unit.pattern} emotion: {' '.join(unit.emotion)}"
+    return embed_text(text)

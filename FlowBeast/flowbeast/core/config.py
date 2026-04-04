@@ -58,16 +58,19 @@ class Settings(BaseSettings):
         os.getenv("FLOWBEAST_VECTOR_DIR", BASE_DIR / "flowbeast/data/vector_store")
     )
 
-    # 兼容旧代码
-    DATA_SAVE_PATH: str = ""
 
     # ======================
     # FP3 专用路径（新增字段，解决 Pydantic 报错）
     # ======================
-    FP3_DIR: str = ""
     
-    FP3_INDEX_PATH: Path = FP3_INDEX_PATH
-    FP3_META_PATH: Path = FP3_META_PATH
+    # 这里先定义占位符，由 sanitize 进行动态对齐
+    FP3_DIR: Path = Path(FLOWBEAST_OUTPUT_DIR) / "vector_store" / "fp3"
+    FP3_INDEX_PATH: Path = Path(FLOWBEAST_OUTPUT_DIR) / "vector_store" / "fp3/fp3.index"
+    FP3_META_PATH: Path = Path(FLOWBEAST_OUTPUT_DIR) / "vector_store" / "fp3/fp3_meta.json"
+    
+    # 兼容旧代码
+    DATA_SAVE_PATH: str = ""
+
 
     model_config = {
         "env_file": ENV_FILE,
@@ -86,6 +89,10 @@ class Settings(BaseSettings):
             logger.warning(f"🛡️ Cleared proxy envs: {removed}")
 
         instance = cls()
+
+        # 3. 动态对齐：确保 FP3 目录始终在输出目录下
+        output_base = Path(instance.FLOWBEAST_OUTPUT_DIR)
+        fp3_dir = output_base / "vector_store" / "fp3"
 
         # 保证 DATA_SAVE_PATH 有值
         if not instance.DATA_SAVE_PATH:
@@ -107,9 +114,12 @@ class Settings(BaseSettings):
         fp3_dir.mkdir(parents=True, exist_ok=True)
 
         # 赋值给 Pydantic 字段
-        instance.FP3_DIR = str(fp3_dir)
-        instance.FP3_INDEX_PATH = str(fp3_dir / "fp3.index")
-        instance.FP3_META_PATH = str(fp3_dir / "fp3_meta.json")
+        instance.FP3_DIR = fp3_dir
+        instance.FP3_INDEX_PATH = fp3_dir / "fp3.index"
+        instance.FP3_META_PATH = fp3_dir / "fp3_meta.json"
+
+        # 兼容旧代码字段
+        instance.DATA_SAVE_PATH = str(output_base)
 
         logger.info(f"✅ FP3_DIR 已设置: {instance.FP3_DIR}")
 
@@ -127,5 +137,9 @@ DATA_SAVE_PATH = settings.DATA_SAVE_PATH
 OUTPUTS_DIR = settings.FLOWBEAST_OUTPUT_DIR
 VECTOR_STORE_PATH = settings.FLOWBEAST_VECTOR_DIR
 
+# 明确导出 FP3 变量
+FP3_INDEX_PATH = settings.FP3_INDEX_PATH
+FP3_META_PATH = settings.FP3_META_PATH
 
-logger.info(f"✅ 配置加载完成 | FP3_DIR = {FP3_DIR}")
+logger.info(f"🚀 FlowBeast 配置加载成功 | Provider: {settings.MODEL_PROVIDER}")
+

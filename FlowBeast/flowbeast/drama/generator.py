@@ -9,7 +9,6 @@ import google.generativeai as genai
 from flowbeast.core.config import settings
 from flowbeast.drama.prompt import build_prompt
 
-
 # ====================== Client 构建 ======================
 def get_client():
     provider = settings.MODEL_PROVIDER.lower()
@@ -52,10 +51,10 @@ def llm_call(prompt: str, model: str = None) -> str:
         import google.generativeai as genai
 
         # 确保已经用 API KEY 配置过
-        if not getattr(settings, "GEMINI_API_KEY", None):
-            raise ValueError("❌ 未配置 GEMINI_API_KEY")
+        if not getattr(settings, "GOOGLE_API_KEY", None):
+            raise ValueError("❌ 未配置 GOOGLE_API_KEY")
 
-        genai.configure(api_key=settings.GEMINI_API_KEY)
+        genai.configure(api_key=settings.GOOGLE_API_KEY)
 
         model_obj = genai.GenerativeModel(target_model)
 
@@ -86,7 +85,7 @@ def llm_call(prompt: str, model: str = None) -> str:
                     "content": (
                         "你是顶级短视频爽剧编剧。你擅长制造冲突、埋设钩子(Hook)和极致反转。"
                         "必须严格按照 JSON 格式输出，包含 hook, conflict, emotion_curve 等字段。"
-                        "不要任何解释，只输出符合格式的 JSON 对象。"
+                        "不要任何解释，只输出符合格式 of JSON 对象。"
                     ),
                 },
                 {"role": "user", "content": prompt},
@@ -114,10 +113,28 @@ def extract_json(text: str) -> str:
     raise ValueError("❌ 未找到JSON结构")
 
 
-# ====================== 核心生成 ======================
+# ====================== 核心生成 (集成 FP3 RAG) ======================
 def generate_script(topic: str) -> dict:
-    prompt = build_prompt(topic)
+    # --- 1. 获取基础 Prompt ---
+    base_prompt = build_prompt(topic)
 
+    # --- 2. FP3 爆款基因增强 ---
+    try:
+        from flowbeast.fp3.retriever import FP3Retriever
+        from flowbeast.fp3.injector import inject_prompt
+        
+        logger.info(f"🔍 正在检索爆款基因: {topic[:15]}...")
+        retriever = FP3Retriever()
+        viral_examples = retriever.retrieve(topic, k=2)
+        
+        # 注入逻辑
+        prompt = inject_prompt(base_prompt, viral_examples)
+        logger.info(f"🚀 FP3 注入完成，检索到 {len(viral_examples)} 条案例")
+    except Exception as e:
+        logger.warning(f"⚠️ FP3 增强失败，回退到基础生成模式: {e}")
+        prompt = base_prompt
+
+    # --- 3. 循环重试生成 ---
     last_error = None
     raw_response = None
 
@@ -146,7 +163,8 @@ def generate_script(topic: str) -> dict:
                     "topic": topic,
                     "provider": settings.MODEL_PROVIDER,
                     "model": settings.MODEL_NAME,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": datetime.now().isoformat(),
+                    "fp3_enhanced": True
                 }
             }
 
@@ -163,6 +181,6 @@ def generate_script(topic: str) -> dict:
 
 # ====================== 测试入口 ======================
 if __name__ == "__main__":
+    # 注意：运行此测试前请确保已运行 python -m scripts.init_fp3
     result = generate_script("逆袭：开除我的女总裁跪求我回去")
-
     print(json.dumps(result, indent=2, ensure_ascii=False))

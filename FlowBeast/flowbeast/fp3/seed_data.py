@@ -1,3 +1,6 @@
+# flowbeast/fp3/seed_data.py
+# 仅作为演示，不建议作为主要生产脚本
+
 from flowbeast.fp3.store import FP3Store
 from flowbeast.fp3.embedding import embed_text
 from loguru import logger
