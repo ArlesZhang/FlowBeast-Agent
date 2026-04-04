@@ -182,5 +182,26 @@ def generate_script(topic: str) -> dict:
 # ====================== 测试入口 ======================
 if __name__ == "__main__":
     # 注意：运行此测试前请确保已运行 python -m scripts.init_fp3
-    result = generate_script("逆袭：开除我的女总裁跪求我回去")
+    topic = "逆袭：开除我的女总裁跪求我回去"
+    result = generate_script(topic)
+
+    # --- 新增：自动保存 logic ---
+    import os
+    from flowbeast.core.config import settings
+
+    # 确保输出目录存在
+    out_dir = settings.FLOWBEAST_OUTPUT_DIR
+    os.makedirs(out_dir, exist_ok=True)
+
+    # 生成文件名 (带时间戳)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    safe_topic = "".join([c for c in topic if c.isalnum() or c in (' ', '_')]).rstrip()
+    file_path = os.path.join(out_dir, f"script_{timestamp}_{safe_topic}.json")
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, ensure_ascii=False)
+
+    logger.success(f"💾 剧本已自动保存至: {file_path}")
+    # ---------------------------
+
     print(json.dumps(result, indent=2, ensure_ascii=False))
