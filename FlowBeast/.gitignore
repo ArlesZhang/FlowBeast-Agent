@@ -38,6 +38,7 @@ logs/
 *.log
 *.cache
 tmp/
+.specstory/
 
 # IDE/Editor
 .vscode/

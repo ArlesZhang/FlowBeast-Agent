@@ -14,7 +14,7 @@ if not ENV_FILE.exists():
     logger.warning(f"⚠️ .env 文件不存在！路径: {ENV_FILE}")
 
 # 定义 FP3 专用路径
-FP3_DIR = Path(os.getenv("FLOWBEAST_OUTPUT_DIR", BASE_DIR / "flowbeast/data/outputs")) / "vector_store" / "fp3"
+FP3_DIR = Path(os.getenv("FLOWBEAST_OUTPUT_DIR", BASE_DIR / "flowbeast/data/outputs")) / "vector_store" / "fp3"   # this path is very long, and it's not easy to read, so we need to simplify it t
 FP3_INDEX_PATH = FP3_DIR / "fp3.index"
 FP3_META_PATH = FP3_DIR / "fp3_meta.json"
 
