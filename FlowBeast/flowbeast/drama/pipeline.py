@@ -31,7 +31,7 @@ def run_full_pipeline(topic: str):
         return
 
     # ====================== 2. 存储（统一路径）======================
-    base_path = Path(settings.DATA_SAVE_PATH) / run_id
+    base_path = Path(settings.FLOWBEAST_OUTPUT_DIR) / run_id
     audio_path = base_path / "audio"
 
     base_path.mkdir(parents=True, exist_ok=True)

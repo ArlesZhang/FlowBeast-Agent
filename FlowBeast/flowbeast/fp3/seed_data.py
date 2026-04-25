@@ -14,7 +14,7 @@ def run_seeding():
     
     for item in seeds:
         vec = embed_text(item["content"])
-        store.add(vec, item)
+        store.add([vec], [item])
     
     store.save()
     logger.success(f"✅ 成功注入 {len(seeds)} 条爆款种子数据")

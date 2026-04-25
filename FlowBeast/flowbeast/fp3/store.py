@@ -7,8 +7,8 @@ from flowbeast.core.config import settings
 class FP3Store:
     def __init__(self, dim=1536):
         # 确保路径是 Path 对象
-        self.index_path = Path(settings.FP3_INDEX_PATH)
-        self.meta_path = Path(settings.FP3_META_PATH)
+        self.index_path = settings.FP3_INDEX_PATH
+        self.meta_path = settings.FP3_META_PATH
         
         self.index = faiss.IndexFlatL2(dim)
         self.meta = []

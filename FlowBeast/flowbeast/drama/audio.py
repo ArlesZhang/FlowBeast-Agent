@@ -112,7 +112,7 @@ def generate_audio(
     if output_dir:
         base_path = Path(output_dir)
     else:
-        base_path = Path(settings.DATA_SAVE_PATH) / "audio"
+        base_path = Path(settings.FLOWBEAST_OUTPUT_DIR) / "audio"
 
     base_path.mkdir(parents=True, exist_ok=True)
 
