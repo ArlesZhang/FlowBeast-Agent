@@ -94,7 +94,7 @@ class Settings(BaseSettings):
                 logger.warning(f"⚠️ 创建目录失败: {path_str} | {e}")
 
         # ====================== FP3 路径 ======================
-        fp3_root = BASE_DIR / "flowbeast/data/vector_store"
+        fp3_root = output_base / "vector_store" / "fp3" 
         fp3_root.mkdir(parents=True, exist_ok=True)
 
         # 赋值给 Pydantic 字段
