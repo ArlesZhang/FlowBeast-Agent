@@ -28,7 +28,7 @@ def run_full_pipeline(topic: str):
 
     except Exception as e:
         logger.exception(f"❌ 剧本生成失败: {e}")
-        return
+        return None
 
     # ====================== 2. 存储（统一路径）======================
     base_path = Path(settings.FLOWBEAST_OUTPUT_DIR) / run_id
@@ -113,6 +113,14 @@ failed      : {fail_count}
         json.dump(report, f, ensure_ascii=False, indent=2)
 
     logger.success(f"📊 生产报告已生成: {report_file}")
+
+    return {
+        "run_id": run_id,
+        "base_path": base_path,
+        "script_path": script_file,
+        "report_path": report_file,
+        "audio_path": audio_path,
+    }
 
 
 # ====================== 批量入口（测试 / 数据采集）======================

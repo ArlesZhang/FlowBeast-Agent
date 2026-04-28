@@ -25,7 +25,16 @@ def get_client():
     elif provider == "gemini":
         genai.configure(api_key=settings.GOOGLE_API_KEY)
         return genai
-
+        
+    elif provider in ["claude", "anthropic"]:
+        # 示例: Anthropic Claude (如 Sonnet 3/Claude 3/Claude 3.5/Sonnet 4.6 等)
+        try:
+            import anthropic
+        except ImportError:
+            raise ImportError("请先安装anthropic: pip install anthropic")
+        return anthropic.Anthropic(
+            api_key=getattr(settings, "ANTHROPIC_API_KEY", None)
+        )
     else:
         raise ValueError(f"❌ 不支持的模型提供商: {provider}")
 

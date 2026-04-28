@@ -1,3 +1,66 @@
-# Text_scripts
+## Text_scripts
 
 一句话：一流项目用 pytest + 清晰目录/标记 + pyproject 约定 + CI 分档 + 文档 解决「又全又快」和「脚本 vs 测」的边界；很少靠「一个统一入口文件」。你若要对齐，最小的一步仍是：把能 pytest 的放进 tests/，在 pyproject 里声明 markers，在 CI 里只跑默认子集。
+
+prompt-独立脚本：快速验证 main 入口（不跑真实 LLM / 不全量写盘）。
+
+## Drama Pipeline Structure
+
+**flowbeast/drama** 目录下的逻辑流：
+
+> **总览**：一条「选题 →（prompt + fp3）→ 剧本 JSON → 落盘 → 配音 → 报告」流水线。`fp3` 只在 **generator** 内参与：在调用 LLM 之前把检索到的基因拼进 prompt。
+
+```mermaid
+flowchart LR
+  topic[topic 字符串]
+  prompt[prompt.py: build_prompt]
+  subgraph FP3[fp3]
+    RET[retriever.retrieve]
+    INJ[injector.inject_prompt]
+    RET --> INJ
+  end
+  gen[generator.py: generate_script]
+  disk[(script.json 等)]
+  aud[audio.py: generate_audio]
+  rep[(production_report.json)]
+
+  topic --> prompt
+  topic --> RET
+  prompt --> INJ
+  INJ --> gen
+  gen --> disk
+  gen --> aud
+  aud --> rep
+```
+
+**与旧图对应**：原先 `prompt --> gen` 与 `fp3 --> gen`，在这里变为 **base prompt 与 query 都汇入 `fp3`，经 `injector` 后再进入 `gen`**（实现顺序在 `generate_script` 内：`build_prompt` → `retrieve` → `inject_prompt` → `llm_call`）。
+
+### FP3 子系统（与上图中 `FP3` 框一致）
+
+```mermaid
+flowchart LR
+  subgraph WRITE["① 建库（离线）"]
+    direction TB
+    SCH[schema: ViralUnit]
+    BLD[builder + embed_unit]
+    SEED[seed_data + embed_text]
+    STW[store.add → save]
+    SCH -.-> BLD
+    BLD --> STW
+    SEED --> STW
+  end
+
+  subgraph READ["② 在线检索（generator 内）"]
+    direction LR
+    EMB[embedding.embed_text]
+    SRH[store.search]
+    EMB --> SRH
+  end
+
+  WRITE -.->|索引与 meta 文件| READ
+```
+
+编排中心是 `pipeline.py` 里的 `run_full_pipeline`：先调 `generator` 出结构化剧本，再写文件，再调 `audio` 逐句 TTS，最后写生产报告。  
+`core/config` 的 `settings` 在 pipeline、generator、audio、fp3 的 `store` 路径上提供目录、模型、Key 等。
+
+**drama 与 fp3 的结合点**（唯一）：`flowbeast/drama/generator.py` → `generate_script`：先 `build_prompt(topic)`，再 `FP3Retriever.retrieve(topic)`（内部 **embedding → store.search**），再 `inject_prompt(base_prompt, examples)`，最后 `llm_call`。
