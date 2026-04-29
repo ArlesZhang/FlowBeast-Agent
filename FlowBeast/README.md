@@ -33,8 +33,6 @@ flowchart LR
   aud --> rep
 ```
 
-**与旧图对应**：原先 `prompt --> gen` 与 `fp3 --> gen`，在这里变为 **base prompt 与 query 都汇入 `fp3`，经 `injector` 后再进入 `gen`**（实现顺序在 `generate_script` 内：`build_prompt` → `retrieve` → `inject_prompt` → `llm_call`）。
-
 ### FP3 子系统（与上图中 `FP3` 框一致）
 
 ```mermaid
@@ -60,7 +58,6 @@ flowchart LR
   WRITE -.->|索引与 meta 文件| READ
 ```
 
-编排中心是 `pipeline.py` 里的 `run_full_pipeline`：先调 `generator` 出结构化剧本，再写文件，再调 `audio` 逐句 TTS，最后写生产报告。  
-`core/config` 的 `settings` 在 pipeline、generator、audio、fp3 的 `store` 路径上提供目录、模型、Key 等。
-
 **drama 与 fp3 的结合点**（唯一）：`flowbeast/drama/generator.py` → `generate_script`：先 `build_prompt(topic)`，再 `FP3Retriever.retrieve(topic)`（内部 **embedding → store.search**），再 `inject_prompt(base_prompt, examples)`，最后 `llm_call`。
+
+`core/config` 的 `settings` 在 pipeline、generator、audio、fp3 的 `store` 路径上提供目录、模型、Key 等。

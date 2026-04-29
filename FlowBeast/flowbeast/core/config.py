@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     # ======================
     # 🔑 API Keys
     # ======================
+    # 这里赋值为 "" 是为了给这些 API Key 字段一个默认的空字符串值，这样即使 .env 或环境变量中没有设置这些 Key，Settings 也可以被正常实例化，不会报错。
     OPENAI_API_KEY: str = ""
     QWEN_API_KEY: str = ""
     GOOGLE_API_KEY: str = ""
