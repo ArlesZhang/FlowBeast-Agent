@@ -16,12 +16,17 @@ docs/_build/
 docs/_static/
 docs/_templates/
 
-# Sphinx / MkDocs generated files
-docs/                                                                                                                                                  
-  !docs/*.md                                                                                                                                             
-  !docs/**/*.md                                                                                                                                          
-  !docs/.gitkeep  
 
+# Sphinx / MkDocs generated files (project root docs only)
+docs/
+  !docs/*.md
+  !docs/**/*.md
+  !docs/.gitkeep
+
+# Exclude flowbeast/docs (our codebase docs)
+!flowbeast/docs/
+!flowbeast/docs/**/*.md
+!flowbeast/docs/.gitkeep
 # Environments
 .env
 .venv
