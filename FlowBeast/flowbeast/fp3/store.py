@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from flowbeast.core.config import settings
 
+
+# FP3Store: Simple class for saving, loading, and searching viral gene vectors using FAISS.
 class FP3Store:
     def __init__(self, dim=1536):
         # 确保路径是 Path 对象

@@ -11,6 +11,17 @@ build/
 .specstory/
 *.egg
 
+# Docs - ignore generated/served docs, but keep source docs
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Sphinx / MkDocs generated files
+docs/                                                                                                                                                  
+  !docs/*.md                                                                                                                                             
+  !docs/**/*.md                                                                                                                                          
+  !docs/.gitkeep  
+
 # Environments
 .env
 .venv

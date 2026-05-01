@@ -1,10 +1,6 @@
 ## Text_scripts
 
-一句话：一流项目用 pytest + 清晰目录/标记 + pyproject 约定 + CI 分档 + 文档 解决「又全又快」和「脚本 vs 测」的边界；很少靠「一个统一入口文件」。你若要对齐，最小的一步仍是：把能 pytest 的放进 tests/，在 pyproject 里声明 markers，在 CI 里只跑默认子集。
-
-prompt-独立脚本：快速验证 main 入口（不跑真实 LLM / 不全量写盘）。
-
-## Drama Pipeline Structure
+### Drama Pipeline Structure
 
 **flowbeast/drama** 目录下的逻辑流：
 
@@ -61,3 +57,5 @@ flowchart LR
 **drama 与 fp3 的结合点**（唯一）：`flowbeast/drama/generator.py` → `generate_script`：先 `build_prompt(topic)`，再 `FP3Retriever.retrieve(topic)`（内部 **embedding → store.search**），再 `inject_prompt(base_prompt, examples)`，最后 `llm_call`。
 
 `core/config` 的 `settings` 在 pipeline、generator、audio、fp3 的 `store` 路径上提供目录、模型、Key 等。
+
+一流项目:用 pytest + 清晰目录/标记 + pyproject 约定 + CI 分档 + 文档 解决「又全又快」和「脚本 vs 测」的边界；很少靠「一个统一入口文件」。
