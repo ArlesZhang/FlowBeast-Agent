@@ -1,0 +1,11 @@
+# Generated files
+_site/
+build/
+
+# Temporary files
+*.md~
+*.swp
+*~
+
+# Logs
+*.log

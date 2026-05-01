@@ -11,23 +11,27 @@ build/
 .specstory/
 *.egg
 
-# Docs - ignore generated/served docs, but keep source docs
+# ==================== Documentation ====================
+# Project root docs (docs/) - keep .md files, ignore generated
 docs/_build/
 docs/_static/
 docs/_templates/
 
+# flowbeast/docs/ - keep all source files for internal project docs
+# (This is for developer-facing technical documentation)
+flowbeast/docs/_build/
+flowbeast/docs/_static/
+flowbeast/docs/_templates/
 
-# Sphinx / MkDocs generated files (project root docs only)
-docs/
-  !docs/*.md
-  !docs/**/*.md
-  !docs/.gitkeep
+# Sphinx / MkDocs generated files
+docs/*.html
+docs/*.xml
+docs/files/
+flowbeast/docs/*.html
+flowbeast/docs/*.xml
+flowbeast/docs/files/
 
-# Exclude flowbeast/docs (our codebase docs)
-!flowbeast/docs/
-!flowbeast/docs/**/*.md
-!flowbeast/docs/.gitkeep
-# Environments
+# ==================== Environments ====================
 .env
 .venv
 .env.docker
@@ -116,7 +120,6 @@ videos/
 audio/
 frames/
 temp/
-tmp/
 
 # Manim / Blender / AE / Kling / 即梦 等工具的默认输出
 */media/
@@ -124,7 +127,6 @@ tmp/
 */animations/
 ManimCache/
 .blender/
-__pycache__/
 
 # ==================== 脚本和临时脚本 ====================
 # 如果你用脚本批量生成，生成的 .sh / .py / .bat 等临时脚本也建议忽略（除非是核心模板）
@@ -154,3 +156,6 @@ audio_clips/
 
 # 忽略可能产生的日志文件
 flowbeast/data/outputs/logs/
+
+# MkDocs generated site
+site/

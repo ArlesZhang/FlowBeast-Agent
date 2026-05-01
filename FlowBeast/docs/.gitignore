@@ -1,0 +1,11 @@
+# MkDocs generated files
+site/
+build/
+
+# Temporary files
+*.md~
+*.swp
+*~
+
+# Logs
+*.log

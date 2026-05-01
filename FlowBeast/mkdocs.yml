@@ -1,0 +1,83 @@
+# MkDocs configuration for FlowBeast
+# Project documentation site
+
+site_name: FlowBeast
+site_description: AI-powered short-form drama content generation engine
+site_url: https://flowbeast.ai
+
+# Repository
+repo_name: FlowBeast
+repo_url: https://github.com/FlowBeast/FlowBeast
+edit_uri: edit/main/docs/
+
+# Theme
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: Roboto Mono
+  icon:
+    logo: material/code-tags
+
+# Markdown extensions
+markdown_extensions:
+  - attr_list
+  - def_list
+  - tables
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+# Plugins
+plugins:
+  - search
+
+# Navigation
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - Tech Debt: tech-debt.md
+  - ADRs:
+    - Overview: adrs/index.md
+    - 0001 - FAISS: adrs/0001-faiss-for-fp3.md
+    - 0002 - Embedding: adrs/0002-unified-embedding-interface.md
+  - Internal:
+    - decisions/0001-template.md
+    - ideas/README.md
+    - meetings/README.md
+    - technical_reports/README.md
+
+# Extra configuration
+extra:
+  version: 0.3.2

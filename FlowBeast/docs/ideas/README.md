@@ -14,7 +14,7 @@ This directory contains working notes, brain dumps, and exploratory thoughts.
 ## Example Notes
 
 ```
- ideas/
+ideas/
 ├── fp3-optimization.md      # RAG performance thoughts
 ├── async-streaming.md       # Streaming response ideas
 └── multi-tenant.md          # Multi-user architecture sketch

@@ -1,4 +1,6 @@
-# 0001 - Document Title
+# 0001-template.md
+
+# 0001 - 决策标题
 
 Date: YYYY-MM-DD
 
@@ -6,38 +8,38 @@ Date: YYYY-MM-DD
 
 Proposed | Accepted | Decided | Deprecated | Superseded by [0002](0002-title.md)
 
-## Context
+## 上下文 (Context)
 
-What is the issue that we're facing, or what background research prompted this decision?
+面临的问题是什么？什么背景研究促成了这个决策？
 
-## Decision
+## 决策 (Decision)
 
-What is the change that we're proposing and/or implementing?
+我们提议/实施的变更是什么？
 
-## Consequences
+## 后果 (Consequences)
 
-What becomes easier or more difficult to do because of this change?
+因为这个变更，哪些事情会变得更简单/更困难？
 
-### Positive
+### 正面
 - ...
 
-### Negative
+### 负面
 - ...
 
-### Trade-offs
+### 权衡
 - ...
 
-## Alternatives Considered
+## 考虑的备选方案
 
-### Alternative 1
+### 备选方案 1
 
-What was this option and why was it rejected?
+这个方案是什么？为何被拒绝？
 
-### Alternative 2
+### 备选方案 2
 
-What was this option and why was it rejected?
+这个方案是什么？为何被拒绝？
 
-## References
+## 引用 (References)
 
-- [Link to related discussion](url)
-- [Link to documentation](url)
+- [相关讨论链接](url)
+- [文档链接](url)
