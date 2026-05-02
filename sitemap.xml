@@ -1,75 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-         <loc>https://flowbeast.ai/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/architecture/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/architecture/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/architecture/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/architecture/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/getting-started/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/getting-started/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/getting-started/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/tech-debt/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/tech-debt/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/tech-debt/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/tech-debt/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/adrs/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/adrs/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/adrs/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/adrs/0001-faiss-for-fp3/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/adrs/0001-faiss-for-fp3/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/adrs/0001-faiss-for-fp3/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/0001-faiss-for-fp3/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/adrs/0002-unified-embedding-interface/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/adrs/0002-unified-embedding-interface/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/adrs/0002-unified-embedding-interface/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/0002-unified-embedding-interface/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/decisions/0001-template/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/decisions/0001-template/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/decisions/0001-template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/decisions/0001-template/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/ideas/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/ideas/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/ideas/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/ideas/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/meetings/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/meetings/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/meetings/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/meetings/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/technical_reports/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/technical_reports/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/technical_reports/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/technical_reports/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/architecture/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/architecture/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/architecture/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/architecture/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/getting-started/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/getting-started/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/getting-started/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/tech-debt/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/tech-debt/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/tech-debt/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/tech-debt/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/adrs/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/adrs/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/adrs/0001-faiss-for-fp3/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/0001-faiss-for-fp3/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/0001-faiss-for-fp3/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/adrs/0001-faiss-for-fp3/"/>
     </url>
     <url>
-         <loc>https://flowbeast.ai/zh/adrs/0002-unified-embedding-interface/</loc>
-         <lastmod>2026-05-02</lastmod>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/0002-unified-embedding-interface/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/adrs/0002-unified-embedding-interface/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/adrs/0002-unified-embedding-interface/"/>
+    </url>
+    <url>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/decisions/0001-template/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/decisions/0001-template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/decisions/0001-template/"/>
+    </url>
+    <url>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/ideas/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/ideas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/ideas/"/>
+    </url>
+    <url>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/meetings/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/meetings/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/meetings/"/>
+    </url>
+    <url>
+        <loc>https://ArlesZhang.github.io/FlowBeast-Agent/zh/technical_reports/</loc>
+        <lastmod>2026-05-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ArlesZhang.github.io/FlowBeast-Agent/zh/technical_reports/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ArlesZhang.github.io/FlowBeast-Agent/technical_reports/"/>
     </url>
 </urlset>
