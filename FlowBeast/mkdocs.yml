@@ -1,13 +1,13 @@
-# MkDocs configuration for FlowBeast
+# MkDocs configuration for FlowBeast-Agent's documentation
 # Project documentation site with i18n support (Vue/React style)
 
-site_name: FlowBeast
+site_name: FlowBeast-Agent
 site_description: AI-powered short-form drama content generation engine
 site_url: https://ArlesZhang.github.io/FlowBeast-Agent/
 
 # Repository
-repo_name: FlowBeast
-repo_url: https://github.com/FlowBeast/FlowBeast
+repo_name: FlowBeast-Agent
+repo_url: https://github.com/ArlesZhang/FlowBeast-Agent
 edit_uri: edit/main/docs/
 
 # Theme
@@ -19,14 +19,12 @@ theme:
     - navigation.tabs.sticky
     - navigation.sections
     - content.code.copy
-    - content.code.annotate
     - content.tabs.link
     - content.action.edit
     - content.action.view
     - header.autohide
     - search.suggest
     - search.highlight
-    - content.tooltips
   palette:
     - scheme: default
       primary: indigo
@@ -71,7 +69,7 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
 
-# Plugins - i18n plugin must be first
+# Plugins with i18n support
 plugins:
   - i18n:
       docs_structure: folder
@@ -84,17 +82,9 @@ plugins:
           name: 简体中文
           default: false
           build: true
-      default_language: en
-      alternate:
-        - name: English
-          link: /
-          lang: en
-        - name: 简体中文
-          link: /zh/
-          lang: zh
   - search
 
-# Navigation - English pages (default)
+# Navigation - pointing to i18n folder structure
 nav:
   - Home: en/index.md
   - Getting Started: en/getting-started.md
