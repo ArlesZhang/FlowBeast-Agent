@@ -10,6 +10,8 @@
       
       
       
+        <link rel="canonical" href="https://flowbeast.ai/zh/adrs/0002-unified-embedding-interface/">
+      
       
       
       
@@ -20,19 +22,19 @@
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>FlowBeast</title>
+        <title>0002 - Embedding 统一接口设计 - FlowBeast</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -75,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#0002-embedding" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -91,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="FlowBeast" class="md-header__button md-logo" aria-label="FlowBeast" data-md-component="logo">
+    <a href="../../.." title="FlowBeast" class="md-header__button md-logo" aria-label="FlowBeast" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.6 16.6 4.6-4.6-4.6-4.6L16 6l6 6-6 6zm-5.2 0L4.8 12l4.6-4.6L8 6l-6 6 6 6z"/></svg>
@@ -111,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              0002 - Embedding 统一接口设计
             
           </span>
         </div>
@@ -253,7 +260,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="FlowBeast" class="md-nav__button md-logo" aria-label="FlowBeast" data-md-component="logo">
+    <a href="../../.." title="FlowBeast" class="md-nav__button md-logo" aria-label="FlowBeast" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.6 16.6 4.6-4.6-4.6-4.6L16 6l6 6-6 6zm-5.2 0L4.8 12l4.6-4.6L8 6l-6 6 6 6z"/></svg>
@@ -283,7 +290,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -310,7 +317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/getting-started/" class="md-nav__link">
+      <a href="../../../getting-started/" class="md-nav__link">
         
   
   
@@ -337,7 +344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/" class="md-nav__link">
+      <a href="../../../architecture/" class="md-nav__link">
         
   
   
@@ -364,7 +371,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/tech-debt/" class="md-nav__link">
+      <a href="../../../tech-debt/" class="md-nav__link">
         
   
   
@@ -438,7 +445,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/adrs/" class="md-nav__link">
+      <a href="../../../adrs/" class="md-nav__link">
         
   
   
@@ -466,7 +473,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/adrs/0001-faiss-for-fp3/" class="md-nav__link">
+      <a href="../../../adrs/0001-faiss-for-fp3/" class="md-nav__link">
         
   
   
@@ -494,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/adrs/0002-unified-embedding-interface/" class="md-nav__link">
+      <a href="../../../adrs/0002-unified-embedding-interface/" class="md-nav__link">
         
   
   
@@ -576,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/decisions/0001-template/" class="md-nav__link">
+      <a href="../../../decisions/0001-template/" class="md-nav__link">
         
   
   
@@ -604,7 +611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ideas/" class="md-nav__link">
+      <a href="../../../ideas/" class="md-nav__link">
         
   
   
@@ -632,7 +639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/meetings/" class="md-nav__link">
+      <a href="../../../meetings/" class="md-nav__link">
         
   
   
@@ -660,7 +667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/technical_reports/" class="md-nav__link">
+      <a href="../../../technical_reports/" class="md-nav__link">
         
   
   
@@ -705,6 +712,105 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        上下文
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        决策
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="决策">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计草案
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        后果
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="后果">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        正面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        负面
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -717,8 +823,63 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+  
+
+
+<h1 id="0002-embedding">0002 - Embedding 统一接口设计<a class="headerlink" href="#0002-embedding" title="Permanent link">&para;</a></h1>
+<p>Date: 2026-04-29</p>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p>Proposed</p>
+<h2 id="_1">上下文<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>当前 <code>flowbeast/fp3/embedding.py</code> 中，不同 LLM 供应商的 embedding 实现方式不一致。</p>
+<p><strong>问题</strong>：
+1. 代码重复，每个供应商需要单独的客户端配置
+2. 维护成本高，新增供应商需修改 core 逻辑
+3. 测试困难，无法 mock 统一接口</p>
+<h2 id="_2">决策<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>创建统一的 <code>EmbeddingClient</code> 接口，抽象不同供应商的 embedding API。</p>
+<h3 id="_3">设计草案<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">embed_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">pass</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">GeminiEmbeddingClient</span><span class="p">(</span><span class="n">EmbeddingClient</span><span class="p">):</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">embed_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">embed_content</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;embedding&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="_4">后果<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="_5">正面<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>单一职责</strong>: <code>embedding.py</code> 只负责文本到向量的转换</li>
+<li><strong>易于测试</strong>: 可 mock <code>EmbeddingClient</code> 接口</li>
+<li><strong>扩展性</strong>: 新增供应商只需实现接口</li>
+</ul>
+<h3 id="_6">负面<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>开发成本</strong>: 需要重构现有代码</li>
+<li><strong>抽象开销</strong>: 多一层间接调用</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -755,14 +916,14 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": [], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.3.2"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.3.2"}</script>
     
     
-      <script src="/assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
       
-        <script src="/assets/js/language-switcher.js"></script>
+        <script src="../../../assets/js/language-switcher.js"></script>
       
     
   </body>
