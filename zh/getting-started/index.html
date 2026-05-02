@@ -380,7 +380,7 @@
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        前置要求 / Prerequisites
       
     </span>
   </a>
@@ -391,7 +391,7 @@
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation
+        安装 / Installation
       
     </span>
   </a>
@@ -402,7 +402,7 @@
   <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
+        配置 / Configuration
       
     </span>
   </a>
@@ -413,7 +413,7 @@
   <a href="#first-run" class="md-nav__link">
     <span class="md-ellipsis">
       
-        First Run
+        首次运行 / First Run
       
     </span>
   </a>
@@ -424,7 +424,7 @@
   <a href="#available-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Available Commands
+        可用命令 / Available Commands
       
     </span>
   </a>
@@ -435,7 +435,7 @@
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        next steps
+        下一步 / Next Steps
       
     </span>
   </a>
@@ -672,7 +672,7 @@
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        前置要求 / Prerequisites
       
     </span>
   </a>
@@ -683,7 +683,7 @@
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation
+        安装 / Installation
       
     </span>
   </a>
@@ -694,7 +694,7 @@
   <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
+        配置 / Configuration
       
     </span>
   </a>
@@ -705,7 +705,7 @@
   <a href="#first-run" class="md-nav__link">
     <span class="md-ellipsis">
       
-        First Run
+        首次运行 / First Run
       
     </span>
   </a>
@@ -716,7 +716,7 @@
   <a href="#available-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Available Commands
+        可用命令 / Available Commands
       
     </span>
   </a>
@@ -727,7 +727,7 @@
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        next steps
+        下一步 / Next Steps
       
     </span>
   </a>
@@ -754,75 +754,75 @@
   
 
 
-<h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<p>Welcome to FlowBeast! This guide will help you get up and running quickly.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h1 id="getting-started">快速开始 / Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
+<p>欢迎使用 FlowBeast！本指南将帮助您快速上手。</p>
+<h2 id="prerequisites">前置要求 / Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Python 3.10+</li>
-<li><code>uv</code> package manager</li>
-<li>API keys for your chosen LLM provider</li>
+<li><code>uv</code> 包管理器</li>
+<li>所选 LLM 供应商的 API 密钥</li>
 </ul>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Clone the repository</span>
+<h2 id="installation">安装 / Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 克隆仓库</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/FlowBeast/FlowBeast.git
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">cd</span><span class="w"> </span>FlowBeast
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Install dependencies</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 安装依赖</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>uv<span class="w"> </span>sync
 </code></pre></div>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p>Create a <code>.env</code> file in the project root:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># LLM Provider (gemini, qwen, openai, openrouter, ollama)</span>
+<h2 id="configuration">配置 / Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>在项目根目录创建 <code>.env</code> 文件：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># LLM 供应商 (gemini, qwen, openai, openrouter, ollama)</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">ACTIVE_VENDOR</span><span class="o">=</span>gemini
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># API Keys</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># API 密钥</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nv">GOOGLE_API_KEY</span><span class="o">=</span>your_google_api_key
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># DASHSCOPE_API_KEY=your_dashscope_key</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># OPENAI_API_KEY=your_openai_key</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Output directories</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># 输出目录</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nv">FLOWBEAST_OUTPUT_DIR</span><span class="o">=</span>./flowbeast/data/outputs
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nv">FLOWBEAST_VECTOR_DIR</span><span class="o">=</span>./flowbeast/data/vectors
 </code></pre></div>
-<h2 id="first-run">First Run<a class="headerlink" href="#first-run" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Initialize FP3 knowledge base (first-time setup)</span>
+<h2 id="first-run">首次运行 / First Run<a class="headerlink" href="#first-run" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># 初始化 FP3 知识库（首次设置）</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>python<span class="w"> </span>-m<span class="w"> </span>scripts.init_fp3
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Run the drama generation pipeline</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># 运行剧本生成流程</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>python<span class="w"> </span>main.py<span class="w"> </span>--topic<span class="w"> </span><span class="s2">&quot;一个关于人工智能的短剧&quot;</span>
 </code></pre></div>
-<h2 id="available-commands">Available Commands<a class="headerlink" href="#available-commands" title="Permanent link">&para;</a></h2>
+<h2 id="available-commands">可用命令 / Available Commands<a class="headerlink" href="#available-commands" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Command</th>
-<th>Description</th>
+<th>命令</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>python main.py</code></td>
-<td>Run full pipeline</td>
+<td>运行完整流程</td>
 </tr>
 <tr>
 <td><code>uvicorn flowbeast.api.main:app --reload</code></td>
-<td>Start API server</td>
+<td>启动 API 服务器</td>
 </tr>
 <tr>
 <td><code>uv run pytest tests/</code></td>
-<td>Run tests</td>
+<td>运行测试</td>
 </tr>
 <tr>
 <td><code>mkdocs serve</code></td>
-<td>Preview docs locally</td>
+<td>本地预览文档</td>
 </tr>
 </tbody>
 </table>
-<h2 id="next-steps">next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="next-steps">下一步 / Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
-<li>📖 Read the <a href="../architecture/">Architecture</a> docs</li>
-<li>🔧 Check out <a href="../tech-debt/">Tech Debt</a> for known issues</li>
-<li>📚 Explore [ADRs](adrs/index.md) for architectural decisions</li>
+<li>📖 阅读 <a href="../architecture/">架构</a> 文档</li>
+<li>🔧 查看 <a href="../tech-debt/">技术债</a> 了解已知问题</li>
+<li>📚 探索 <a href="../adrs/">ADRs</a> 了解架构决策</li>
 </ul>
 
 
