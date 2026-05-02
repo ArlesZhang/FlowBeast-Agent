@@ -91,12 +91,16 @@
       
     </div>
     
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
     
       
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="FlowBeast" class="md-header__button md-logo" aria-label="FlowBeast" data-md-component="logo">
       
@@ -172,7 +176,7 @@
         
           <li class="md-select__item">
             <a href="../zh/architecture/" hreflang="zh" class="md-select__link">
-              中文
+              简体中文
             </a>
           </li>
         
@@ -207,6 +211,8 @@
         </button>
       </nav>
       
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -237,13 +243,120 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tech-debt/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tech Debt
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adrs/" class="md-tabs__link">
+          
+  
+  
+  ADRs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -257,8 +370,10 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="FlowBeast" class="md-nav__button md-logo" aria-label="FlowBeast" data-md-component="logo">
       
@@ -412,23 +527,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IP2 — Drama Generation Layer (flowbeast/drama/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Components
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -439,23 +537,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="FP3 — Viral Gene Knowledge Base (flowbeast/fp3/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#components_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Components
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -471,17 +552,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-flow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Flow
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#key-data-structures" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -489,34 +559,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Key Data Structures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#dramaschemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        drama/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp3schemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fp3/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -564,6 +606,11 @@
     
     
     
+    
+      
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -728,23 +775,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IP2 — Drama Generation Layer (flowbeast/drama/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Components
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -755,23 +785,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="FP3 — Viral Gene Knowledge Base (flowbeast/fp3/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#components_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Components
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -787,17 +800,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-flow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Flow
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#key-data-structures" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -805,34 +807,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Key Data Structures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#dramaschemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        drama/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp3schemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fp3/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -853,6 +827,19 @@
 
 
   
+    <a href="https://github.com/FlowBeast/FlowBeast/edit/main/docs/en/architecture.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/FlowBeast/FlowBeast/raw/main/docs/en/architecture.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
   
 
 
@@ -860,33 +847,9 @@
 <p>FlowBeast consists of two core engines working together:</p>
 <h2 id="ip2-drama-generation-layer-flowbeastdrama">IP2 — Drama Generation Layer (<code>flowbeast/drama/</code>)<a class="headerlink" href="#ip2-drama-generation-layer-flowbeastdrama" title="Permanent link">&para;</a></h2>
 <p>Generates viral short-drama scripts via LLM calls.</p>
-<h3 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>pipeline.py</code></strong>: Top-level orchestrator</li>
-<li><strong><code>generator.py</code></strong>: Builds LLM prompts, calls vendor API</li>
-<li><strong><code>prompt.py</code></strong>: Structured prompt templates</li>
-<li><strong><code>audio.py</code></strong>: Converts dialogue to MP3</li>
-<li><strong><code>schema.py</code></strong>: TypedDict definitions</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>topic → build_prompt() → FP3Retriever() → inject_prompt() → generate_script()
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                          ↓
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                                   (LLM call)
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                          ↓
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                 script.json + audio → report.json
-</code></pre></div>
 <h2 id="fp3-viral-gene-knowledge-base-flowbeastfp3">FP3 — Viral Gene Knowledge Base (<code>flowbeast/fp3/</code>)<a class="headerlink" href="#fp3-viral-gene-knowledge-base-flowbeastfp3" title="Permanent link">&para;</a></h2>
 <p>RAG layer that enriches prompts with retrieved viral patterns.</p>
-<h3 id="components_1">Components<a class="headerlink" href="#components_1" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>store.py</code></strong>: FAISS-backed vector search</li>
-<li><strong><code>retriever.py</code></strong>: Topic → vector → search</li>
-<li><strong><code>embedding.py</code></strong>: Text → vector via Qwen</li>
-<li><strong><code>injector.py</code></strong>: Inject ViralUnit examples into prompt</li>
-<li><strong><code>builder.py</code></strong>: Build knowledge base from seed data</li>
-<li><strong><code>feedback.py</code></strong>: Feed successful scripts back into KB</li>
-</ul>
 <h2 id="llm-routing-flowbeastcoreconfigpy">LLM Routing (<code>flowbeast/core/config.py</code>)<a class="headerlink" href="#llm-routing-flowbeastcoreconfigpy" title="Permanent link">&para;</a></h2>
-<p><code>ACTIVE_VENDOR</code> env var selects the provider:</p>
 <table>
 <thead>
 <tr>
@@ -911,37 +874,15 @@
 <td>gpt-4o</td>
 <td><code>OPENAI_API_KEY</code></td>
 </tr>
-<tr>
-<td>OpenRouter</td>
-<td>auto</td>
-<td><code>OPENROUTER_API_KEY</code></td>
-</tr>
-<tr>
-<td>Ollama</td>
-<td>local</td>
-<td>-</td>
-</tr>
 </tbody>
 </table>
-<h2 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Natural Language Prompt
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>         ↓
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  compile_workflow()     [flowbeast/agent/compiler.py]
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>         ↓
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    DataWorkflow (IR)    [flowbeast/ir/models.py]
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>         ↓
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  generate_code()        [flowbeast/agent/codegen.py]
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>         ↓
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>   Python Code Output
-</code></pre></div>
 <h2 id="key-data-structures">Key Data Structures<a class="headerlink" href="#key-data-structures" title="Permanent link">&para;</a></h2>
-<h3 id="dramaschemapy">drama/schema.py<a class="headerlink" href="#dramaschemapy" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Script</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">core_hook</span><span class="p">,</span> <span class="n">scenes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Scene</span><span class="p">]</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">Scene</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">emotion_curve</span><span class="p">,</span> <span class="n">dialogue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dialogue</span><span class="p">]</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">Dialogue</span><span class="p">:</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">emotion</span><span class="p">,</span> <span class="n">intensity</span>
-</code></pre></div>
-<h3 id="fp3schemapy">fp3/schema.py<a class="headerlink" href="#fp3schemapy" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">ViralUnit</span><span class="p">:</span> <span class="n">hook</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">emotion</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># drama/schema.py</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Script</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">core_hook</span><span class="p">,</span> <span class="n">scenes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Scene</span><span class="p">]</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">Scene</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">emotion_curve</span><span class="p">,</span> <span class="n">dialogue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dialogue</span><span class="p">]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># fp3/schema.py</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">ViralUnit</span><span class="p">:</span> <span class="n">hook</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">emotion</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 
@@ -960,6 +901,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -992,7 +935,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.edit", "content.action.view", "header.autohide", "search.suggest", "search.highlight", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.3.2"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

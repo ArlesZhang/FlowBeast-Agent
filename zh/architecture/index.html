@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#architecture" class="md-skip">
+        <a href="#_1" class="md-skip">
           跳转至
         </a>
       
@@ -91,12 +91,16 @@
       
     </div>
     
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
     
       
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
     <a href="../" title="FlowBeast" class="md-header__button md-logo" aria-label="FlowBeast" data-md-component="logo">
       
@@ -172,7 +176,7 @@
         
           <li class="md-select__item">
             <a href="./" hreflang="zh" class="md-select__link">
-              中文
+              简体中文
             </a>
           </li>
         
@@ -207,6 +211,8 @@
         </button>
       </nav>
       
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -237,13 +243,120 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tech-debt/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tech Debt
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adrs/" class="md-tabs__link">
+          
+  
+  
+  ADRs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -257,8 +370,10 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../" title="FlowBeast" class="md-nav__button md-logo" aria-label="FlowBeast" data-md-component="logo">
       
@@ -412,23 +527,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IP2 — 剧本生成层 (flowbeast/drama/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        组件
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -439,23 +537,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="FP3 — 病毒基因知识库 (flowbeast/fp3/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        组件
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -471,52 +552,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-flow" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据流 / Data Flow
+        关键数据结构
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-data-structures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        关键数据结构 / Key Data Structures
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="关键数据结构 / Key Data Structures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#dramaschemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        drama/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp3schemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fp3/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -564,6 +606,11 @@
     
     
     
+    
+      
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -728,23 +775,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IP2 — 剧本生成层 (flowbeast/drama/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        组件
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -755,23 +785,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="FP3 — 病毒基因知识库 (flowbeast/fp3/)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        组件
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -787,52 +800,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-flow" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据流 / Data Flow
+        关键数据结构
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-data-structures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        关键数据结构 / Key Data Structures
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="关键数据结构 / Key Data Structures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#dramaschemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        drama/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp3schemapy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fp3/schema.py
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -853,40 +827,29 @@
 
 
   
+    <a href="https://github.com/FlowBeast/FlowBeast/edit/main/docs/zh/architecture.md" title="编辑此页" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/FlowBeast/FlowBeast/raw/main/docs/zh/architecture.md" title="查看本页的源代码" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
   
 
 
-<h1 id="architecture">架构 / Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
+<h1 id="_1">架构<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <p>FlowBeast 由两个核心引擎协同工作：</p>
 <h2 id="ip2-flowbeastdrama">IP2 — 剧本生成层 (<code>flowbeast/drama/</code>)<a class="headerlink" href="#ip2-flowbeastdrama" title="Permanent link">&para;</a></h2>
 <p>通过 LLM 调用生成病毒式短视频剧本。</p>
-<h3 id="_1">组件<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>pipeline.py</code></strong>: 顶层编排器</li>
-<li><strong><code>generator.py</code></strong>: 构建 LLM prompt，调用供应商 API</li>
-<li><strong><code>prompt.py</code></strong>: 结构化的 prompt 模板</li>
-<li><strong><code>audio.py</code></strong>: 将对话转换为 MP3</li>
-<li><strong><code>schema.py</code></strong>: TypedDict 定义</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>topic → build_prompt() → FP3Retriever() → inject_prompt() → generate_script()
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                          ↓
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                                   (LLM 调用)
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                          ↓
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                 script.json + audio → report.json
-</code></pre></div>
 <h2 id="fp3-flowbeastfp3">FP3 — 病毒基因知识库 (<code>flowbeast/fp3/</code>)<a class="headerlink" href="#fp3-flowbeastfp3" title="Permanent link">&para;</a></h2>
 <p>RAG 层，通过检索到的病毒模式来增强 prompt。</p>
-<h3 id="_2">组件<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>store.py</code></strong>: FAISS 支持的向量搜索</li>
-<li><strong><code>retriever.py</code></strong>: Topic → vector → search</li>
-<li><strong><code>embedding.py</code></strong>: 通过 Qwen 进行 Text → vector</li>
-<li><strong><code>injector.py</code></strong>: 将 ViralUnit 示例注入 prompt</li>
-<li><strong><code>builder.py</code></strong>: 从种子数据构建知识库</li>
-<li><strong><code>feedback.py</code></strong>: 将成功的脚本反馈回 KB</li>
-</ul>
 <h2 id="llm-flowbeastcoreconfigpy">LLM 路由 (<code>flowbeast/core/config.py</code>)<a class="headerlink" href="#llm-flowbeastcoreconfigpy" title="Permanent link">&para;</a></h2>
-<p><code>ACTIVE_VENDOR</code> 环境变量选择供应商：</p>
 <table>
 <thead>
 <tr>
@@ -911,37 +874,15 @@
 <td>gpt-4o</td>
 <td><code>OPENAI_API_KEY</code></td>
 </tr>
-<tr>
-<td>OpenRouter</td>
-<td>auto</td>
-<td><code>OPENROUTER_API_KEY</code></td>
-</tr>
-<tr>
-<td>Ollama</td>
-<td>本地</td>
-<td>-</td>
-</tr>
 </tbody>
 </table>
-<h2 id="data-flow">数据流 / Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>自然语言 Prompt
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>         ↓
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  compile_workflow()     [flowbeast/agent/compiler.py]
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>         ↓
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    DataWorkflow (IR)    [flowbeast/ir/models.py]
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>         ↓
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  generate_code()        [flowbeast/agent/codegen.py]
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>         ↓
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>   Python 代码输出
-</code></pre></div>
-<h2 id="key-data-structures">关键数据结构 / Key Data Structures<a class="headerlink" href="#key-data-structures" title="Permanent link">&para;</a></h2>
-<h3 id="dramaschemapy">drama/schema.py<a class="headerlink" href="#dramaschemapy" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Script</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">core_hook</span><span class="p">,</span> <span class="n">scenes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Scene</span><span class="p">]</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">Scene</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">emotion_curve</span><span class="p">,</span> <span class="n">dialogue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dialogue</span><span class="p">]</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">Dialogue</span><span class="p">:</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">emotion</span><span class="p">,</span> <span class="n">intensity</span>
-</code></pre></div>
-<h3 id="fp3schemapy">fp3/schema.py<a class="headerlink" href="#fp3schemapy" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">ViralUnit</span><span class="p">:</span> <span class="n">hook</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">emotion</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<h2 id="_2">关键数据结构<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># drama/schema.py</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Script</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">core_hook</span><span class="p">,</span> <span class="n">scenes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Scene</span><span class="p">]</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">Scene</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">conflict</span><span class="p">,</span> <span class="n">emotion_curve</span><span class="p">,</span> <span class="n">dialogue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dialogue</span><span class="p">]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># fp3/schema.py</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">ViralUnit</span><span class="p">:</span> <span class="n">hook</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">emotion</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 
 
@@ -960,6 +901,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -992,7 +935,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.edit", "content.action.view", "header.autohide", "search.suggest", "search.highlight", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": "0.3.2"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
