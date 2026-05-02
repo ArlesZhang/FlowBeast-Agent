@@ -10,7 +10,6 @@
 
 - 📚 [Getting Started](getting-started.md)
 - 🏗️ [Architecture](architecture.md)
-- 🚀 [Quick Start](getting-started.md)
 
 ## Features
 
@@ -24,10 +23,6 @@
 ```
 FlowBeast/
 ├── flowbeast/          # Core package
-│   ├── drama/         # Drama generation engine
-│   ├── fp3/           # RAG knowledge base
-│   ├── core/          # Core utilities
-│   └── api/           # FastAPI server
 ├── docs/              # MkDocs documentation
 ├── scripts/           # Utility scripts
 └── tests/             # Test suite

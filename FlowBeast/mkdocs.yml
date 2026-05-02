@@ -1,9 +1,9 @@
 # MkDocs configuration for FlowBeast
-# Project documentation site
+# Project documentation site with i18n support (Vue/React style)
 
 site_name: FlowBeast
 site_description: AI-powered short-form drama content generation engine
-site_url: https://flowbeast.ai
+site_url: https://ArlesZhang.github.io/FlowBeast-Agent/
 
 # Repository
 repo_name: FlowBeast
@@ -14,6 +14,19 @@ edit_uri: edit/main/docs/
 theme:
   name: material
   language: en
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+    - header.autohide
+    - search.suggest
+    - search.highlight
+    - content.tooltips
   palette:
     - scheme: default
       primary: indigo
@@ -58,25 +71,39 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
 
-# Plugins
+# Plugins - i18n plugin must be first
 plugins:
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: zh
+          name: 简体中文
+          default: false
+          build: true
+      default_language: en
+      alternate:
+        - name: English
+          link: /
+          lang: en
+        - name: 简体中文
+          link: /zh/
+          lang: zh
   - search
 
-# Navigation
+# Navigation - English pages (default)
 nav:
-  - Home: index.md
-  - Getting Started: getting-started.md
-  - Architecture: architecture.md
-  - Tech Debt: tech-debt.md
+  - Home: en/index.md
+  - Getting Started: en/getting-started.md
+  - Architecture: en/architecture.md
+  - Tech Debt: en/tech-debt.md
   - ADRs:
-    - Overview: adrs/index.md
-    - 0001 - FAISS: adrs/0001-faiss-for-fp3.md
-    - 0002 - Embedding: adrs/0002-unified-embedding-interface.md
-  - Internal:
-    - decisions/0001-template.md
-    - ideas/README.md
-    - meetings/README.md
-    - technical_reports/README.md
+    - Overview: en/adrs/index.md
+    - 0001 - FAISS: en/adrs/0001-faiss-for-fp3.md
+    - 0002 - Embedding: en/adrs/0002-unified-embedding-interface.md
 
 # Extra configuration
 extra:
