@@ -5,7 +5,7 @@ import structlog
 from openai import OpenAI, APIError, RateLimitError
 from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential
-from flowbeast.ir.models import DataWorkflow # 确保 models.py 存在
+from flowbeast.legacy_workflows.ir.models import DataWorkflow # 确保 models.py 存在
 
 load_dotenv()
 log = structlog.get_logger()
