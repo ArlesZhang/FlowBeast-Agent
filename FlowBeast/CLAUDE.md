@@ -4,11 +4,24 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-  
+## Language Policy (STRICT)
+
+You MUST always respond in English.
+
+This applies to:
+- Explanations
+- Code comments
+- Commit messages
+- Debug output
+- Any generated text
+
+DO NOT use Chinese unless the user explicitly requests it.
+
+If the user writes in another language, you STILL respond in English.  
+
 
 ## Project Overview
 
-  
 
 **FlowBeast** is an AI-powered short-form drama content generation engine. The core pipeline is: **Topic → Viral Script (JSON) → Audio → Video-ready output**.
 
