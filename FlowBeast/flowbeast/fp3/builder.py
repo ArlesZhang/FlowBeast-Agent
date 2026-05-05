@@ -3,6 +3,7 @@ from .schema import ViralUnit
 from .embedding import embed_unit
 from .store import FP3Store
 
+# workflow: seed_data.py --> embedding.py --> builder.py --> store.py --> retriever.py
 def build_fp3(units: list[ViralUnit]):
     """核心构建函数：将 ViralUnit 列表转化为向量库"""
     store = FP3Store()

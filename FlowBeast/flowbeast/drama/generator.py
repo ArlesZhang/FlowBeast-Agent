@@ -1,15 +1,23 @@
+import os
 import json
 import re
 from datetime import datetime
 
 from loguru import logger
 from openai import OpenAI
-import google.generativeai as genai
+from google import genai     # Use latest Google GenAI SDK (https://ai.google.dev/tutorials/python_quickstart)
 
 from flowbeast.core.config import settings
 from flowbeast.drama.prompt import build_prompt
 
-# ====================== Client 构建 ======================
+#region ====================== Client 构建 ======================
+
+# LLM SDK official docs:
+# - OpenAI:    https://developers.openai.com/api/docs/quickstart  ( https://github.com/openai/openai-python )
+# - Qwen:      https://www.alibabacloud.com/help/en/model-studio/first-api-call-to-qwen  ( https://github.com/dashscope/dashscope-python-sdk )
+# - Gemini:    https://ai.google.dev/gemini-api/docs/get-started/python
+# call LLM Mode SDK of OpenAI, Qwen, Gemini (refer to official documentation) --> return client instance
+#endregion 
 def get_client():
     provider = settings.MODEL_PROVIDER.lower()
 
@@ -23,9 +31,12 @@ def get_client():
         return OpenAI(api_key=settings.OPENAI_API_KEY)
 
     elif provider == "gemini":
-        genai.configure(api_key=settings.GOOGLE_API_KEY)
-        return genai
+        # Ensure the API KEY is configured in settings (FlowBeast config.py)
+        if not getattr(settings, "GOOGLE_API_KEY", None):
+            raise ValueError("❌ GOOGLE_API_KEY is not configured")
 
+        return genai.Client(api_key=settings.GOOGLE_API_KEY)   # Use the recommended Client class for Gemini (latest SDK)
+ 
     else:
         raise ValueError(f"❌ 不支持的模型提供商: {provider}")
 
@@ -35,57 +46,57 @@ client = get_client()
 
 # ====================== LLM 调用 ======================
 def llm_call(prompt: str, model: str = None) -> str:
+#region  Notes  
     """
-    FlowBeast 统一 LLM 调用接口
-    支持 provider：qwen / openai / gemini
-    返回 JSON 字符串（原始输出）
+    # FlowBeast unified LLM call interface
+    # Supports providers: qwen / openai / gemini
+    # Returns the raw output as a JSON string,which is content under message.content
     """
+#endregion 
     provider = settings.MODEL_PROVIDER.lower()
     target_model = model or settings.MODEL_NAME
 
-    logger.info(f"🧠 LLM调用 | provider={provider} | model={target_model}")
+    logger.info(f"LLM调用 | provider={provider} | model={target_model}")
 
     # ------------------ Gemini ------------------
     if provider == "gemini":
-        # 避免全局污染，直接在这里 import
-        import google.generativeai as genai
+        response = client.models.generate_content(
+            model=target_model,
+            content=[
+                {
+                    "role": "user",
+                    "parts": [
+                        f"""
+You are a top short-drama screenwriter.
+You excel at creating conflict, planting hooks, and delivering extreme reversals.
+Strictly output JSON including hook, conflict, emotion_curve, etc.
+Do not provide any explanations or extra text.
 
-        # 确保已经用 API KEY 配置过
-        if not getattr(settings, "GOOGLE_API_KEY", None):
-            raise ValueError("❌ 未配置 GOOGLE_API_KEY")
-
-        genai.configure(api_key=settings.GOOGLE_API_KEY)
-
-        model_obj = genai.GenerativeModel(target_model)
-
-        response = model_obj.generate_content(
-            f"""
-你是顶级短视频爽剧编剧。
-你擅长制造冲突、埋设钩子(Hook)和极致反转。
-必须严格输出 JSON，包含 hook, conflict, emotion_curve 等字段。
-不要任何解释或额外文本。
-
-{prompt}
-""",
-            generation_config=genai.types.GenerationConfig(
-                temperature=0.7,
-                response_mime_type="application/json",  # 确保输出 JSON
-            ),
+{prompt}  
+"""
+                    ],
+                }
+            ],
+            generation_config={
+                "temperature": 0.7,
+                "response_mime_type": "application/json",
+            },
         )
         content = response.text
 
     # ------------------ Qwen / OpenAI ------------------
     else:
-        # client 必须是 OpenAI 实例
+        # client must be an OpenAI instance
         kwargs = {
             "model": target_model,
             "messages": [
                 {
                     "role": "system",
                     "content": (
-                        "你是顶级短视频爽剧编剧。你擅长制造冲突、埋设钩子(Hook)和极致反转。"
-                        "必须严格按照 JSON 格式输出，包含 hook, conflict, emotion_curve 等字段。"
-                        "不要任何解释，只输出符合格式 of JSON 对象。"
+                        "You are a top short-drama screenwriter. You excel at creating conflict, "
+                        "planting hooks, and delivering extreme reversals. "
+                        "You must strictly output in JSON format, including hook, conflict, emotion_curve, etc. "
+                        "Do not provide any explanation, only output a JSON object."
                     ),
                 },
                 {"role": "user", "content": prompt},
@@ -93,7 +104,7 @@ def llm_call(prompt: str, model: str = None) -> str:
             "temperature": 0.7,
         }
 
-        # OpenAI 特殊参数，启用 JSON 输出
+        # OpenAI special parameter, enable JSON output
         if "gpt" in target_model.lower():
             kwargs["response_format"] = {"type": "json_object"}
 
@@ -101,7 +112,7 @@ def llm_call(prompt: str, model: str = None) -> str:
         content = response.choices[0].message.content
 
     if not content:
-        raise ValueError("❌ LLM 返回为空")
+        raise ValueError("❌ LLM response is empty")
 
     return content
 
@@ -179,15 +190,11 @@ def generate_script(topic: str) -> dict:
     raise ValueError(f"❌ 连续3次生成失败: {last_error}")
 
 
-# ====================== 测试入口 ======================
+# ====================== Test entrance ========================================
 if __name__ == "__main__":
     # 注意：运行此测试前请确保已运行 python -m scripts.init_fp3
     topic = "逆袭：开除我的女总裁跪求我回去"
     result = generate_script(topic)
-
-    # --- 新增：自动保存 logic ---
-    import os
-    from flowbeast.core.config import settings
 
     # 确保输出目录存在
     out_dir = settings.FLOWBEAST_OUTPUT_DIR

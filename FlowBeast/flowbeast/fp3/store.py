@@ -6,6 +6,7 @@ from flowbeast.core.config import settings
 
 
 # FP3Store: Simple class for saving, loading, and searching viral gene vectors using FAISS.
+# workflow: init_fp3.py  --> embedding.py --> builder.py --> store.py --> retriever.py
 class FP3Store:
     def __init__(self, dim=1536):
         # 确保路径是 Path 对象
