@@ -6,7 +6,7 @@ def embed_text(text: str):
     from flowbeast.drama.generator import get_client
     client = get_client()
 
-    # text -> embedding(can switch to other models like gemini, openai, qwen) -> vector 
+    # text -> embedding(Tips:can switch to other models like gemini, openai, qwen) -> vector 
     provider = settings.MODEL_PROVIDER.lower()
     if provider == "gemini":
         # 使用你 v0.2.0 已有的 client 配置
