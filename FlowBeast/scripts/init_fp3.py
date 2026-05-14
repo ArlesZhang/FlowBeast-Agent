@@ -14,7 +14,7 @@ def run_init():
     items = []
     for u in units:
         vectors.append(embed_unit(u))
-        items.append(u.dict())
+        items.append(u.model_dump())
     
     store.add(vectors, items)
     store.save()
