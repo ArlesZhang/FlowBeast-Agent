@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
   flowbeast:
-    build: .
+    build:
+      context: .
+      target: production
     container_name: flowbeast-engine
 
     # ======================
@@ -21,7 +23,7 @@ services:
     # ======================
     env_file:
       - .env
-      - .env.docker   # ← setup 脚本生成
+      # - .env.docker   # ← 仅生产环境使用，setup脚本生成
 
     environment:
       - WATCHFILES_FORCE_POLLING=true

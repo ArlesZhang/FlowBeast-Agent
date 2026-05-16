@@ -1,0 +1,29 @@
+{
+  "name": "FlowBeast Dev",
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.extend.yml"],
+  "service": "flowbeast",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/app/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "editor.formatOnSave": true,
+        "ruff.lint.run": "onSave",
+        "ruff.format.args": ["--line-length=88"],
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": [8000],
+  "postCreateCommand": "uv sync",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true
+}

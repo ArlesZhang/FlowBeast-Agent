@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  flowbeast:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        USERNAME: vscode
+        USER_UID: 1000
+        USER_GID: 1000
+
+    command: sleep infinity
+
+    volumes:
+      - .:/app:cached
+
+    environment:
+      - UV_CACHE_DIR=/tmp/uv-cache
+      - WATCHFILES_FORCE_POLLING=true
+
+    user: vscode
