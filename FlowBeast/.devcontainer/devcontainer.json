@@ -10,7 +10,8 @@
         "ms-python.vscode-pylance",
         "charliermarsh.ruff",
         "tamasfe.even-better-toml",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "anthropic.claude-code"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/app/.venv/bin/python",
@@ -21,6 +22,15 @@
         "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
+  },
+  "remoteEnv": {
+    "ANTHROPIC_AUTH_TOKEN": "${localEnv:ANTHROPIC_AUTH_TOKEN}",
+    "ANTHROPIC_BASE_URL": "${localEnv:ANTHROPIC_BASE_URL}",
+    "ANTHROPIC_MODEL": "${localEnv:ANTHROPIC_MODEL}",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "${localEnv:ANTHROPIC_DEFAULT_HAIKU_MODEL}",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "${localEnv:ANTHROPIC_DEFAULT_SONNET_MODEL}",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "${localEnv:ANTHROPIC_DEFAULT_OPUS_MODEL}",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "${localEnv:CLAUDE_CODE_SUBAGENT_MODEL}"
   },
   "forwardPorts": [8000],
   "postCreateCommand": "uv sync",
