@@ -4,7 +4,13 @@ Date: 2026-04-28
 
 ## Status
 
-Accepted
+Architecture Decision Records
+
+| ADR | 标题 | 状态 | 日期 |
+|-----|------|------|------|
+| 0001 | FAISS 向量检索 | ✅ 已采纳 | 2026-05-17 |
+| 0002 | 统一 Embedding 接口 | 🔄 进行中 | 2026-05-20 |
+
 
 ## 上下文
 

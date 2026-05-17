@@ -1,0 +1,9 @@
+我的项目是 `~/FlowBeast-p1/FlowBeast`，已经配置了 Dev Container 并能在 VS Code 中成功进入容器。现在我需要完成一件事：
+  
+  1.在容器内使用与宿主机完全一致的 Claude Code 扩展                                                                
+  - 宿主机上已安装 Claude Code 扩展，配置在 `~/.claude/settings.json`（使用阿里云百炼 API）                                                                                                                    
+  - 进入容器后，Claude Code 扩展的没有自动安装，且安装后的配置是默认，不是我宿主机的配置                                                                                                                       
+  - 我需要容器内的 Claude Code 扩展能：
+    - 自动安装（不需要我手动在容器内重新下载）                                        
+    - 读取并使用宿主机 `~/.claude/settings.json` 中的配置（API Key、Base URL、模型等）     
+  - 限制：不能把 API Key 写死在配置文件中

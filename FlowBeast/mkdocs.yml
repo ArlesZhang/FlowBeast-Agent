@@ -83,19 +83,30 @@ plugins:
           name: 简体中文
           default: false
           build: true
+          nav_translations:
+            Home: 首页
+            Getting Started: 快速开始
+            Architecture: 架构
+            Tech Debt: 技术债与路线图
+            ADRs: 架构决策记录
+            Overview: 概述
+            0001 - FAISS: 0001 - FAISS
+            0002 - Embedding: 0002 - Embedding
+            Tech_Blog: 技术博客
+            fast-api: FastAPI
   - search
 
-# Navigation - pointing to i18n folder structure
+# 显式导航配置（使用英文文件名，i18n 插件会自动翻译）
 nav:
-  - Home: en/index.md
-  - Getting Started: en/getting-started.md
-  - Architecture: en/architecture.md
-  - Tech Debt: en/tech-debt.md
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - Tech Debt: tech-debt.md
   - ADRs:
-    - Overview: en/adrs/index.md
-    - 0001 - FAISS: en/adrs/0001-faiss-for-fp3.md
-    - 0002 - Embedding: en/adrs/0002-unified-embedding-interface.md
-
+    - Overview: adrs/index.md
+    - 0001 - FAISS: adrs/0001-faiss-for-fp3.md
+    - 0002 - Embedding: adrs/0002-unified-embedding-interface.md
+  - Tech_Blog: Tech_Blog/fast-api.md
 # Extra configuration
 extra:
   version: 0.3.2
