@@ -65,6 +65,8 @@ tmp/
 .idea/
 *.swp
 *.swo
+.cursorindexingignore
+.cursorrules
 
 # OS
 .DS_Store

@@ -1,8 +1,24 @@
 # CLAUDE.md
 
- @README.md 
+> This project uses Cursor Rules - see [.cursor/rules/](./.cursor/rules/) for detailed development guidelines.
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+- This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository. @README.md
+
+- The primary goal of this repository is shipping a working AI-native content generation system, not maximizing architectural sophistication.The primary goal of this repository is shipping a working AI-native content generation system, not maximizing architectural sophistication.
+
+
+# Long-Term Vision
+
+FlowBeast is evolving toward an AI-native content operating system focused on:
+
+- scalable viral content generation
+- reusable AI workflows
+- multi-agent orchestration
+- autonomous content pipelines
+- feedback-driven optimization systems
+
+The project prioritizes practical execution, modularity, automation, and iteration speed over theoretical architectural complexity.
+
 
 ## Language Policy (STRICT)
 
@@ -148,9 +164,62 @@ topic → build_prompt() → FP3Retriever → inject_prompt() → generate_scrip
 - **scripts/test_main_script.py**: Quick main.py validation
 - **tests/full_pipeline_test.py**: Full pipeline integration test (slow, requires LLM)
 
-## Configuration
 
-  
+## Engineering Principles
+
+- Prefer simple working solutions over complex abstractions.
+- Avoid premature optimization.
+- Avoid unnecessary framework introduction.
+- Prefer explicit code over hidden magic.
+- Maintain deterministic and debuggable pipelines.
+- Minimize AI-generated architectural drift.
+- Keep modules loosely coupled and easy to replace.
+- Favor incremental improvements over large rewrites.
+- Preserve backward compatibility when possible.
+- Never rewrite unrelated files.
+
+
+## AI Modification Constraints
+
+Claude Code must NOT:
+
+- Rewrite large subsystems without explicit instruction.
+- Modify deployment/infrastructure files unnecessarily.
+- Introduce new dependencies without justification.
+- Replace working implementations with speculative abstractions.
+- Auto-refactor unrelated files.
+- Change public interfaces without warning.
+- Generate placeholder enterprise patterns.
+- Add unnecessary async/concurrency complexity.
+
+## Development Workflow
+
+Preferred workflow:
+
+1. Understand existing architecture first.
+2. Make the smallest valid change.
+3. Run targeted tests.
+4. Explain architectural impact briefly.
+5. Avoid speculative rewrites.
+6. Preserve repository consistency.
+7. Keep commits focused and atomic.
+
+
+## Context Priority
+
+When multiple sources conflict, prioritize:
+
+1. Existing repository architecture
+2. CLAUDE.md instructions
+3. .cursor/rules/
+4. Existing code patterns
+5. User request
+6. General framework conventions
+
+
+
+
+## Configuration  
 
 All configuration is in `.env` (gitignored; see `.env.example`):
 
