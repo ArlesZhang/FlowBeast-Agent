@@ -10,14 +10,8 @@ from google import genai     # Use latest Google GenAI SDK (https://ai.google.de
 from flowbeast.core.config import settings
 from flowbeast.drama.prompt import build_prompt
 
-#region ====================== Client 构建 ======================
+# ====================== Client 构建 ======================
 
-# LLM SDK official docs:
-# - OpenAI:    https://developers.openai.com/api/docs/quickstart  ( https://github.com/openai/openai-python )
-# - Qwen:      https://www.alibabacloud.com/help/en/model-studio/first-api-call-to-qwen  ( https://github.com/dashscope/dashscope-python-sdk )
-# - Gemini:    https://ai.google.dev/gemini-api/docs/get-started/python
-# call LLM Mode SDK of OpenAI, Qwen, Gemini (refer to official documentation) --> return client instance
-#endregion 
 def get_client():
     provider = settings.MODEL_PROVIDER.lower()
 

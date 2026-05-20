@@ -35,6 +35,23 @@ class FP3Store:
         D, I = self.index.search(np.array([vector]).astype("float32"), k)
         # 过滤掉无效索引 (-1)
         return [self.meta[i] for i in I[0] if i != -1 and i < len(self.meta)]
+
+    def search_with_scores(self, vector, k=2):
+        """
+        Search for k nearest neighbors, returning both metadata AND L2 distances.
+
+        Returns:
+            List of tuples: [(distance, metadata_dict), ...]
+            Empty list if store is empty.
+        """
+        if self.index.ntotal == 0:
+            return []
+        D, I = self.index.search(np.array([vector]).astype("float32"), min(k, self.index.ntotal))
+        results = []
+        for dist, idx in zip(D[0], I[0]):
+            if idx != -1 and idx < len(self.meta):
+                results.append((float(dist), self.meta[idx]))
+        return results
     
     # This class implements a simple FAISS-based vector store for FP3, supporting addition, search, saving, and loading of vectors along with their associated metadata.
     def save(self):

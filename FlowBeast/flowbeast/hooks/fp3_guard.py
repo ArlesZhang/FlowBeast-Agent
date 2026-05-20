@@ -61,6 +61,12 @@ class FP3Guard:
             "embedding.py",
             "injector.py",
             "schema.py",
+            "quality/__init__.py",
+            "quality/gate.py",
+            "quality/scorer.py",
+            "quality/dedup.py",
+            "quality/models.py",
+            "quality/config.py",
         ]
 
         for filename in required_files:
@@ -101,7 +107,7 @@ class FP3Guard:
                 store_content = store_file.read_text()
                 # Check for VectorStore, QdrantStore, FAISSStore or similar
                 has_evaluation_class = bool(re.search(
-                    r'class\s+(?:Vector|Qdrant|FAISS|Cache|Index)\w*Store',
+                    r'class\s+(?:Vector|Qdrant|FAISS|Cache|Index|FP3)\w*Store',
                     store_content,
                     re.IGNORECASE
                 ))
