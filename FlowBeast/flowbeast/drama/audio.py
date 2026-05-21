@@ -15,6 +15,9 @@ from flowbeast.core.config import settings
 EDGE_VOICE = "zh-CN-YunxiNeural"
 ELEVEN_VOICE = "pNInz6obpgDQGcFmaJgB"
 
+EDGE_TTS_MAX_RETRIES = 3
+EDGE_TTS_BACKOFF = 2  # seconds, exponential base
+
 
 # ====================== ElevenLabs ======================
 def get_eleven_client():
@@ -66,6 +69,22 @@ async def _edge_generate(text, file_path, emotion=None, intensity=None):
     )
 
     await communicate.save(str(file_path))
+
+
+async def _edge_generate_with_retry(text, file_path, emotion=None, intensity=None, max_retries=EDGE_TTS_MAX_RETRIES):
+    """Edge TTS wrapper with retry + exponential backoff（处理国内网络不稳定）。"""
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            await _edge_generate(text, file_path, emotion=emotion, intensity=intensity)
+            return
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries:
+                delay = EDGE_TTS_BACKOFF ** attempt
+                logger.warning(f"⚠️ Edge TTS 失败 (第 {attempt}/{max_retries} 次)，{delay}s 后重试: {e}")
+                await asyncio.sleep(delay)
+    raise last_error
 
 
 # ====================== ElevenLabs ======================
@@ -122,7 +141,7 @@ def generate_audio(
     try:
         if provider == "edge":
             asyncio.run(
-                _edge_generate(
+                _edge_generate_with_retry(
                     text,
                     file_path,
                     emotion=emotion,

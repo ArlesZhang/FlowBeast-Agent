@@ -150,7 +150,8 @@ class QualityGate:
         )
 
     def _write_audit_log(self, unit: ViralUnit, decision: GateDecision) -> None:
-        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")
+        from datetime import timezone
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
         safe_hook = "".join(c if c.isalnum() else "_" for c in unit.hook[:30])
         filename = self.audit_dir / f"{timestamp}_{safe_hook}_{decision.action.value}.json"
 
