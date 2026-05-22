@@ -20,6 +20,9 @@ site/
 # Claude Code own session data (prevent recursive reads)
 .claude/
 
+# AI prompt assets (private collection, not for agent indexing)
+prompt-set/
+
 # Data & outputs (runtime artifacts, not source code)
 flowbeast/data/
 flowbeast/market_material/raw_data/

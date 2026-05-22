@@ -161,5 +161,8 @@ audio_clips/
 # 忽略可能产生的日志文件
 flowbeast/data/outputs/logs/
 
+# AI prompt assets (private collection, not for GitHub)
+prompt-set/
+
 # MkDocs generated site
 site/
