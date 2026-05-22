@@ -8,11 +8,15 @@ from flowbeast.core.config import settings
 # FP3Store: Simple class for saving, loading, and searching viral gene vectors using FAISS.
 # workflow: init_fp3.py  --> embedding.py --> builder.py --> store.py --> retriever.py
 class FP3Store:
-    def __init__(self, dim=1536):
-        # 确保路径是 Path 对象
+    def __init__(self, dim=None):
         self.index_path = settings.FP3_INDEX_PATH
         self.meta_path = settings.FP3_META_PATH
-        
+
+        if dim is None:
+            # Auto-detect embedding dimension from active provider
+            from .embedding import embed_text
+            dim = len(embed_text("probe"))
+
         self.index = faiss.IndexFlatL2(dim)
         self.meta = []
 

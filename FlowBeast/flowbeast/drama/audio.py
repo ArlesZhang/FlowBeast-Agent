@@ -15,8 +15,8 @@ from flowbeast.core.config import settings
 EDGE_VOICE = "zh-CN-YunxiNeural"
 ELEVEN_VOICE = "pNInz6obpgDQGcFmaJgB"
 
-EDGE_TTS_MAX_RETRIES = 3
-EDGE_TTS_BACKOFF = 2  # seconds, exponential base
+EDGE_TTS_MAX_RETRIES = 2
+EDGE_TTS_BACKOFF = 1  # seconds, exponential base
 
 
 # ====================== ElevenLabs ======================
@@ -135,17 +135,21 @@ def generate_audio(
 
     base_path.mkdir(parents=True, exist_ok=True)
 
-    file_path = base_path / f"s{scene_id}_l{line_id}_{speaker}.mp3"
+    safe_speaker = "".join(c for c in speaker if c.isalnum() or c in "_- ")
+    file_path = base_path / f"s{scene_id}_l{line_id}_{safe_speaker}.mp3"
 
     # ====================== 执行生成 ======================
     try:
         if provider == "edge":
             asyncio.run(
-                _edge_generate_with_retry(
-                    text,
-                    file_path,
-                    emotion=emotion,
-                    intensity=intensity
+                asyncio.wait_for(
+                    _edge_generate_with_retry(
+                        text,
+                        file_path,
+                        emotion=emotion,
+                        intensity=intensity,
+                    ),
+                    timeout=30,
                 )
             )
 
@@ -157,6 +161,9 @@ def generate_audio(
 
         logger.success(f"✅ 音频生成完成: {file_path.name}")
 
+    except asyncio.TimeoutError:
+        logger.warning(f"⚠️ S{scene_id}-L{line_id} 超时，跳过")
+        raise TimeoutError(f"Audio generation timeout for S{scene_id}-L{line_id}")
     except Exception as e:
         logger.error(f"❌ 音频生成失败: {e}")
         raise

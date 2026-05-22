@@ -25,7 +25,7 @@ class EmbeddingDeduplicator(BaseDeduplicator):
         cos_sim = 1 - (L2_distance^2) / 2
     """
 
-    def __init__(self, similarity_threshold: float = 0.85, search_k: int = 5):
+    def __init__(self, similarity_threshold: float = 0.95, search_k: int = 5):
         if not 0.0 <= similarity_threshold <= 1.0:
             raise ValueError(f"similarity_threshold must be in [0,1], got {similarity_threshold}")
         self.threshold = similarity_threshold
@@ -53,6 +53,13 @@ class EmbeddingDeduplicator(BaseDeduplicator):
         best_distance, best_match = min(results, key=lambda x: x[0])
         similarity = self._l2_to_cosine(best_distance)
         is_dup = similarity >= self.threshold
+
+        # Soft warning for high domain similarity (not rejection-worthy)
+        if 0.85 <= similarity < self.threshold:
+            logger.debug(
+                f"Dedup: high domain similarity ({similarity:.4f}) but below reject threshold. "
+                f"Closest: {best_match.get('hook', 'N/A')[:40]}..."
+            )
 
         logger.info(
             f"Dedup: is_dup={is_dup}, sim={similarity:.4f}, "

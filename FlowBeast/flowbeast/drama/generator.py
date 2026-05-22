@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import asyncio
 from datetime import datetime
 
 from loguru import logger
@@ -19,10 +20,56 @@ def extract_json(text: str) -> str:
     raise ValueError("未找到JSON结构")
 
 
-# ====================== 核心生成 (集成 FP3 RAG) ======================
-def generate_script(topic: str) -> dict:
-    # --- 1. 获取基础 Prompt ---
-    base_prompt = build_prompt(topic)
+# ====================== 结构校验 ======================
+def validate_script_structure(script: dict) -> list[str]:
+    """Validate generated script has all required fields. Returns list of issues."""
+    issues = []
+    if not script.get("title"):
+        issues.append("missing title")
+    if not script.get("core_hook"):
+        issues.append("missing core_hook")
+    if not isinstance(script.get("scenes"), list):
+        issues.append("scenes is not a list")
+    elif len(script["scenes"]) < 3:
+        issues.append(f"too few scenes: {len(script['scenes'])} (need >= 3)")
+    else:
+        for i, scene in enumerate(script["scenes"]):
+            if not isinstance(scene.get("dialogue"), list):
+                issues.append(f"scene {i}: missing dialogue list")
+            elif len(scene.get("dialogue", [])) == 0:
+                issues.append(f"scene {i}: empty dialogue")
+            for j, line in enumerate(scene.get("dialogue", [])):
+                if not line.get("text"):
+                    issues.append(f"scene {i}, line {j}: empty text")
+    return issues
+
+
+# ====================== 核心生成 (集成 FP3 RAG + 实时热点) ======================
+def generate_script(
+    topic: str,
+    auto_trend: bool = True,
+) -> dict:
+    # --- 1. 获取基础 Prompt (含实时热点注入) ---
+    trend_context = None
+    if auto_trend:
+        try:
+            from flowbeast.drama.trending import fetch_trending_context
+
+            logger.info("🔥 正在抓取实时热搜...")
+            trend_context = asyncio.run(fetch_trending_context())
+            if trend_context.topics:
+                logger.info(f"🔥 获取到 {len(trend_context.topics)} 条热搜话题")
+            else:
+                logger.warning("⚠️ 实时热搜为空，使用纯话题生成")
+                trend_context = None
+        except Exception as e:
+            logger.warning(f"⚠️ 实时热搜抓取失败，使用纯话题生成: {e}")
+            trend_context = None
+
+    base_prompt = build_prompt(
+        topic=topic,
+        trend_context=trend_context.creative_brief() if trend_context else None,
+    )
 
     # --- 2. FP3 爆款基因增强 ---
     fp3_used = False
@@ -40,9 +87,9 @@ def generate_script(topic: str) -> dict:
             logger.info(f"🚀 FP3 注入完成，检索到 {len(viral_examples)} 条案例")
         else:
             prompt = base_prompt
-            logger.info("FP3 检索结果为空，使用基础 prompt")
+            logger.info("FP3 检索结果为空，使用增强 prompt")
     except Exception as e:
-        logger.warning(f"⚠️ FP3 增强失败，回退到基础生成模式: {e}")
+        logger.warning(f"⚠️ FP3 增强失败，使用增强 prompt: {e}")
         prompt = base_prompt
 
     # --- 3. 循环重试生成 ---
@@ -64,8 +111,9 @@ def generate_script(topic: str) -> dict:
                 script = json.loads(cleaned)
 
             # ---------- 结构校验 ----------
-            if "scenes" not in script:
-                raise ValueError("JSON缺少 scenes 字段")
+            issues = validate_script_structure(script)
+            if issues:
+                raise ValueError(f"结构校验失败: {', '.join(issues)}")
 
             # ---------- 返回结构升级 ----------
             return {
@@ -76,24 +124,22 @@ def generate_script(topic: str) -> dict:
                     "model": settings.MODEL_NAME,
                     "timestamp": datetime.now().isoformat(),
                     "fp3_enhanced": fp3_used,
+                    "trend_enhanced": bool(trend_context and trend_context.topics),
                 },
             }
 
         except Exception as e:
             logger.error(f"⚠️ 第 {attempt + 1} 次生成失败: {e}")
-
-            if attempt == 2:
-                logger.error(f"❌ 原始输出:\n{raw_response}")
-
             last_error = e
 
+    logger.error(f"❌ 原始输出:\n{raw_response}")
     raise ValueError(f"连续3次生成失败: {last_error}")
 
 
 # ====================== Test entrance ========================================
 if __name__ == "__main__":
     topic = "逆袭：开除我的女总裁跪求我回去"
-    result = generate_script(topic)
+    result = generate_script(topic, auto_trend=True)
 
     out_dir = settings.FLOWBEAST_OUTPUT_DIR
     os.makedirs(out_dir, exist_ok=True)
