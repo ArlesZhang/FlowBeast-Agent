@@ -67,6 +67,8 @@ tmp/
 *.swo
 .cursorindexingignore
 .cursorrules
+.claude/
+.claude/settings.local.json
 
 # OS
 .DS_Store

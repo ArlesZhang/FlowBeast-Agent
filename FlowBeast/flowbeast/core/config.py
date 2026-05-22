@@ -47,6 +47,7 @@ def _resolve_active_model(vendor: str) -> str:
         "ollama": "llama3",
         "glm": "glm-4",
         "openrouter": "anthropic/claude-sonnet-4-20250514",
+        "anthropic": "qwen3.6-plus",
     }
     return defaults.get(vendor, "qwen-turbo")
 
@@ -56,11 +57,11 @@ _active_model = _resolve_active_model(_active_vendor)
 
 
 def _resolve_embed_vendor() -> str:
-    """解析 embedding provider。默认 qwen（国内网络稳定），可设 EMBED_VENDOR 覆盖。"""
+    """解析 embedding provider。默认 ollama（本地离线无 API key），可设 EMBED_VENDOR 覆盖。"""
     vendor = os.getenv("EMBED_VENDOR", "").lower().strip()
     if vendor:
         return vendor
-    return "qwen"
+    return "ollama"
 
 
 def _resolve_embed_model(vendor: str) -> str:
@@ -71,8 +72,9 @@ def _resolve_embed_model(vendor: str) -> str:
         "gemini": "models/embedding-001",
         "openai": "text-embedding-3-small",
         "qwen": "text-embedding-v3",
+        "ollama": "nomic-embed-text",
     }
-    return defaults.get(vendor, "models/embedding-001")
+    return defaults.get(vendor, "nomic-embed-text")
 
 
 _active_embed_vendor = _resolve_embed_vendor()
@@ -109,6 +111,7 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str = ""
     DEEPSEEK_API_KEY: str = ""
     GLM_API_KEY: str = ""
+    ANTHROPIC_API_KEY: str = ""
 
     # ======================
     # 🔌 本地模型
@@ -116,6 +119,7 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://host.docker.internal:11434"
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
     DASHSCOPE_BASE_URL: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    ANTHROPIC_BASE_URL: str = ""
 
     # ======================
     # 目录配置
