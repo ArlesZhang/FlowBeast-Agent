@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional
 from datetime import datetime, timezone
 from pydantic import BaseModel, Field
 
@@ -40,5 +40,6 @@ class GateDecision(BaseModel):
     score_result: ScoreResult
     dedup_result: DedupResult
     reason: str
+    quality_label: Literal["viral", "average", "failed", "unknown"] = "unknown"
     audit_trail: Dict = Field(default_factory=dict)
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

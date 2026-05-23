@@ -25,7 +25,7 @@ class EmbeddingDeduplicator(BaseDeduplicator):
         cos_sim = 1 - (L2_distance^2) / 2
     """
 
-    def __init__(self, similarity_threshold: float = 0.95, search_k: int = 5):
+    def __init__(self, similarity_threshold: float = 0.98, search_k: int = 5):
         if not 0.0 <= similarity_threshold <= 1.0:
             raise ValueError(f"similarity_threshold must be in [0,1], got {similarity_threshold}")
         self.threshold = similarity_threshold
@@ -33,6 +33,20 @@ class EmbeddingDeduplicator(BaseDeduplicator):
 
     async def check_duplicate(self, unit: ViralUnit, store: FP3Store) -> DedupResult:
         logger.debug(f"Dedup: embedding candidate [hook={unit.hook[:30]}...]")
+
+        # Skip dedup when store is too small — embedding similarity is unreliable
+        # with < MIN_STORE_SIZE entries (everything looks similar in a tiny corpus).
+        MIN_STORE_SIZE = 50
+        if store.index.ntotal < MIN_STORE_SIZE:
+            logger.debug(
+                f"Dedup: store has only {store.index.ntotal} entries "
+                f"(need {MIN_STORE_SIZE} for reliable dedup), skipping"
+            )
+            return DedupResult(
+                is_duplicate=False, similarity_score=0.0, threshold_used=self.threshold,
+                duplicate_checks_performed=0,
+            )
+
         candidate_vec = embed_unit(unit)
 
         if store.index.ntotal == 0:
@@ -55,7 +69,7 @@ class EmbeddingDeduplicator(BaseDeduplicator):
         is_dup = similarity >= self.threshold
 
         # Soft warning for high domain similarity (not rejection-worthy)
-        if 0.85 <= similarity < self.threshold:
+        if 0.90 <= similarity < self.threshold:
             logger.debug(
                 f"Dedup: high domain similarity ({similarity:.4f}) but below reject threshold. "
                 f"Closest: {best_match.get('hook', 'N/A')[:40]}..."

@@ -1,9 +1,49 @@
 # flowbeast/fp3/seed_data.py
 
-from .schema import ViralUnit
+from pathlib import Path
+from typing import Union
+
+from .schema import ViralUnit, ViralScript
 from .store import FP3Store
 from .embedding import embed_text
 from loguru import logger
+
+RE_DIR = Path("flowbeast/data/reverse_engineered")
+
+
+def get_reference_units() -> list[Union[ViralUnit, ViralScript]]:
+    """
+    从 reverse_engineered/ 目录读取真实参考数据。
+    如果目录为空，fallback 到 get_demo_units()。
+    """
+    import json
+
+    if not RE_DIR.exists():
+        return get_demo_units()
+
+    units = []
+    for p in sorted(RE_DIR.glob("*.json")):
+        if p.name.startswith("TEMPLATE"):
+            continue
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            # Detect whether it's a ViralScript or legacy format
+            if "hook_structure" in data:
+                units.append(ViralScript(**data))
+            elif "hook" in data:
+                units.append(ViralUnit(**data))
+            else:
+                logger.warning(f"  跳过 {p.name}: 无法识别格式")
+        except Exception as e:
+            logger.warning(f"  跳过 {p.name}: {e}")
+
+    if units:
+        logger.info(f"  从 reverse_engineered/ 加载 {len(units)} 条真实参考数据")
+        return units
+
+    logger.info("  reverse_engineered/ 为空，使用手写种子数据")
+    return get_demo_units()
 
 
 def get_demo_units() -> list[ViralUnit]:

@@ -24,7 +24,7 @@ class QualitySettings(BaseSettings):
     QUALITY_ACCEPT_THRESHOLD: float = Field(default=0.60, ge=0.0, le=1.0)
     QUALITY_REVIEW_THRESHOLD: float = Field(default=0.40, ge=0.0, le=1.0)
 
-    DEDUP_SIMILARITY_THRESHOLD: float = Field(default=0.95, ge=0.0, le=1.0)
+    DEDUP_SIMILARITY_THRESHOLD: float = Field(default=0.98, ge=0.0, le=1.0)
     DEDUP_SEARCH_K: int = Field(default=5, ge=1)
 
     QUALITY_AUDIT_DIR: str = "flowbeast/data/quality_audit"

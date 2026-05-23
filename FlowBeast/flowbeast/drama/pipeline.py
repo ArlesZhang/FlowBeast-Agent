@@ -7,9 +7,25 @@ from loguru import logger
 from flowbeast.core.config import settings
 from flowbeast.drama.generator import generate_script
 from flowbeast.drama.audio import generate_audio
+from flowbeast.drama.audio_assembly import assemble_episode_audio
+from flowbeast.drama.shot_director import build_shot_list, shots_to_json
+from flowbeast.drama.asset_manager import (
+    load_style_lock,
+    load_all_character_assets,
+    load_all_scene_assets,
+    inject_visual_prompts,
+    DEFAULT_STYLE,
+)
 
 # ====================== 全局配置 ======================
 AUDIO_PROVIDER = "edge"
+
+
+# ====================== Shot Analytics ======================
+def _count_beats(shots) -> dict:
+    """Count beat_type distribution for report analytics."""
+    from collections import Counter
+    return dict(Counter(s.beat_type for s in shots))
 
 # 输出质量门控阈值（与 FP3 入库阈值不同）
 OUTPUT_QUALITY_ACCEPT = 0.65
@@ -20,16 +36,14 @@ OUTPUT_QUALITY_MAX_RETRIES = 2
 # ====================== 输出质量门控 ======================
 def _run_output_quality_gate(script: dict) -> dict:
     """
-    Score generated script through QualityGate (rule-based, free, no LLM calls).
+    Score generated script through QualityGate.
+    Uses calibrated mode if calibration report exists, otherwise falls back
+    to rule-based scoring with default thresholds.
     Returns {"passed": bool, "score": float, "action": str, "reason": str}
     """
     try:
         from flowbeast.fp3.schema import ViralUnit
-        from flowbeast.fp3.quality import GateAction
-        from flowbeast.fp3.quality.scorer import RuleBasedScorer
-        from flowbeast.fp3.quality.dedup import EmbeddingDeduplicator
-        from flowbeast.fp3.quality.gate import QualityGate
-        from flowbeast.fp3.quality.config import quality_settings
+        from flowbeast.fp3.quality import GateAction, create_quality_gate
         from flowbeast.fp3.store import FP3Store
 
         # 从脚本中提取 ViralUnit 用于评分
@@ -40,18 +54,7 @@ def _run_output_quality_gate(script: dict) -> dict:
         )
 
         store = FP3Store()
-        scorer = RuleBasedScorer(weights=quality_settings.weights_dict)
-        deduplicator = EmbeddingDeduplicator(
-            similarity_threshold=quality_settings.DEDUP_SIMILARITY_THRESHOLD,
-            search_k=quality_settings.DEDUP_SEARCH_K,
-        )
-        gate = QualityGate(
-            scorer=scorer,
-            deduplicator=deduplicator,
-            store=store,
-            accept_threshold=OUTPUT_QUALITY_ACCEPT,
-            review_threshold=OUTPUT_QUALITY_REJECT,
-        )
+        gate = create_quality_gate(store=store, calibrated=True)
 
         import asyncio
         decision = asyncio.run(gate.evaluate(unit))
@@ -133,6 +136,31 @@ def run_full_pipeline(topic: str):
 
     logger.success(f"📦 剧本已存储: {script_file}")
 
+    # ====================== 3.5. 导演分镜（Shot Director）======================
+    logger.info("🎬 生成导演分镜清单...")
+
+    shots = build_shot_list(script)
+
+    # Load Style Lock and character/scene assets
+    base_assets_dir = Path(settings.FLOWBEAST_OUTPUT_DIR).parent.parent.parent / "assets"
+    style_dir = base_assets_dir / "style"
+    character_dir = base_assets_dir / "characters"
+    scene_dir = base_assets_dir / "scenes"
+
+    style_lock = load_style_lock(style_dir) if style_dir.exists() else DEFAULT_STYLE
+    character_assets = load_all_character_assets(character_dir)
+    scene_assets = load_all_scene_assets(scene_dir)
+
+    # Inject visual prompts into all shots
+    shots = inject_visual_prompts(shots, style_lock, character_assets, scene_assets)
+
+    # Save shot list
+    shot_list_file = base_path / "shot_list.json"
+    with open(shot_list_file, "w", encoding="utf-8") as f:
+        json.dump(shots_to_json(shots), f, ensure_ascii=False, indent=2)
+
+    logger.success(f"📋 分镜清单已存储: {shot_list_file} ({len(shots)} shots)")
+
     # ====================== 4. 产能（音频生成）======================
     logger.info(f"🎬 开始配音 | provider={AUDIO_PROVIDER}")
 
@@ -162,6 +190,17 @@ def run_full_pipeline(topic: str):
                 logger.error(f"❌ S{scene_id}-L{line_id} 失败: {e}")
                 fail_count += 1
 
+    # ====================== 4.5. 音频合成（整集连续音频）======================
+    if success_count > 0:
+        try:
+            episode_audio_path = assemble_episode_audio(audio_path, script)
+            logger.success(f"🎵 整集音频已合成: {episode_audio_path}")
+        except Exception as e:
+            logger.warning(f"⚠️ 整集音频合成失败: {e}")
+            episode_audio_path = None
+    else:
+        episode_audio_path = None
+
     # ====================== 5. 总结 ======================
     logger.success(
         f"""
@@ -170,6 +209,8 @@ def run_full_pipeline(topic: str):
 topic       : {topic}
 run_id      : {run_id}
 script_path : {script_file}
+shot_list   : {shot_list_file} ({len(shots)} shots)
+episode_mp3 : {episode_audio_path or 'FAILED'}
 audio_dir   : {audio_path}
 success     : {success_count}
 failed      : {fail_count}
@@ -195,9 +236,12 @@ failed      : {fail_count}
         # --- 核心指标回流 ---
         "analytics": {
             "total_scenes": len(script.get("scenes", [])),
+            "total_shots": len(shots),
             "audio_assets": success_count,
+            "episode_audio": str(episode_audio_path) if episode_audio_path else None,
             "core_hook": script.get("core_hook", ""),
             "global_emotion_curve": script.get("emotion_curve_global", []),
+            "beat_distribution": _count_beats(shots),
         },
 
         # --- 时间线 ---
@@ -215,6 +259,8 @@ failed      : {fail_count}
         "run_id": run_id,
         "base_path": base_path,
         "script_path": script_file,
+        "shot_list_path": shot_list_file,
+        "episode_audio_path": episode_audio_path,
         "report_path": report_file,
         "audio_path": audio_path,
     }

@@ -1,11 +1,11 @@
-# 核心逻辑层:这个文件负责把 generator.py 产出的复杂 script.json 降维打击，提取成 ViralUnit 格式
+# 核心逻辑层:这个文件负责把 generator.py 产出的复杂 script.json 降维打击，提取成 ViralUnit/ViralScript 格式
 
 import asyncio
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 from loguru import logger
-from .schema import ViralUnit
+from .schema import ViralUnit, ViralScript
 from .builder import build_fp3
 
 
@@ -13,7 +13,7 @@ class FP3Feedback:
     @staticmethod
     def extract_unit_from_script(script_data: dict) -> ViralUnit:
         """
-        从生成的剧本 JSON 中提取爆款基因
+        从生成的剧本 JSON 中提取爆款基因（保留旧接口，向后兼容）
         """
         script_body = script_data.get("script", {})
 
@@ -23,6 +23,17 @@ class FP3Feedback:
         emotion = script_body.get("emotion_curve_global", ["neutral"])
 
         return ViralUnit(hook=hook, pattern=pattern, emotion=emotion)
+
+    @staticmethod
+    def extract_viral_script_from_script(script_data: dict) -> ViralScript:
+        """
+        从生成的剧本 JSON 中提取完整 ViralScript 解剖信息。
+        委托给 reverse_engineer.analyze_generated_script。
+        """
+        from flowbeast.tools.reverse_engineer import analyze_generated_script
+
+        script_body = script_data.get("script", script_data)
+        return analyze_generated_script(script_body)
 
     def process_file(self, file_path: Path, auto_confirm: bool = False):
         """
@@ -51,10 +62,14 @@ class FP3Feedback:
         except Exception as e:
             logger.error(f"回流处理失败: {e}")
 
-    async def process_file_async(self, file_path: Path, auto_confirm: bool = False) -> Optional["GateDecision"]:
+    async def process_file_async(self, file_path: Path, auto_confirm: bool = False, use_viral_script: bool = True) -> Optional["GateDecision"]:
         """
         处理单个剧本文件，通过 QualityGate 评估后回流。
         返回 GateDecision 或 None（如果文件无效或被取消）。
+
+        Args:
+            use_viral_script: If True, extract full ViralScript (enriched).
+                              If False, use legacy ViralUnit.
         """
         from .quality import create_quality_gate, GateAction, GateDecision
 
@@ -66,8 +81,13 @@ class FP3Feedback:
                 logger.warning(f"跳过无效文件: {file_path.name}")
                 return None
 
-            unit = self.extract_unit_from_script(data)
-            logger.info(f"🧬 提取到新基因: [Hook: {unit.hook[:20]}...]")
+            if use_viral_script:
+                unit = self.extract_viral_script_from_script(data)
+            else:
+                unit = self.extract_unit_from_script(data)
+
+            hook_preview = unit.hook[:20]
+            logger.info(f"🧬 提取到新基因: [Hook: {hook_preview}...]")
 
             if not auto_confirm:
                 confirm = input("是否确认将此基因提交至 QualityGate? (y/n): ")
@@ -75,7 +95,7 @@ class FP3Feedback:
                     logger.info("已取消回流")
                     return None
 
-            gate = create_quality_gate()
+            gate = create_quality_gate(calibrated=True)
             decision = await gate.evaluate_and_store(unit)
 
             if decision.action == GateAction.ACCEPT:

@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Dict, Tuple
+from typing import Dict, Optional, Tuple
 from loguru import logger
 
 from .models import ScoreResult
@@ -201,3 +201,71 @@ class RuleBasedScorer(BaseScorer):
 
         total = min(1.0, twists * 0.35 + layers * 0.40 + 0.15)
         return round(total, 4), f"twists={twists}, layers={layers}"
+
+
+# ====================== Reference-Anchored Scorer ======================
+
+import math
+
+
+def _z_to_percentile(z: float) -> float:
+    """Approximate z-score to percentile."""
+    x = z / math.sqrt(2)
+    t = 1.0 / (1.0 + 0.3275911 * abs(x))
+    poly = t * (0.254829592 + t * (-0.284496736 + t * (
+        1.421413741 + t * (-1.453152027 + t * 1.061405429))))
+    erf = 1.0 - poly * math.exp(-x * x)
+    return max(0.0, min(1.0, 0.5 * (1.0 + math.copysign(1, z) * erf)))
+
+
+class ReferenceAnchoredScorer(BaseScorer):
+    """
+    将候选分数映射到真实爆款参考分布的 z-score。
+
+    不是凭空评分，而是与参考集中 viral 样本的实际分布对比。
+    冷启动防御：当 σ < 0.01（样本少或方差极小）时，回退到原始分数。
+    """
+
+    def __init__(self, weights: Dict[str, float], reference_stats: Optional[Dict] = None):
+        self.weights = weights
+        # reference_stats: {dim: {"mean": float, "std": float}, ...}
+        self.reference_stats = reference_stats or {}
+
+    async def score(self, unit: ViralUnit) -> ScoreResult:
+        # 先拿 RuleBasedScorer 的原始分
+        base = RuleBasedScorer(weights=self.weights)
+        raw_result = await base.score(unit)
+
+        if not self.reference_stats:
+            return raw_result
+
+        # 对每个维度做 z-score → percentile 映射
+        anchored_scores = {}
+        explanations = {}
+
+        for dim, raw in raw_result.category_scores.items():
+            stats = self.reference_stats.get(dim, {})
+            mean = stats.get("mean", 0)
+            std = stats.get("std", 0)
+
+            if std > 0.01:
+                z = (raw - mean) / std
+                anchored_scores[dim] = round(_z_to_percentile(z), 4)
+                explanations[dim] = f"z={z:.2f} -> p={anchored_scores[dim]:.3f} (raw={raw:.3f})"
+            else:
+                # 冷启动保护：σ 太小，z-score 不稳定，保持原始分
+                anchored_scores[dim] = raw
+                explanations[dim] = f"raw={raw:.3f} (σ={std:.4f} too small, no anchoring)"
+
+        weighted_total = sum(
+            anchored_scores.get(n, 0.0) * self.weights.get(n, 0.0)
+            for n in anchored_scores
+        )
+        weighted_total = round(max(0.0, min(1.0, weighted_total)), 4)
+
+        return ScoreResult(
+            category_scores=anchored_scores,
+            weighted_total=weighted_total,
+            explanations=explanations,
+            scorer_version="reference-anchored-v1",
+        )
