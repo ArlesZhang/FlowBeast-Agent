@@ -117,12 +117,11 @@ Generates viral short-drama scripts via LLM calls. The main components:
 RAG layer that enriches prompts with retrieved viral patterns:
 
 - `store.py` / `retriever.py`: FAISS-backed vector search
-
-- `embedding.py`: Text → vector via sentence-transformers
-
-- `injector.py`: Injects retrieved `ViralUnit` examples into the prompt
-
+- `embedding.py`: Text → vector via cloud API (gemini/openai/qwen/ollama)
+- `injector.py`: Injects retrieved `ViralUnit` / `ViralScript` examples into the prompt
 - `feedback.py`: Feeds successful scripts back into the knowledge base
+- `quality/`: QualityGate scorer + dedup + calibrator (ReferenceAnchoredScorer)
+- `tools/reverse_engineer.py`: CLI tool to convert real viral dramas into `ViralScript` anatomy
 
 
 ### LLM Routing (`flowbeast/core/config.py`)
@@ -254,7 +253,41 @@ Dialogue: speaker, text, emotion, intensity
 
 ViralUnit: hook: str, pattern: str, emotion: List[str]
 
+ViralScript:                  # enriched drama anatomy (alongside ViralUnit)
+  hook_structure: HookStructure(opening_line, hook_type, audience_question, ...)
+  conflict_pattern: ConflictPattern(conflict_type, escalation_curve, reversal_count, ...)
+  emotional_curve: EmotionalCurve(curve_sequence, peak_emotion, resolution_type, ...)
+  pacing_profile: PacingProfile(duration_sec, scene_count, beat_distribution, ...)
+  characters: List[CharacterArchetype]
+  quality_label: "viral" | "average" | "failed"
+  → to_viral_unit() for legacy backward compatibility
+
 ```
+
+## Data Flywheel (1→0 Reverse Deconstruction Engine)
+
+```
+人工筛选市场爆款
+    ↓
+reverse_engineer CLI → ViralScript anatomy extraction
+    ↓
+FP3 Knowledge Base (structured + positive/negative labels)
+    ↓
+QualityGate Calibrator (reference-distribution scoring, z-score cold-start defense)
+    ↓
+Script Generation (FP3 RAG-enhanced)
+    ↓
+High-quality output → feedback loops back to FP3
+```
+
+Stages:
+- **A (1→0):** Manual curation → reverse engineering → system injection (with negative samples)
+- **B (0→1):** Quality calibration → generation quality improvement
+- **C (self-reinforcing):** Output feedback → knowledge base growth → better generation
+
+Use `flowbeast/tools/reverse_engineer.py` to convert real dramas into ViralScript records.
+The calibrator (`flowbeast/fp3/quality/calibrator.py`) reads from `flowbeast/data/reverse_engineered/`
+and produces threshold/weight recommendations for QualityGate.
   
 
 ## Package Manager

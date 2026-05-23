@@ -179,13 +179,15 @@ flowchart LR
 flowchart LR
   subgraph WRITE["① 建库（离线）"]
     direction TB
-    SCH[schema: ViralUnit]
+    SCH[schema: ViralUnit + ViralScript]
     BLD[builder + embed_unit]
-    SEED[seed_data + embed_text]
+    SEED[seed_data / reverse_engineered]
+    REV[reverse_engineer CLI]
     STW[store.add → save]
     SCH -.-> BLD
-    BLD --> STW
+    REV --> BLD
     SEED --> STW
+    BLD --> STW
   end
 
   subgraph READ["② 在线检索（generator 内）"]
@@ -195,11 +197,41 @@ flowchart LR
     EMB --> SRH
   end
 
+  subgraph CAL["③ QualityGate 校准"]
+    direction LR
+    CLB[calibrator]
+    RAS[ReferenceAnchoredScorer]
+    CLB --> RAS
+  end
+
   WRITE -.->|索引与 meta 文件| READ
+  WRITE -.->|参考集| CAL
 ```
 
 **drama 与 fp3 的结合点**（唯一）：`flowbeast/drama/generator.py` → `generate_script`：先 `build_prompt(topic)`，再 `FP3Retriever.retrieve(topic)`（内部 **embedding → store.search**），再 `inject_prompt(base_prompt, examples)`，最后 `llm_call`。
 
 `core/config` 的 `settings` 在 pipeline、generator、audio、fp3 的 `store` 路径上提供目录、模型、Key 等。
+
+### 数据飞轮（1→0 逆向拆解引擎）
+
+```
+人工筛选市场爆款 → reverse_engineer CLI → ViralScript 解剖档案
+                                                  │
+                                        ┌─────────┘
+                                        ▼
+                              QualityGate 校准器（参考集分布对比）
+                                        │
+                                        ▼
+                              脚本生成（FP3 RAG 增强）
+                                        │
+                                        ▼
+                              高质量输出 → 回流 FP3
+```
+
+- **阶段A (1→0)：** 人工筛选 → 逆向拆解 → 系统注入（含正负样本）
+- **阶段B (0→1)：** 质量校准 → 生成质量提升
+- **阶段C (自转)：** 生成内容回流 → 知识库增长 → 生成更好
+
+使用 `uv run python -m flowbeast.tools.reverse_engineer` 将真实漫剧转为 ViralScript 档案。
 
 一流项目:用 pytest + 清晰目录/标记 + pyproject 约定 + CI 分档 + 文档 解决「又全又快」和「脚本 vs 测」的边界；很少靠「一个统一入口文件」。
