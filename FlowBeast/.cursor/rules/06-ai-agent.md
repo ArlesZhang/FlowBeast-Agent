@@ -36,6 +36,21 @@ Tool interfaces should:
 - Be explicit
 - Return structured data
 
+## Human-in-the-Loop Workflows
+
+FlowBeast relies on human curation for quality data injection, not autonomous AI self-improvement:
+
+- **Reverse Engineering**: The `reverse_engineer` CLI requires a human to watch and analyze real dramas,
+  then provide structured judgments (hook type, conflict pattern, emotional curve, quality label).
+  This is intentional — AI cannot reliably self-evaluate content quality without a ground-truth anchor.
+
+- **QualityGate Calibration**: Scores are anchored against a human-curated reference distribution.
+  The calibrator computes z-scores from real viral samples, not theoretical ideals.
+  When sample count < 5, σ=0 cold-start protection prevents meaningless z-score computation.
+
+- **Negative Samples**: `quality_label` ("viral" / "average" / "failed") allows boundary learning.
+  The system must learn what to reject as much as what to accept.
+
 ## Multi-Agent Systems
 
 Prefer:
@@ -46,3 +61,4 @@ Prefer:
 Avoid:
 - Recursive uncontrolled agent loops
 - Excessive autonomy
+- Autonomous self-calibration without human-curated reference data

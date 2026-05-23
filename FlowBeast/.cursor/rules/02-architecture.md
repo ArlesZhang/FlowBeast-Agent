@@ -11,11 +11,33 @@ FP2 -> FP3 -> IP1 -> IP2 -> Product -> Observe -> FP2
 ## Layer Definitions
 
 - **FP2** = Data processing layer
-- **FP3** = Viral knowledge base + retrieval
+- **FP3** = Viral knowledge base + retrieval + quality gate
+  - Dual schema: `ViralUnit` (3-field legacy) + `ViralScript` (enriched drama anatomy)
+  - Reverse engineering CLI converts real dramas into structured ViralScript records
+  - QualityGate calibrator anchors scores against reference distribution (not in vacuo)
 - **IP1** = Generation enhancement / RAG
 - **IP2** = Multi-agent automation
 - **Product** = Video/content pipeline MVP
 - **Observe** = Observation and Feedback Center
+
+## Data Flywheel Pattern (1→0 Reverse Deconstruction Engine)
+
+FlowBeast uses a human-in-the-loop data flywheel for quality improvement:
+
+```
+Manual curation (market viral dramas)
+    → reverse_engineer CLI → ViralScript anatomy
+    → FP3 knowledge base (structured, with positive/negative labels)
+    → QualityGate calibrator (reference-distribution scoring, z-score cold-start defense)
+    → Script generation (FP3 RAG-enhanced)
+    → High-quality output → feedback loops back to FP3
+```
+
+Key rules:
+- FP3 quality depends on real viral content injection, not hand-written seeds
+- Calibration requires >= 5 reverse-engineered samples for meaningful z-score statistics
+- QualityGate falls back to rule-based scoring when no calibration report exists
+- ViralScript backward-compatible with ViralUnit via `to_viral_unit()`
 
 ## Module Boundaries
 
