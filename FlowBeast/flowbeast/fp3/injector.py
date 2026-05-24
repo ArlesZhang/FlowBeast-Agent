@@ -1,3 +1,15 @@
+"""
+FP3 Injector: enriches LLM prompts with retrieved viral pattern examples.
+
+Role: Takes a base prompt + RAG-retrieved ViralUnit/ViralScript examples,
+appends structured reference cases. ViralScript examples show hook_type
+and audience_question for deeper anatomy display.
+
+This is the ONLY point where FP3 connects to the drama generation pipeline
+(called inside flowbeast/drama/generator.py).
+"""
+
+
 def inject_prompt(base_prompt: str, viral_examples: list) -> str:
     if not viral_examples:
         return base_prompt

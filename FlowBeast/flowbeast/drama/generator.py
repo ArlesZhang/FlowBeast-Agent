@@ -1,3 +1,14 @@
+"""
+Drama Generator: produces viral short-drama scripts via LLM calls.
+
+Role: Builds prompt (with FP3 RAG injection), calls the active LLM vendor
+(gemini/qwen/openai/openrouter/ollama), parses JSON output into Script
+schema. The ONLY connection point between FP3 knowledge base and drama
+generation — FP3 examples are retrieved and injected here.
+
+Workflow: topic → build_prompt() → FP3Retriever.retrieve() → inject_prompt() → llm_call() → parse
+"""
+
 import os
 import json
 import re

@@ -1,3 +1,14 @@
+"""
+Quality Dedup: semantic deduplication of viral content entries.
+
+Role: Prevents duplicate ViralUnit/ViralScript entries in FP3 by comparing
+embedding similarity against a threshold. Uses L2 distance converted to
+cosine similarity proxy. Skips dedup when store is too small (< 50 entries)
+since embedding similarity is unreliable at tiny corpus scale.
+
+Called by QualityGate.evaluate() before scoring.
+"""
+
 from abc import ABC, abstractmethod
 from typing import Optional
 from loguru import logger

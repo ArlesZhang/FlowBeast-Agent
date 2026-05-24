@@ -1,4 +1,12 @@
-# flowbeast/drama/audio.py
+"""
+Drama Audio: converts dialogue text to MP3 files.
+
+Role: Generates individual audio files per dialogue line using Edge TTS
+(default, free) or ElevenLabs (premium). Handles emotion/intensity
+parameter routing and output file naming.
+
+Output: individual MP3s in audio/ directory, later assembled by audio_assembly.py.
+"""
 
 import asyncio
 from pathlib import Path

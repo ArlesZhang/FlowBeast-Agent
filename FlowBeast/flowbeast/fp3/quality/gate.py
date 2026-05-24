@@ -1,3 +1,14 @@
+"""
+QualityGate: accept/review/reject decisions for viral content.
+
+Role: Orchestrates scoring (RuleBased or ReferenceAnchored), deduplication,
+and audit logging. Returns GateDecision with score, action, and reason.
+Three actions: ACCEPT (>= accept_threshold), REVIEW (>= review_threshold),
+REJECT (below review_threshold).
+
+Called in pipeline.py (_run_output_quality_gate) and feedback.py.
+"""
+
 import json
 from datetime import datetime
 from pathlib import Path

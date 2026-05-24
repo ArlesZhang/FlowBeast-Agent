@@ -1,3 +1,13 @@
+"""
+FP3 Builder: constructs and saves the FAISS vector knowledge base.
+
+Role: Accepts ViralUnit or ViralScript entries, embeds them via cloud API,
+stores vectors + metadata in FAISS index. Called during FP3 initialization
+and when reverse-engineered ViralScript records are injected.
+
+Workflow: seed_data.py / reverse_engineered/ → embedding.py → this → store.py → retriever.py
+"""
+
 from typing import Union
 
 from loguru import logger
@@ -5,7 +15,7 @@ from .schema import ViralUnit, ViralScript
 from .embedding import embed_unit
 from .store import FP3Store
 
-# workflow: seed_data.py --> embedding.py --> builder.py --> store.py --> retriever.py
+
 def build_fp3(units: list[Union[ViralUnit, ViralScript]]):
     """核心构建函数：将 ViralUnit / ViralScript 列表转化为向量库"""
     store = FP3Store()

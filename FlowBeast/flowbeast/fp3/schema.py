@@ -1,3 +1,12 @@
+"""
+FP3 Schema: dual schema for viral content knowledge base.
+
+Role: Defines ViralUnit (3-field legacy) and ViralScript (enriched drama anatomy).
+ViralScript sub-models: HookStructure, ConflictPattern, EmotionalCurve,
+PacingProfile, CharacterArchetype. ViralScript.to_viral_unit() provides
+backward compatibility with existing ViralUnit code paths.
+"""
+
 from pydantic import BaseModel
 from typing import Dict, List, Literal, Optional
 

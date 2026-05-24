@@ -1,3 +1,11 @@
+"""
+QualityGate Configuration: thresholds, weights, and settings for quality assessment.
+
+Role: Pydantic-settings based configuration. All values overridable via
+environment variables with QUALITY_ prefix. Provides dimension weights,
+accept/review thresholds, dedup settings, and audit directory path.
+"""
+
 from pathlib import Path
 from pydantic import Field
 from pydantic_settings import BaseSettings

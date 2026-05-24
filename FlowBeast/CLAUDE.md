@@ -203,6 +203,30 @@ Preferred workflow:
 6. Preserve repository consistency.
 7. Keep commits focused and atomic.
 
+## Core File Header Docstrings
+
+Every core module file must begin with a module-level docstring that states:
+
+1. **What it is** — one-line description
+2. **Role** — what it does in the system and its boundaries
+3. **Workflow** — how it connects to upstream/downstream modules (call sites)
+
+Example:
+```python
+"""
+FP3 Store: FAISS-backed vector storage for viral content patterns.
+
+Role: Saves, loads, and searches ViralUnit/ViralScript embeddings.
+Provides k-nearest-neighbor search for RAG retrieval.
+
+Workflow: builder.py → add() → save() / load() ← retriever.py
+"""
+```
+
+This allows quick understanding of any core file's role without reading
+the full implementation. Apply to new files created and update existing
+files when their role changes significantly.
+
 
 ## Context Priority
 

@@ -1,5 +1,17 @@
+"""
+Drama Prompt: LLM prompt template for hook-driven short-drama storytelling.
+
+Role: Provides the structured prompt template that guides the LLM to generate
+viral drama scripts. Includes narrative structure rotation, emotion curve
+requirements, and output JSON schema enforcement.
+
+The base prompt is enriched by injector.py with FP3 RAG examples before
+being sent to the LLM.
+"""
+
 import random
 from typing import Optional
+
 
 # ====================== 叙事结构轮换池 ======================
 NARRATIVE_STRUCTURES = [

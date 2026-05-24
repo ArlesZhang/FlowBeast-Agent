@@ -1,4 +1,12 @@
-# flowbeast/fp3/seed_data.py
+"""
+FP3 Seed Data: provides initial viral content knowledge base entries.
+
+Role: Loads reference data from reverse_engineered/ directory (real viral
+dramas). Falls back to 15 hand-written seed entries when the directory
+is empty. Called during FP3 initialization.
+
+Returns Union[ViralUnit, ViralScript] to support both legacy and enriched formats.
+"""
 
 from pathlib import Path
 from typing import Union

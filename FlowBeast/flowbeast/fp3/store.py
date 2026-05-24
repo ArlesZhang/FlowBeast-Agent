@@ -1,3 +1,13 @@
+"""
+FP3 Store: FAISS-backed vector storage for viral content patterns.
+
+Role: Saves, loads, and searches ViralUnit/ViralScript embeddings. Provides
+k-nearest-neighbor search for RAG retrieval during script generation.
+Also used by deduplication to detect semantically similar entries.
+
+Workflow: builder.py / seed_data.py → add() → save() / load() ← retriever.py
+"""
+
 import faiss
 import numpy as np
 import json
@@ -5,8 +15,6 @@ from pathlib import Path
 from flowbeast.core.config import settings
 
 
-# FP3Store: Simple class for saving, loading, and searching viral gene vectors using FAISS.
-# workflow: init_fp3.py  --> embedding.py --> builder.py --> store.py --> retriever.py
 class FP3Store:
     def __init__(self, dim=None):
         self.index_path = settings.FP3_INDEX_PATH

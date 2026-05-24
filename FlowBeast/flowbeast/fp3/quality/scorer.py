@@ -1,3 +1,15 @@
+"""
+Quality Scorer: multi-dimensional quality assessment for ViralUnit/ViralScript.
+
+Role: Contains two scorers:
+- RuleBasedScorer: heuristic scorer analyzing text fields across 9 dimensions
+  (hook_strength, emotional_intensity, novelty, etc.)
+- ReferenceAnchoredScorer: anchors scores against real viral reference distribution
+  via z-score mapping, with cold-start defense when σ < 0.01.
+
+Called by QualityGate.evaluate() during output quality control.
+"""
+
 import re
 from abc import ABC, abstractmethod
 from typing import Dict, Optional, Tuple
