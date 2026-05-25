@@ -1,7 +1,61 @@
 ## Text_scripts
 
 
-## FlowBeast Flamwork for Agent-Centric
+## Strategic Architecture: What This Project Is Actually About
+
+FlowBeast's competitive advantage is **not** the production pipeline (script → audio → video). That step solves production capacity — a commodity problem with many existing AI tools (Runway, Kling, HeyGen, etc.) that can be integrated via MCP/Skills.
+
+**The real moat is the "Brain"** — the system that decides *what* to produce, not *how* to render it.
+
+### FP3 is a Viral Memory System — Composable Narrative Atoms
+
+FP3 不应只是存储"完整的爆款脚本"。它应该存储**可组合的叙事原子**：
+
+| 叙事原子 | 角色 | 性质 |
+|----------|------|------|
+| **Hook 原子** | 开场模式（前3秒） | 可插拔 — 独立替换 |
+| **Conflict Kernel** | 核心冲突引擎 | 可迁移 — 跨语义域通用 |
+| **Character Slot** | 角色原型 | 可替换 — 填充不同人设 |
+| **Emotion Track** | 情绪序列 | 可重映射 — 同形状不同情绪 |
+| **Pacing Template** | 节拍节奏 | 可参数化 — 缩放时长密度 |
+
+每个原子独立可嵌入、可检索、可组合。`ViralScript` 不是待检索的文档——而是系统已验证有效的原子配置。
+
+**FP3 是内容生成的 Latent Grammar（隐式语法）：**
+- 原子 = 词汇（hook 类型、冲突模式、情绪曲线）
+- 合法组合 = 语法（哪些 hook + 哪些 conflict + 哪些 emotion = 爆款）
+- VTO 算子 = 句法规则（如何把原子变换成新的合法句子）
+- QualityGate = 类型检查（拒绝违反隐式语法的组合）
+
+```
+逆向工程         FP3 Viral Memory (Latent Grammar)         生成策略层
+爆款降维      ┌──────────────────────────────┐      VTO Operators
+→叙事原子     │ Narrative Atoms (可插拔)      │      GRAFT / PARASITE
+              │ Conflict Kernels (可迁移)     │      DISTORT / MISDIRECT
+              │ Emotion Tracks (可重映射)     │      THEFT
+              │ Pacing Templates (可参数化)   │
+              │ Latent Grammar (合法组合规则) │
+              └──────────────────────────────┘
+```
+
+### Viral Transformation Operators (VTO)
+
+| Operator | 公式 | 作用 |
+|----------|------|------|
+| **GRAFT 嫁接** | `viral_A.hook_atom + topic_B.context` | 保留已验证结构，替换语义域到新话题 |
+| **PARASITE 寄生** | `trend_event → inject(narrative_spine)` | 热点事件污染已有叙事骨架，最强流量适配器 |
+| **DISTORT 篡改** | `conflict_kernel → exaggerate / invert / compress` | 提升情绪极值，在安全模式内制造非线性冲突 |
+| **MISDIRECT 愚弄** | `audience_expectation → violate(key_beat)` | 关键节拍违反预期，驱动评论转发 |
+| **THEFT 偷盗** | `viral_arc → re-theme + re-worldbuild` | 偷取他类情绪弧线，换皮到新世界观 |
+
+### Development Priority
+
+1. **Build FP3-S:** 逆向工程把爆款降维为可计算状态数据，正负样本注入
+2. **Validate VTO + QualityGate:** 用变换算子生成脚本，基于参考分布评估质量
+3. **Integrate MCP for production:** 产能最后解决 — 脚本转视频是已有工程问题
+
+
+## FlowBeast Framework for Agent-Centric
 
 ```mermaid
 flowchart TB
@@ -40,7 +94,7 @@ class FP2,FP3 FoundationNode
 
 subgraph Training ["02Training Pipeline (认知层)"]
     direction TB
-    TP1["FuelGenius<br/><sub>训练数据精炼飞轮<br/>数据自动筛选与合成&去重<br/><sub>(预留“人工审核”接口:防合成数据带毒)</sub>"]
+    TP1["FuelGenius<br/><sub>训练数据精炼飞轮<br/>数据自动筛选与合成&去重<br/><sub>(预留"人工审核"接口:防合成数据带毒)</sub>"]
 
 end
 
@@ -177,7 +231,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  subgraph WRITE["① 建库（离线）"]
+  subgraph WRITE["① 建库（离线）— 原子化存储"]
     direction TB
     SCH[schema: ViralUnit + ViralScript]
     BLD[builder + embed_unit]
@@ -204,8 +258,18 @@ flowchart LR
     CLB --> RAS
   end
 
+  subgraph VTO["④ Viral Transformation Operators"]
+    direction LR
+    GRAFT[GRAFT 嫁接]
+    PARASITE[PARASITE 寄生]
+    DISTORT[DISTORT 篡改]
+    MISDIRECT[MISDIRECT 愚弄]
+    THEFT[THEFT 偷盗]
+  end
+
   WRITE -.->|索引与 meta 文件| READ
   WRITE -.->|参考集| CAL
+  READ -.->|retrieved atoms| VTO
 ```
 
 **drama 与 fp3 的结合点**（唯一）：`flowbeast/drama/generator.py` → `generate_script`：先 `build_prompt(topic)`，再 `FP3Retriever.retrieve(topic)`（内部 **embedding → store.search**），再 `inject_prompt(base_prompt, examples)`，最后 `llm_call`。
@@ -215,22 +279,30 @@ flowchart LR
 ### 数据飞轮（1→0 逆向拆解引擎）
 
 ```
-人工筛选市场爆款 → reverse_engineer CLI → ViralScript 解剖档案
+人工筛选市场爆款 → reverse_engineer CLI → ViralScript 拆解为叙事原子
                                                   │
                                         ┌─────────┘
                                         ▼
-                              QualityGate 校准器（参考集分布对比）
+                    FP3 Viral Memory: 原子化存储 + Latent Grammar 学习
                                         │
                                         ▼
-                              脚本生成（FP3 RAG 增强）
+                          QualityGate 校准器（参考集分布对比）
                                         │
                                         ▼
-                              高质量输出 → 回流 FP3
+                    VTO 算子 (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
+                                        │
+                                        ▼
+                    脚本生成（原子组合 + VTO 变换 + 热点嫁接）
+                                        │
+                                        ▼
+                    高质量输出 → 回流 FP3（强化有效组合, 惩罚无效）
 ```
 
-- **阶段A (1→0)：** 人工筛选 → 逆向拆解 → 系统注入（含正负样本）
-- **阶段B (0→1)：** 质量校准 → 生成质量提升
-- **阶段C (自转)：** 生成内容回流 → 知识库增长 → 生成更好
+- **阶段A (1→0)：** 人工筛选 → 逆向拆解 → 原子级注入（正负样本）
+- **阶段B (0→1)：** 隐式语法校准 → 原子组合质量提升
+- **阶段C (自转)：** 生成回流 → 语法精炼 → 更好生成
+
+**核心原则：** 系统不应检索并复制完整脚本。应检索兼容的叙事原子，通过 latent grammar 规则组合，经 VTO 算子变换，生成结构新颖但具备爆款 DNA 的新脚本。
 
 使用 `uv run python -m flowbeast.tools.reverse_engineer` 将真实漫剧转为 ViralScript 档案。
 

@@ -4,7 +4,7 @@
 
 - This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository. @README.md
 
-- The primary goal of this repository is shipping a working AI-native content generation system, not maximizing architectural sophistication.The primary goal of this repository is shipping a working AI-native content generation system, not maximizing architectural sophistication.
+- The primary goal of this repository is shipping a working AI-native content generation system, not maximizing architectural sophistication.
 
 
 # Long-Term Vision
@@ -20,6 +20,89 @@ FlowBeast is evolving toward an AI-native content operating system focused on:
 The project prioritizes practical execution, modularity, automation, and iteration speed over theoretical architectural complexity.
 
 
+## Strategic Architecture
+
+### Core Moat vs. Commodity
+
+**Production pipeline is a commodity.** Script-to-audio, audio-to-video, multi-agent orchestration — all solvable via third-party tools (Runway, Kling, HeyGen) through MCP integration. Capacity scales horizontally; it's easy to replace.
+
+**The real moat is the "Brain"** — deciding *what* to produce, not *how* to render it.
+
+### FP3 is a Viral Memory System — Composable Narrative Atoms
+
+The competitive advantage is **not** "having a vector database of viral scripts." Anyone can embed text and do similarity search.
+
+The moat is FP3 as a **Viral Memory System** — a structured embedding space that stores **composable narrative atoms**, not monolithic scripts.
+
+A `ViralScript` should decompose into individually addressable, pluggable units:
+
+| Narrative Atom | Role | Property |
+|----------------|------|----------|
+| **Hook atom** | Opening pattern (first 3s) | Pluggable — swap in/out independently |
+| **Conflict kernel** | Core tension engine | Migratable — works across semantic domains |
+| **Character slot** | Role archetypes | Replaceable — fill with different personas |
+| **Emotion track** | Affective sequence | Remappable — same shape, different emotions |
+| **Pacing template** | Beat timing/rhythm | Parameterizable — scale duration, density |
+
+**Each atom is independently embeddable, searchable, and composable.** A `ViralScript` is not a document to retrieve — it is a valid configuration of atoms that the system has observed to work.
+
+### Latent Grammar of Viral Content
+
+FP3 is not a database. It is a **Narrative LLM Embedding Space** — the latent grammar of what makes content go viral.
+
+- **Atoms** are the vocabulary (hook types, conflict patterns, emotion curves)
+- **Valid configurations** are the grammar (which hook + which conflict + which emotion curve = viral)
+- **VTO operators** are the syntax rules (how to transform atoms into new valid sentences)
+- **QualityGate** is the type checker (rejects grammatically invalid combinations)
+
+The system should learn: *which atom combinations produce viral output*, and reject combinations that violate the latent grammar.
+
+### Layer 3: Viral Transformation Operators (VTO)
+
+The generation policy layer. Each operator is a transformation function that combines retrieved viral atoms with real-time context:
+
+| Operator | Formula | Purpose |
+|----------|---------|---------|
+| **GRAFT (嫁接)** | `viral_A.hook_atom + topic_B.context` | Preserve proven structure, swap semantic domain onto new topic |
+| **PARASITE (寄生)** | `trend_event → inject(narrative_spine)` | Use real-time trending events to pollinate existing viral structures — strongest traffic adapter |
+| **DISTORT (篡改)** | `conflict_kernel → exaggerate / invert / compress` | Raise emotional extremes, create nonlinear conflict within known-safe patterns |
+| **MISDIRECT (愚弄)** | `audience_expectation → violate(key_beat)` | Subvert expected pattern at critical moment — drives comments and re-shares |
+| **THEFT (偷盗)** | `viral_arc → re-theme + re-worldbuild` | Steal the proven emotional arc from one genre, re-skin into another |
+
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    FlowBeast Core Moat                        │
+│                                                               │
+│  逆向工程         FP3 Viral Memory System (Latent Grammar)    │
+│  爆款降维     ┌──────────────────────────────────┐   生成策略层 │
+│  →可计算状态  │ Narrative Atoms (可插拔/可组合)   │   VTO Operators│
+│  叙事原子     │ Conflict Kernels (可迁移)         │   GRAFT/      │
+│               │ Emotion Tracks (可重映射)          │   PARASITE/   │
+│               │ Pacing Templates (可参数化)        │   DISTORT/    │
+│               │ Character Slots (可替换)           │   MISDIRECT/  │
+│               │                                  │   THEFT       │
+│               │ Latent Grammar (合法组合规则)     │               │
+│               └──────────────────────────────────┘               │
+└──────────────────────────────────────────────────────────────┘
+                              ↓
+              ┌────────────────────────────────┐
+              │  Production Pipeline (MCP)     │
+              │  script → audio → video        │
+              │  Replaceable commodity layer   │
+              └────────────────────────────────┘
+```
+
+### Development Priority
+
+1. **Build FP3-S:** Reverse-engineer viral content into computable `ViralScript` state data; inject with positive/negative labels
+2. **Validate VTO + QualityGate:** Generate scripts using transformation operators; measure quality against reference distribution
+3. **Integrate MCP for production:** Solve capacity last — script-to-video is a solved engineering problem
+
+Multi-agent orchestration and production pipeline are relatively straightforward. The hard problem — whether output is viral content or garbage — is determined entirely by layers 1-2.
+
+
 ## Language Policy (STRICT)
 
 You MUST always respond in English.
@@ -33,7 +116,7 @@ This applies to:
 
 DO NOT use Chinese unless the user explicitly requests it.
 
-If the user writes in another language, you STILL respond in English.  
+If the user writes in another language, you STILL respond in English.
 
 
 ## Project Overview
@@ -41,15 +124,12 @@ If the user writes in another language, you STILL respond in English.
 
 **FlowBeast** is an AI-powered short-form drama content generation engine. The core pipeline is: **Topic → Viral Script (JSON) → Audio → Video-ready output**.
 
-  
 
 Current phase: **v0.3.2** (FP3 Quality Control). The system uses RAG (FP3 knowledge base) to inject viral patterns into LLM prompts for generating hook-driven short drama scripts.
 
-  
 
 ## Commands
 
-  
 
 ```bash
 
@@ -58,7 +138,7 @@ uv sync
 
 # Run the main drama generation pipeline
 python main.py
-  
+
 # Run the FastAPI server (hot reload)
 uvicorn flowbeast.api.main:app --reload --port 8000
 
@@ -86,49 +166,40 @@ docker-compose up --build
 
 ```
 
-  
 
 ## Architecture
 
-  
 
 The system has two core engines working together:
 
-  
 
 ### IP2 — Drama Generation Layer (`flowbeast/drama/`)
 
 Generates viral short-drama scripts via LLM calls. The main components:
 
 - `pipeline.py`: Top-level orchestrator — calls generator, saves JSON, triggers audio
-
 - `generator.py`: Builds the LLM prompt (with FP3 injection), calls the active vendor, parses JSON output
-
 - `prompt.py`: The structured prompt template for hook-driven storytelling
-
 - `audio.py`: Converts dialogue lines to MP3 (Edge TTS primary, ElevenLabs premium)
-
 - `schema.py`: TypedDict definitions — `Script → [Scene] → [Dialogue]`
 
-  
 
-### FP3 — Viral Gene Knowledge Base (`flowbeast/fp3/`)
+### FP3 — Viral Memory System (`flowbeast/fp3/`)
 
-RAG layer that enriches prompts with retrieved viral patterns:
+Composable narrative atom storage and latent grammar engine:
 
-- `store.py` / `retriever.py`: FAISS-backed vector search
+- `store.py` / `retriever.py`: FAISS-backed vector search for narrative atoms
 - `embedding.py`: Text → vector via cloud API (gemini/openai/qwen/ollama)
-- `injector.py`: Injects retrieved `ViralUnit` / `ViralScript` examples into the prompt
-- `feedback.py`: Feeds successful scripts back into the knowledge base
-- `quality/`: QualityGate scorer + dedup + calibrator (ReferenceAnchoredScorer)
-- `tools/reverse_engineer.py`: CLI tool to convert real viral dramas into `ViralScript` anatomy
+- `injector.py`: Injects retrieved narrative atoms into prompts via VTO-guided composition
+- `feedback.py`: Feeds successful scripts back, reinforcing winning atom combinations
+- `quality/`: QualityGate scorer + dedup + calibrator (ReferenceAnchoredScorer) — type-checks atom combinations against latent grammar
+- `tools/reverse_engineer.py`: CLI tool to decompose real viral dramas into composable narrative atoms
 
 
 ### LLM Routing (`flowbeast/core/config.py`)
 
 `ACTIVE_VENDOR` env var selects the provider. Default: `gemini` (`gemini-1.5-flash`). Supported: `gemini`, `qwen`, `openai`, `openrouter`, `ollama`.
 
-  
 
 ### Data Flow
 
@@ -242,23 +313,17 @@ When multiple sources conflict, prioritize:
 
 
 
-## Configuration  
+## Configuration
 
 All configuration is in `.env` (gitignored; see `.env.example`):
 
 - `ACTIVE_VENDOR` — LLM provider (`gemini` default)
-
 - `GOOGLE_API_KEY`, `DASHSCOPE_API_KEY`, `OPENAI_API_KEY`, `OPENROUTER_API_KEY`
-
 - `FLOWBEAST_OUTPUT_DIR` — where scripts/audio land
-
 - `FLOWBEAST_VECTOR_DIR` — FAISS index location
-
-  
 
 `flowbeast/core/config.py` uses `pydantic-settings` to load these and auto-creates required directories on startup.
 
-  
 
 ## Key Data Structures
 
@@ -293,29 +358,33 @@ ViralScript:                  # enriched drama anatomy (alongside ViralUnit)
 ```
 人工筛选市场爆款
     ↓
-reverse_engineer CLI → ViralScript anatomy extraction
+reverse_engineer CLI → ViralScript 拆解为叙事原子
     ↓
-FP3 Knowledge Base (structured + positive/negative labels)
+FP3 Viral Memory: 原子化存储 + Latent Grammar 学习
     ↓
-QualityGate Calibrator (reference-distribution scoring, z-score cold-start defense)
+QualityGate Calibrator (参考集分布对比, z-score 冷启动防御)
     ↓
-Script Generation (FP3 RAG-enhanced)
+VTO Operators: GRAFT / PARASITE / DISTORT / MISDIRECT / THEFT
     ↓
-High-quality output → feedback loops back to FP3
+Script Generation (原子组合 + VTO 变换 + 热点嫁接)
+    ↓
+高质量输出 → 回流 FP3 (强化有效组合, 惩罚无效组合)
 ```
 
 Stages:
-- **A (1→0):** Manual curation → reverse engineering → system injection (with negative samples)
-- **B (0→1):** Quality calibration → generation quality improvement
-- **C (self-reinforcing):** Output feedback → knowledge base growth → better generation
+- **A (1→0):** Manual curation → reverse engineering → atom-level injection (positive + negative samples)
+- **B (0→1):** Latent grammar calibration → atom combination quality improvement
+- **C (self-reinforcing):** Output feedback → grammar refinement → better generation
+
+**Key principle:** The system should not retrieve and copy full scripts. It should retrieve compatible atoms, compose them via latent grammar rules, transform them via VTO operators, and generate structurally novel scripts with proven viral DNA.
 
 Use `flowbeast/tools/reverse_engineer.py` to convert real dramas into ViralScript records.
 The calibrator (`flowbeast/fp3/quality/calibrator.py`) reads from `flowbeast/data/reverse_engineered/`
 and produces threshold/weight recommendations for QualityGate.
-  
+
 
 ## Package Manager
-  
+
 This project uses **`uv`** (not pip). Always use `uv sync` to install dependencies and `uv run` to execute scripts when inside Docker. Do not use `pip install`.
 
 ## Agent/Compiler Layer (`flowbeast/agent/`, `flowbeast/compiler/`)

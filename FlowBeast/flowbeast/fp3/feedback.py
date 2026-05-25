@@ -3,10 +3,13 @@
 import asyncio
 import json
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, TYPE_CHECKING, Union
 from loguru import logger
 from .schema import ViralUnit, ViralScript
 from .builder import build_fp3
+
+if TYPE_CHECKING:
+    from .quality import GateDecision
 
 
 class FP3Feedback:
