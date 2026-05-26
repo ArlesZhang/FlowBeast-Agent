@@ -26,28 +26,27 @@ These rules are designed to:
 
 ## Current Focus
 
-- Viral content pipeline
-- AI drama/comic generation
-- RAG + retrieval enhancement
-- Multi-agent orchestration
-- Automated video/content workflow
-- Fast iteration MVP
+- FP3 Viral Memory System (narrative atom extraction + injection)
+- Latent grammar learning for viral content generation
+- VTO-guided script generation (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
+- QualityGate calibration against reference distribution
+- MCP integration for audio/video production (commodity layer)
 
 ## Project Priorities
 
-1. Working systems over theoretical perfection
-2. Fast iteration over premature abstraction
-3. Simplicity over enterprise complexity
-4. Maintainability over clever code
-5. Production pipeline stability over experimentation
+1. The "Brain" (what to produce) over the pipeline (how to render it)
+2. Working systems over theoretical perfection
+3. Fast iteration over premature abstraction
+4. Simplicity over enterprise complexity
+5. Maintainability over clever code
 
 ## Philosophy
 
 This is NOT about "restricting AI". It's about stabilizing AI's long-term output style.
 
 For FlowBeast's stage, the most important thing is:
-- Prevent AI over-engineering
-- Prevent architecture drift
+- Prevent AI over-engineering (pipeline sophistication is not the moat)
+- Prevent architecture drift (FP3 is the core, everything else is commodity)
 - Maintain long-term consistency
 - Improve multi-model collaboration stability
 - Reduce context pollution

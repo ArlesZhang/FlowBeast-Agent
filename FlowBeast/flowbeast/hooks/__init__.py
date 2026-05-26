@@ -1,13 +1,11 @@
 """
-Hooks System - Architectural Guardrails for FlowBeast
+Hooks System - Architectural Guardrails for FlowBeast.
 
-This module provides git hooks for enforcing architectural integrity:
-- Pre-commit: import checking, type hints, sanity checks
-- Pre-push: FP3 tests, pipeline tests
+Pre-commit hooks for config centralization and FP3 integrity.
 """
 
-from flowbeast.hooks.import_checker import ImportChecker
+from flowbeast.hooks.import_checker import check_imports
 from flowbeast.hooks.fp3_guard import FP3Guard
 from flowbeast.hooks.hook_runner import HookRunner
 
-__all__ = ["ImportChecker", "FP3Guard", "HookRunner"]
+__all__ = ["check_imports", "FP3Guard", "HookRunner"]

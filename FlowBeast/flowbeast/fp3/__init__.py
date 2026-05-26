@@ -1,4 +1,4 @@
-"""FP3 — Viral Gene Knowledge Base (RAG memory for FlowBeast)."""
+"""FP3 — Viral Memory System (RAG memory for FlowBeast)."""
 
 from .schema import (
     ViralUnit,
@@ -14,12 +14,10 @@ from .retriever import FP3Retriever
 from .injector import inject_prompt
 from .builder import build_fp3
 from .feedback import FP3Feedback
-from .quality import QualityGate, create_quality_gate, GateAction
 
 __all__ = [
     "ViralUnit", "ViralScript",
     "HookStructure", "ConflictPattern", "EmotionalCurve", "PacingProfile", "CharacterArchetype",
     "FP3Store", "FP3Retriever", "inject_prompt",
     "build_fp3", "FP3Feedback",
-    "QualityGate", "create_quality_gate", "GateAction",
 ]

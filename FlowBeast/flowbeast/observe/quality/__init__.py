@@ -1,5 +1,5 @@
 """
-FP3 Quality Gate Subpackage.
+Observe Quality Gate Subpackage.
 
 Pipeline: score() -> dedup() -> gate() -> audit()
 """
@@ -11,7 +11,7 @@ from .config import QualitySettings, quality_settings
 from .scorer import BaseScorer, RuleBasedScorer, ReferenceAnchoredScorer
 from .dedup import BaseDeduplicator, EmbeddingDeduplicator
 from .gate import QualityGate
-from ..store import FP3Store
+from flowbeast.fp3.store import FP3Store
 
 
 def create_quality_gate(

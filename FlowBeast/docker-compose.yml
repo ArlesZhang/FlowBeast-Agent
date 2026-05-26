@@ -29,9 +29,8 @@ services:
       - WATCHFILES_FORCE_POLLING=true
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
 
-      # ✅ 数据分层（核心）
+      # ✅ 数据目录
       - FLOWBEAST_OUTPUT_DIR=/app/flowbeast/data/outputs
-      - FLOWBEAST_MARKET_DIR=/app/flowbeast/market_material/raw_data
       - FLOWBEAST_VECTOR_DIR=/app/flowbeast/data/vector_store
       
       # ✅ ⭐ 关键修复（uv 权限问题）
@@ -46,9 +45,6 @@ services:
 
       # 🎬 内容输出（强绑定）
       - ./flowbeast/data/outputs:/app/flowbeast/data/outputs
-
-      # 📊 商业数据（强隔离）
-      - ./flowbeast/market_material/raw_data:/app/flowbeast/market_material/raw_data
 
       # 🧠 向量库（FP2）
       - ./flowbeast/data/vector_store:/app/flowbeast/data/vector_store

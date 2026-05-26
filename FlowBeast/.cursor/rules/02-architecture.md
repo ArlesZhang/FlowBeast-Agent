@@ -5,20 +5,25 @@
 ## Core Architecture
 
 ```
-FP2 -> FP3 -> IP1 -> IP2 -> Product -> Observe -> FP2
+Reverse engineering → FP3 Viral Memory → VTO Operators → Script Generation → Feedback
 ```
 
 ## Layer Definitions
 
-- **FP2** = Data processing layer
-- **FP3** = Viral knowledge base + retrieval + quality gate
+- **FP3** = Viral Memory System (the core moat)
+  - Composable narrative atoms (hook, conflict, character, emotion, pacing)
   - Dual schema: `ViralUnit` (3-field legacy) + `ViralScript` (enriched drama anatomy)
   - Reverse engineering CLI converts real dramas into structured ViralScript records
-  - QualityGate calibrator anchors scores against reference distribution (not in vacuo)
-- **IP1** = Generation enhancement / RAG
-- **IP2** = Multi-agent automation
-- **Product** = Video/content pipeline MVP
-- **Observe** = Observation and Feedback Center
+  - VTO operators (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT) for generation strategy
+  - `feedback.py` — output feedback reinforces winning atom combinations
+- **Observe** = Quality & feedback layer (`flowbeast/observe/`)
+  - `quality/` — QualityGate scorer, dedup, calibrator (independent of FP3 internals)
+  - Future: metrics, tracing, monitoring
+- **Drama** = Script generation pipeline (`flowbeast/drama/`)
+  - `pipeline.py` → `generator.py` → `prompt.py` → `audio.py`
+  - FP3 injection occurs inside `generate_script()` before LLM call
+- **Core** = Configuration, routing (`flowbeast/core/`)
+- **Production** = Script → audio → video (commodity, MCP-integrated)
 
 ## Data Flywheel Pattern (1→0 Reverse Deconstruction Engine)
 
@@ -26,10 +31,11 @@ FlowBeast uses a human-in-the-loop data flywheel for quality improvement:
 
 ```
 Manual curation (market viral dramas)
-    → reverse_engineer CLI → ViralScript anatomy
-    → FP3 knowledge base (structured, with positive/negative labels)
-    → QualityGate calibrator (reference-distribution scoring, z-score cold-start defense)
-    → Script generation (FP3 RAG-enhanced)
+    → reverse_engineer CLI → ViralScript anatomy (composable narrative atoms)
+    → FP3 Viral Memory (atom-level injection, positive/negative labels)
+    → Observe QualityGate calibrator (reference-distribution scoring, z-score cold-start defense)
+    → VTO Operators (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
+    → Script generation (atom composition + VTO transformation)
     → High-quality output → feedback loops back to FP3
 ```
 
@@ -86,13 +92,13 @@ AI pipeline code should:
 ## Long-term Maintainability
 
 The assistant must think about:
-- Future agent expansion
-- Long context workflows
-- Retrieval scaling
-- Async task orchestration
-- Content generation reliability
+- FP3 knowledge base quality (garbage in = garbage out)
+- VTO operator effectiveness (which transformations produce viral output)
+- QualityGate calibration accuracy
+- Narrative atom composability and searchability
+- MCP integration for production pipeline
 
-**But should NOT prematurely build infrastructure for them.**
+**But should NOT prematurely build infrastructure for theoretical possibilities.**
 
 ## File Organization
 

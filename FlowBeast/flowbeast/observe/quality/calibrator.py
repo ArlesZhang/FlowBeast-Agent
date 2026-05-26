@@ -1,4 +1,4 @@
-# flowbeast/fp3/quality/calibrator.py
+# flowbeast/observe/quality/calibrator.py
 
 """
 QualityGate 校准器：用真实爆款参考集校准评分维度。
@@ -23,7 +23,7 @@ from loguru import logger
 
 from .config import quality_settings
 from .scorer import RuleBasedScorer
-from ..schema import ViralScript
+from flowbeast.fp3.schema import ViralScript
 
 
 RE_DIR = Path("flowbeast/data/reverse_engineered")

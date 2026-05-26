@@ -1,13 +1,13 @@
-# flowbeast/tools/reverse_engineer.py
+# flowbeast/reverse/reverse_engineer.py
 
 """
 逆向工程 CLI：将真实漫剧/短剧拆解为 ViralScript 档案，注入 FP3 知识库。
 
 用法：
-    uv run python -m flowbeast.tools.reverse_engineer              # 交互模式
-    uv run python -m flowbeast.tools.reverse_engineer --input f.json  # 从 JSON 导入
-    uv run python -m flowbeast.tools.reverse_engineer --dir ./analyses/ # 批量导入
-    uv run python -m flowbeast.tools.reverse_engineer --from-script script.json  # 从已有脚本提取
+    uv run python -m flowbeast.reverse.reverse_engineer              # 交互模式
+    uv run python -m flowbeast.reverse.reverse_engineer --input f.json  # 从 JSON 导入
+    uv run python -m flowbeast.reverse.reverse_engineer --dir ./analyses/ # 批量导入
+    uv run python -m flowbeast.reverse.reverse_engineer --from-script script.json  # 从已有脚本提取
 """
 
 import argparse
@@ -357,6 +357,50 @@ def inject_to_fp3(script: ViralScript) -> None:
     logger.success(f"  注入成功: [{script.source_title}]")
 
 
+# ====================== Ingestion Gate ======================
+
+def _gate_before_inject(script: ViralScript, auto_confirm: bool) -> bool:
+    """
+    Run QualityGate before FP3 injection.
+
+    Returns True if injection should proceed, False if skipped.
+
+    GateAction.ACCEPT  → proceed
+    GateAction.REVIEW  → ask user (or auto-proceed if auto_confirm)
+    GateAction.REJECT  → always skip (auto_confirm does NOT bypass)
+    """
+    from flowbeast.observe.quality import GateAction, create_quality_gate
+
+    try:
+        gate = create_quality_gate(calibrated=True)
+        unit = script.to_viral_unit()
+        import asyncio
+        decision = asyncio.run(gate.evaluate(unit))
+    except Exception as e:
+        logger.warning(f"  ⚠️ 入库门控异常，降级放行: {e}")
+        return True
+
+    score = decision.score_result.weighted_total
+    action = decision.action
+    hook_preview = script.hook[:50]
+
+    if action == GateAction.ACCEPT:
+        logger.info(f"  ✅ 入库门控通过 | score={score:.3f} | {hook_preview}...")
+        return True
+
+    if action == GateAction.REVIEW:
+        logger.warning(f"  ⏳ 入库门控 REVIEW | score={score:.3f} | {decision.reason}")
+        if auto_confirm:
+            logger.info(f"  --yes 模式，自动注入")
+            return True
+        confirm = input(f"  是否仍要注入? (y/n): ")
+        return confirm.strip().lower() == "y"
+
+    # REJECT
+    logger.error(f"  ❌ 入库门控拒绝 | score={score:.3f} | {decision.reason}")
+    return False
+
+
 # ====================== Main ======================
 
 def main():
@@ -365,6 +409,7 @@ def main():
     parser.add_argument("--dir", type=str, help="从目录批量导入 JSON 文件")
     parser.add_argument("--from-script", type=str, help="从 FlowBeast 生成的 script.json 自动提取")
     parser.add_argument("--no-inject", action="store_true", help="仅保存 JSON，不注入 FP3")
+    parser.add_argument("--yes", action="store_true", help="自动确认 REVIEW 区入库（不跳过 REJECT）")
     args = parser.parse_args()
 
     scripts_to_process = []
@@ -418,9 +463,12 @@ def main():
         # Save
         save_script(script)
 
-        # Inject
+        # Inject (with ingestion gate)
         if not args.no_inject:
-            inject_to_fp3(script)
+            if _gate_before_inject(script, auto_confirm=args.yes):
+                inject_to_fp3(script)
+            else:
+                logger.warning(f"  ⏭️ 跳过注入: [{script.source_title}]")
 
     print(f"\n  共处理 {len(scripts_to_process)} 条档案")
 

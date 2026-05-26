@@ -16,7 +16,7 @@ from typing import Dict, Optional, Tuple
 from loguru import logger
 
 from .models import ScoreResult
-from ..schema import ViralUnit
+from flowbeast.fp3.schema import ViralUnit
 
 
 class BaseScorer(ABC):

@@ -14,9 +14,9 @@ from typing import Optional
 from loguru import logger
 
 from .models import DedupResult
-from ..schema import ViralUnit
-from ..store import FP3Store
-from ..embedding import embed_unit
+from flowbeast.fp3.schema import ViralUnit
+from flowbeast.fp3.store import FP3Store
+from flowbeast.fp3.embedding import embed_unit
 
 
 class BaseDeduplicator(ABC):

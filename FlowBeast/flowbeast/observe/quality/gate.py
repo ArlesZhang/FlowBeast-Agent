@@ -18,9 +18,9 @@ from loguru import logger
 from .models import GateAction, GateDecision
 from .scorer import BaseScorer
 from .dedup import BaseDeduplicator
-from ..schema import ViralUnit
-from ..store import FP3Store
-from ..builder import build_fp3
+from flowbeast.fp3.schema import ViralUnit
+from flowbeast.fp3.store import FP3Store
+from flowbeast.fp3.builder import build_fp3
 
 
 class QualityGate:

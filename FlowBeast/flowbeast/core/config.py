@@ -127,9 +127,6 @@ class Settings(BaseSettings):
     FLOWBEAST_OUTPUT_DIR: str = str(
         os.getenv("FLOWBEAST_OUTPUT_DIR", BASE_DIR / "flowbeast/data/outputs")
     )
-    FLOWBEAST_MARKET_DIR: str = str(
-        os.getenv("FLOWBEAST_MARKET_DIR", BASE_DIR / "flowbeast/market_material/raw_data")
-    )
     FLOWBEAST_VECTOR_DIR: str = str(
         os.getenv("FLOWBEAST_VECTOR_DIR", BASE_DIR / "flowbeast/data/vector_store")
     )
@@ -161,7 +158,6 @@ class Settings(BaseSettings):
 
         for path_str in [
             instance.FLOWBEAST_OUTPUT_DIR,
-            instance.FLOWBEAST_MARKET_DIR,
             instance.FLOWBEAST_VECTOR_DIR,
         ]:
             try:

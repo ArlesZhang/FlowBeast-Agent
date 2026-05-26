@@ -43,7 +43,7 @@ def _run_output_quality_gate(script: dict) -> dict:
     """
     try:
         from flowbeast.fp3.schema import ViralUnit
-        from flowbeast.fp3.quality import GateAction, create_quality_gate
+        from flowbeast.observe.quality import GateAction, create_quality_gate
         from flowbeast.fp3.store import FP3Store
 
         # 从脚本中提取 ViralUnit 用于评分
@@ -77,7 +77,7 @@ def run_full_pipeline(topic: str):
 
     logger.info(f"🚀 FlowBeast 启动 | topic={topic} | run_id={run_id}")
 
-    # ====================== 1. 大脑（IP2）======================
+    # ====================== 1. 生成脚本（FP3 增强）======================
     script = None
     meta = None
     quality_result = None
@@ -218,7 +218,7 @@ failed      : {fail_count}
 """
     )
 
-    # ====================== 6. 生产报告（为 FP2/自进化准备） ======================
+    # ====================== 6. 生产报告（为回流 FP3 准备） ======================
     report = {
         "run_id": run_id,
         "topic": topic,

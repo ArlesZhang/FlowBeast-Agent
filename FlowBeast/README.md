@@ -251,7 +251,7 @@ flowchart LR
     EMB --> SRH
   end
 
-  subgraph CAL["③ QualityGate 校准"]
+  subgraph OBSERVE["③ Observe (QualityGate 校准)"]
     direction LR
     CLB[calibrator]
     RAS[ReferenceAnchoredScorer]
@@ -304,6 +304,6 @@ flowchart LR
 
 **核心原则：** 系统不应检索并复制完整脚本。应检索兼容的叙事原子，通过 latent grammar 规则组合，经 VTO 算子变换，生成结构新颖但具备爆款 DNA 的新脚本。
 
-使用 `uv run python -m flowbeast.tools.reverse_engineer` 将真实漫剧转为 ViralScript 档案。
+使用 `uv run python -m flowbeast.reverse.reverse_engineer` 将真实漫剧转为 ViralScript 档案。
 
 一流项目:用 pytest + 清晰目录/标记 + pyproject 约定 + CI 分档 + 文档 解决「又全又快」和「脚本 vs 测」的边界；很少靠「一个统一入口文件」。

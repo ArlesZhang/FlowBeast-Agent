@@ -33,7 +33,7 @@ class FP3Feedback:
         从生成的剧本 JSON 中提取完整 ViralScript 解剖信息。
         委托给 reverse_engineer.analyze_generated_script。
         """
-        from flowbeast.tools.reverse_engineer import analyze_generated_script
+        from flowbeast.reverse.reverse_engineer import analyze_generated_script
 
         script_body = script_data.get("script", script_data)
         return analyze_generated_script(script_body)
@@ -74,7 +74,7 @@ class FP3Feedback:
             use_viral_script: If True, extract full ViralScript (enriched).
                               If False, use legacy ViralUnit.
         """
-        from .quality import create_quality_gate, GateAction, GateDecision
+        from flowbeast.observe.quality import create_quality_gate, GateAction, GateDecision
 
         try:
             with open(file_path, "r", encoding="utf-8") as f:

@@ -51,14 +51,18 @@ FlowBeast relies on human curation for quality data injection, not autonomous AI
 - **Negative Samples**: `quality_label` ("viral" / "average" / "failed") allows boundary learning.
   The system must learn what to reject as much as what to accept.
 
-## Multi-Agent Systems
+## MCP Integration (Production Pipeline)
 
-Prefer:
-- Coordinator patterns
-- Explicit orchestration
-- Shared memory abstractions
+The production pipeline (script → audio → video) is solved via MCP/Skills integration with third-party tools (Runway, Kling, HeyGen, etc.).
+
+Principles:
+- MCP endpoints should be stable, explicit, and observable
+- FlowBeast decides WHAT to produce; MCP tools handle HOW to render it
+- Production capacity is horizontally scalable and replaceable
+- No need to build custom audio/video generation — integrate, don't reinvent
 
 Avoid:
 - Recursive uncontrolled agent loops
-- Excessive autonomy
+- Excessive autonomy in production pipeline
 - Autonomous self-calibration without human-curated reference data
+- Over-investing in production pipeline sophistication

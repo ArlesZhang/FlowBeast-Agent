@@ -55,18 +55,15 @@ class FP3Guard:
         violations = []
 
         # Check for required files (structural check, not implementation)
+        # quality/ was moved to observe/quality/ — not checked here
         required_files = [
             "store.py",
             "retriever.py",
             "embedding.py",
             "injector.py",
             "schema.py",
-            "quality/__init__.py",
-            "quality/gate.py",
-            "quality/scorer.py",
-            "quality/dedup.py",
-            "quality/models.py",
-            "quality/config.py",
+            "builder.py",
+            "feedback.py",
         ]
 
         for filename in required_files:

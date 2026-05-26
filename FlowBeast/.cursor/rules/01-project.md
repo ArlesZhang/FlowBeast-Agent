@@ -4,15 +4,14 @@
 
 ## Project Overview
 
-FlowBeast is an AI-native content generation and automation system.
+FlowBeast is an AI-powered viral short-drama engine. The core moat is the **FP2 Viral Memory System** — decomposing viral content into composable narrative atoms, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts. The production pipeline (script → audio → video) is a replaceable commodity layer.
 
 Current focus:
-- Viral content pipeline
-- AI drama/comic generation
-- RAG + retrieval enhancement
-- Multi-agent orchestration
-- Automated video/content workflow
-- Fast iteration MVP
+- FP3 narrative atom extraction and injection
+- Latent grammar learning for viral content
+- VTO-guided script generation (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
+- QualityGate calibration
+- MCP integration for audio/video production
 
 ## Core Principles
 
@@ -27,11 +26,11 @@ The assistant must:
 
 ## Project Priorities
 
-1. Working systems over theoretical perfection
-2. Fast iteration over premature abstraction
-3. Simplicity over enterprise complexity
-4. Maintainability over clever code
-5. Production pipeline stability over experimentation
+1. The "Brain" (what to produce) over the pipeline (how to render it)
+2. Working systems over theoretical perfection
+3. Fast iteration over premature abstraction
+4. Simplicity over enterprise complexity
+5. Maintainability over clever code
 
 ## Understanding the Project
 
@@ -63,8 +62,7 @@ Never:
 ## Optimization Targets
 
 The project is optimized for:
-- AI-assisted development
-- Multi-model collaboration
-- Long context engineering
-- Rapid experimentation
-- Local-first workflows
+- AI-assisted development (Claude Code as primary collaborator)
+- Multi-model collaboration (Qwen / Openai / Gemini / Claude)
+- Rapid experimentation with narrative atoms and VTO operators
+- Local-first workflows with cloud API fallback for LLM/embedding

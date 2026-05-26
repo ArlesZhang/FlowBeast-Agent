@@ -2,14 +2,14 @@ import asyncio
 import json
 import pytest
 
-from flowbeast.fp3.quality.models import (
+from flowbeast.observe.quality.models import (
     GateAction, ScoreResult, DedupResult, GateDecision,
 )
-from flowbeast.fp3.quality.config import quality_settings
-from flowbeast.fp3.quality.scorer import RuleBasedScorer
-from flowbeast.fp3.quality.dedup import EmbeddingDeduplicator
-from flowbeast.fp3.quality.gate import QualityGate
-from flowbeast.fp3.quality import create_quality_gate
+from flowbeast.observe.quality.config import quality_settings
+from flowbeast.observe.quality.scorer import RuleBasedScorer
+from flowbeast.observe.quality.dedup import EmbeddingDeduplicator
+from flowbeast.observe.quality.gate import QualityGate
+from flowbeast.observe.quality import create_quality_gate
 from flowbeast.fp3.schema import ViralUnit
 from flowbeast.fp3.store import FP3Store
 

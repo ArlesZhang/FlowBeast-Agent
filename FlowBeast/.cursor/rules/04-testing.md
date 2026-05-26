@@ -11,13 +11,13 @@
 ## Priority Testing Areas
 
 **Highest priority:**
-- Retrieval logic (FP3)
-- Prompt pipelines
-- Agent orchestration (IP2)
+- FP3 retrieval logic
+- Observe QualityGate scoring and calibration
+- Narrative atom composition and VTO transformations
+- Prompt pipelines (build_prompt → inject → generate)
 - Config loading
 - Docker/devcontainer behavior
 - API boundaries
-- File processing pipelines
 
 **Lower priority:**
 - Thin wrappers
