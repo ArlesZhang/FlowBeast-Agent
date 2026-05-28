@@ -250,6 +250,9 @@ failed      : {fail_count}
             "beat_distribution": _count_beats(shots),
         },
 
+        # --- FP3 原子追踪（用于反馈回流） ---
+        "fp3_atoms_used": meta.get("fp3_examples_used", []),
+
         # --- 时间线 ---
         "created_at": meta.get("timestamp"),
         "finished_at": datetime.now().isoformat(),

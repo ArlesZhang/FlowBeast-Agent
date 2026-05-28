@@ -24,7 +24,7 @@ The project prioritizes practical execution, modularity, automation, and iterati
 
 ### Core Moat vs. Commodity
 
-**Production pipeline is a commodity.** Script-to-audio, audio-to-video, multi-agent orchestration — all solvable via third-party tools (Runway, Kling, HeyGen) through MCP integration. Capacity scales horizontally; it's easy to replace.
+**Production pipeline is a commodity.** Video rendering (Runway, Kling, HeyGen), multi-agent orchestration — all solvable via third-party tools through MCP integration. Audio generation (Edge TTS) runs locally as a quality validation layer — not a production dependency.
 
 **The real moat is the "Brain"** — deciding *what* to produce, not *how* to render it.
 
@@ -93,18 +93,23 @@ The generation policy layer. Each operator is a transformation function that com
 │               └──────────────────────────────────┘               │
 └──────────────────────────────────────────────────────────────┘
                               ↓
-              ┌────────────────────────────────┐
-              │  Production Pipeline (MCP)     │
-              │  script → audio → video        │
-              │  Replaceable commodity layer   │
-              └────────────────────────────────┘
+            ┌─────────────────┴──────────────────┐
+            │                                    │
+  ┌─────────────────────┐          ┌─────────────────────────┐
+  │ Audio Validation    │          │ prompt_package.json     │
+  │ (Edge TTS)          │          │ (shots, style, camera)  │
+  │ 听节奏/对话/情绪     │          │ → Seedance / Kling /    │
+  │ 快速判断脚本成立与否  │          │   HeyGen (MCP)          │
+  └─────────────────────┘          └─────────────────────────┘
+                              ↓
+              人工发布 → 互动数据 → feedback_ingest → FP3回流
 ```
 
 ### Development Priority
 
 1. **Build FP3-S:** Reverse-engineer viral content into computable `ViralScript` state data; inject with positive/negative labels
 2. **Validate VTO + QualityGate:** Generate scripts using transformation operators; measure quality against reference distribution
-3. **Integrate MCP for production:** Solve capacity last — script-to-video is a solved engineering problem
+3. **Integrate MCP for production:** Solve capacity last — script-to-video is a solved engineering problem. Audio validation (Edge TTS) is already wired in as the quality check before video rendering.
 
 Multi-agent orchestration and production pipeline are relatively straightforward. The hard problem — whether output is viral content or garbage — is determined entirely by layers 1-2.
 
@@ -128,7 +133,7 @@ If the user writes in another language, you STILL respond in English.
 ## Project Overview
 
 
-**FlowBeast** is an AI-powered short-form drama content generation engine. The core pipeline is: **Topic → Viral Script (JSON) → Audio → Video-ready output**.
+**FlowBeast** is an AI-powered short-form drama content generation engine. The core pipeline is: **Topic → Viral Script (JSON) → Audio (validation) → prompt_package.json**. Audio generation (Edge TTS) runs as a built-in quality validation layer — hearing a script read aloud reveals pacing and dialogue issues invisible in raw JSON. Video rendering is handled by third-party tools (Seedance, Kling, HeyGen) via MCP.
 
 
 Current phase: **v0.3.2** (FP3 Quality Control). The system uses RAG (FP3 knowledge base) to inject viral patterns into LLM prompts for generating hook-driven short drama scripts.
@@ -212,14 +217,18 @@ Independent quality assessment and feedback learning:
 `ACTIVE_VENDOR` env var selects the provider. Default: `gemini` (`gemini-1.5-flash`). Supported: `gemini`, `qwen`, `openai`, `openrouter`, `ollama`.
 
 
-### Drama Pipeline (Video Content Generation)
+### Pipeline Flow
 
 ```
-topic → build_prompt() → FP3Retriever → inject_prompt() → generate_script()
-                                           ↓
-                                    (LLM call via Qwen or Claude Sonnet4.6 and so on)
-                                           ↓
-                                  script.json + audio → report.json
+topic → build_prompt() → FP3 retrieval → inject_prompt() → generate_script()
+                                              ↓
+                                       (LLM call)
+                                              ↓
+                                       script.json
+                                          ↓    ↓
+                              audio (validation)  prompt_package.json
+                              (hear pacing,          (shots, style,
+                              fix dialogue)          camera, BGM, SFX)
 ```
 
 
@@ -365,19 +374,23 @@ VTO Operators: GRAFT / PARASITE / DISTORT / MISDIRECT / THEFT
     ↓
 Script Generation (原子组合 + VTO 变换 + 热点嫁接)
     ↓
-高质量输出 → 回流 FP3 (强化有效组合, 惩罚无效组合)
+prompt_package.json → 音频验证 → 人工发布
+    ↓
+收集互动数据 (views/likes/shares/completion)
+    ↓
+feedback_ingest → 回流 FP3 (强化有效原子, 惩罚无效组合)
 ```
 
 Stages:
 - **A (1→0):** Manual curation → reverse engineering → atom-level injection (positive + negative samples)
 - **B (0→1):** Latent grammar calibration → atom combination quality improvement
-- **C (self-reinforcing):** Output feedback → grammar refinement → better generation
+- **C (self-reinforcing):** Real-world data → atom weight updates → better generation
 
 **Key principle:** The system should not retrieve and copy full scripts. It should retrieve compatible atoms, compose them via latent grammar rules, transform them via VTO operators, and generate structurally novel scripts with proven viral DNA.
 
-Use `flowbeast/reverse/reverse_engineer.py` to convert real dramas into ViralScript records.
-The calibrator (`flowbeast/observe/quality/calibrator.py`) reads from `flowbeast/data/reverse_engineered/`
-and produces threshold/weight recommendations for QualityGate.
+- Reverse engineer: `flowbeast/reverse/reverse_engineer.py`
+- Feedback ingest: `flowbeast/fp3/feedback_ingest.py`
+- Calibrator reads from `flowbeast/data/reverse_engineered/` and produces QualityGate recommendations.
 
 
 ## Package Manager

@@ -84,17 +84,25 @@ def generate_script(
 
     # --- 2. FP3 爆款基因增强 ---
     fp3_used = False
+    fp3_examples_used = []
     try:
         from flowbeast.fp3.retriever import FP3Retriever
         from flowbeast.fp3.injector import inject_prompt
 
         logger.info(f"🔍 正在检索爆款基因: {topic[:15]}...")
         retriever = FP3Retriever()
-        viral_examples = retriever.retrieve(topic, k=2)
+        viral_examples = retriever.retrieve(topic, k=2, use_feedback_boost=True)
 
         if viral_examples:
             prompt = inject_prompt(base_prompt, viral_examples)
             fp3_used = True
+            # Track which examples were used for feedback mapping
+            for ex in viral_examples:
+                fp3_examples_used.append({
+                    "hook": ex.get("hook", "")[:60],
+                    "pattern": ex.get("pattern", ""),
+                    "atom_id": ex.get("atom_id", ""),
+                })
             logger.info(f"🚀 FP3 注入完成，检索到 {len(viral_examples)} 条案例")
         else:
             prompt = base_prompt
@@ -136,6 +144,7 @@ def generate_script(
                     "timestamp": datetime.now().isoformat(),
                     "fp3_enhanced": fp3_used,
                     "trend_enhanced": bool(trend_context and trend_context.topics),
+                    "fp3_examples_used": fp3_examples_used,
                 },
             }
 

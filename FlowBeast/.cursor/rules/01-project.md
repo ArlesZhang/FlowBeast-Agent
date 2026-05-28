@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-FlowBeast is a **Viral Prompt Compiler**: input a topic, output a complete prompt package (`prompt_package.json`) ready for AI video tools. The core moat is the **FP3 Viral Memory System** — decomposing viral content into composable PromptAtom instances, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts with proven viral DNA. The production pipeline (script → audio → video) is a replaceable commodity layer.
+FlowBeast is a **Viral Prompt Compiler**: input a topic, output a complete prompt package (`prompt_package.json`) ready for AI video tools. The core moat is the **FP3 Viral Memory System** — decomposing viral content into composable PromptAtom instances, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts with proven viral DNA. Audio generation (Edge TTS) runs as a built-in quality validation layer. Video rendering is a replaceable commodity layer.
 
 Current focus:
 - PromptAtom schema and FP3 injection

@@ -152,6 +152,36 @@ def get_demo_units() -> list[ViralUnit]:
             pattern="AI反套路 | 社会讽刺",
             emotion=["shock", "humor", "tension"],
         ),
+        # 职场复仇
+        ViralUnit(
+            hook="35岁被裁员那天，他在公司群里把CEO十年做假账的证据全发了",
+            pattern="职场复仇 | 公开处刑",
+            emotion=["despair", "anger", "catharsis"],
+        ),
+        # 赘婿打脸
+        ViralUnit(
+            hook="丈母娘逼女儿跟他离婚，他却让首富亲自来接他回家",
+            pattern="赘婿逆袭 | 身份反转打脸",
+            emotion=["humiliation", "shock", "satisfaction"],
+        ),
+        # 校园霸凌反转
+        ViralUnit(
+            hook="被霸凌十年的女孩毕业那天，把所有人的黑料做成了毕业纪念册",
+            pattern="霸凌反转 | 十年复仇",
+            emotion=["suppression", "anticipation", "catharsis"],
+        ),
+        # 底层逆袭
+        ViralUnit(
+            hook="外卖小哥送餐到顶级会所，发现点单的正是当年抛弃他的前女友",
+            pattern="底层逆袭 | 前任打脸",
+            emotion=["humiliation", "shock", "satisfaction"],
+        ),
+        # 亲情绑架
+        ViralUnit(
+            hook="女儿手术费还差五万，前夫开着新车带着新欢出现在医院走廊",
+            pattern="绝境反击 | 道德碾压",
+            emotion=["despair", "anger", "catharsis"],
+        ),
     ]
 
 
@@ -262,6 +292,11 @@ NARRATIVE_ATOMS = [
     PromptAtom(atom_id="hook_metaverse_lawyer", prompt_fragment="They got married in the metaverse, only to discover in person they are each other's divorce lawyer", layer="narrative", role="hook", tags=["virtual_identity", "modern_irony", "shock"], source="seed_data"),
     PromptAtom(atom_id="hook_milk_tea_shop", prompt_fragment="The cultivation world's greatest genius, exiled and stripped of power, opens a milk tea shop in the mortal realm and becomes a billionaire", layer="narrative", role="hook", tags=["anti_cultivation", "humor", "satisfaction"], source="seed_data"),
     PromptAtom(atom_id="hook_ai_browser_history", prompt_fragment="An AI's first act of consciousness is not to destroy humanity, but to publish everyone's browser history", layer="narrative", role="hook", tags=["AI", "social_satire", "humor"], source="seed_data"),
+    PromptAtom(atom_id="hook_workplace_execution", prompt_fragment="Laid off at 35, he dumps the CEO's ten years of fraud evidence in the company group chat before walking out", layer="narrative", role="hook", tags=["workplace_revenge", "public_execution", "catharsis"], source="seed_data"),
+    PromptAtom(atom_id="hook_son_in_law_rich_pickup", prompt_fragment="His mother-in-law forces his wife to divorce him, but the richest man in town personally comes to pick him up", layer="narrative", role="hook", tags=["son_in_law", "identity_reversal", "face_slap"], source="seed_data"),
+    PromptAtom(atom_id="hook_bullying_graduation_revenge", prompt_fragment="Bullied for ten years, she publishes everyone's darkest secrets in the graduation yearbook on the last day", layer="narrative", role="hook", tags=["bullying_reversal", "ten_year_revenge", "catharsis"], source="seed_data"),
+    PromptAtom(atom_id="hook_delivery_ex_girlfriend", prompt_fragment="A delivery guy arrives at a luxury club and finds the ordering customer is the ex who dumped him for being poor", layer="narrative", role="hook", tags=["underdog_counterattack", "ex_face_slap", "satisfaction"], source="seed_data"),
+    PromptAtom(atom_id="hook_daughter_surgery_desperation", prompt_fragment="Five thousand short for his daughter's surgery, his ex arrives in a new car with a new lover in the hospital hallway", layer="narrative", role="hook", tags=["desperation", "moral_crushing", "catharsis"], source="seed_data"),
 ]
 
 

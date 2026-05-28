@@ -41,6 +41,7 @@ def chat(
         messages=[{"role": "user", "content": prompt}],
         temperature=temperature,
         max_tokens=8192,
+        thinking={"type": "disabled"},
     )
 
     content = extract_anthropic_text(response.content)

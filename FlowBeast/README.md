@@ -81,16 +81,24 @@ FP3 是内容生成的隐式语法：
                         脚本生成（原子组合 + VTO 变换 + 热点嫁接）
                                           │
                                           ▼
-                        prompt_package.json → 用户手动喂给 AI 视频工具
+                        prompt_package.json → 音频验证 → 人工发布
                                           │
                                           ▼
-                        高质量输出 → 回流 FP3（强化有效组合, 惩罚无效）
+                        收集互动数据 (views/likes/shares/completion)
+                                          │
+                                          ▼
+                        feedback_ingest → 回流 FP3（强化有效原子, 惩罚无效）
 ```
 
 - **阶段A (1→0)：** 人工筛选 → 逆向拆解 → 原子级注入（正负样本）
 - **阶段B (0→1)：** 隐式语法校准 → 原子组合质量提升
-- **阶段C (自转)：** 生成回流 → 语法精炼 → 更好生成
+- **阶段C (自转)：** 真实数据回流 → 原子权重更新 → 更准的生成
 
 **核心原则：** 系统不应检索并复制完整脚本。应检索兼容的叙事原子，通过 latent grammar 规则组合，经 VTO 算子变换，生成结构新颖但具备爆款 DNA 的新脚本。
 
-使用 `uv run python -m flowbeast.reverse.reverse_engineer` 将真实漫剧转为 ViralScript 档案。
+- 反向工程: `uv run python -m flowbeast.reverse.reverse_engineer`
+- 反馈回流: `uv run python -m flowbeast.fp3.feedback_ingest --report production_report.json --views N --likes N`
+
+### Audio Validation
+
+Edge TTS 生成音频作为**质量验证层**：听觉比视觉更快暴露节奏和对话问题，无需视频渲染即可判断脚本是否成立。
