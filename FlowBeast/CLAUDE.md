@@ -34,15 +34,21 @@ The competitive advantage is **not** "having a vector database of viral scripts.
 
 The moat is FP3 as a **Viral Memory System** — a structured embedding space that stores **composable narrative atoms**, not monolithic scripts.
 
-A `ViralScript` should decompose into individually addressable, pluggable units:
+A `ViralScript` should decompose into individually addressable, pluggable units — both narrative and production atoms:
 
-| Narrative Atom | Role | Property |
-|----------------|------|----------|
-| **Hook atom** | Opening pattern (first 3s) | Pluggable — swap in/out independently |
-| **Conflict kernel** | Core tension engine | Migratable — works across semantic domains |
-| **Character slot** | Role archetypes | Replaceable — fill with different personas |
-| **Emotion track** | Affective sequence | Remappable — same shape, different emotions |
-| **Pacing template** | Beat timing/rhythm | Parameterizable — scale duration, density |
+| Layer | Atom | Role | Property |
+|-------|------|------|----------|
+| Narrative | **Hook atom** | Opening pattern (first 3s) | Pluggable |
+| Narrative | **Conflict kernel** | Core tension engine | Migratable across domains |
+| Narrative | **Character slot** | Role archetypes | Replaceable |
+| Narrative | **Emotion track** | Affective sequence | Remappable |
+| Narrative | **Pacing template** | Beat timing/rhythm | Parameterizable |
+| Visual | **Style Lock** | Art style / color / AR | Global lock — prevents AI drift |
+| Visual | **Character Design** | Appearance (face/clothing/body) | Cross-scene consistent |
+| Visual | **Scene Composition** | Background / props / lighting | Reusable across shots |
+| Camera | **Camera Shot** | Framing / angle / movement | Composable — same story, different lens |
+| Audio | **Voice Profile** | Timbre / speed / emotion | Mappable — same text, different voice |
+| Audio | **BGM/SFX curve** | Background music / sound effects | Overlayable — same scene, different mood |
 
 **Each atom is independently embeddable, searchable, and composable.** A `ViralScript` is not a document to retrieve — it is a valid configuration of atoms that the system has observed to work.
 
@@ -50,8 +56,8 @@ A `ViralScript` should decompose into individually addressable, pluggable units:
 
 FP3 is not a database. It is a **Narrative LLM Embedding Space** — the latent grammar of what makes content go viral.
 
-- **Atoms** are the vocabulary (hook types, conflict patterns, emotion curves)
-- **Valid configurations** are the grammar (which hook + which conflict + which emotion curve = viral)
+- **Atoms** are the vocabulary (hook types, conflict patterns, emotion curves, visual styles, camera shots)
+- **Valid configurations** are the grammar (which hook + which conflict + which emotion + which shot = viral)
 - **VTO operators** are the syntax rules (how to transform atoms into new valid sentences)
 - **QualityGate** is the type checker (rejects grammatically invalid combinations)
 
@@ -370,7 +376,7 @@ Stages:
 **Key principle:** The system should not retrieve and copy full scripts. It should retrieve compatible atoms, compose them via latent grammar rules, transform them via VTO operators, and generate structurally novel scripts with proven viral DNA.
 
 Use `flowbeast/reverse/reverse_engineer.py` to convert real dramas into ViralScript records.
-The calibrator (`flowbeast/fp3/quality/calibrator.py`) reads from `flowbeast/data/reverse_engineered/`
+The calibrator (`flowbeast/observe/quality/calibrator.py`) reads from `flowbeast/data/reverse_engineered/`
 and produces threshold/weight recommendations for QualityGate.
 
 

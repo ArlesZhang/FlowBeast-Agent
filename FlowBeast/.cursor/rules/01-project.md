@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-FlowBeast is an AI-powered viral short-drama engine. The core moat is the **FP2 Viral Memory System** — decomposing viral content into composable narrative atoms, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts. The production pipeline (script → audio → video) is a replaceable commodity layer.
+FlowBeast is an AI-powered viral short-drama engine. The core moat is the **FP3 Viral Memory System** — decomposing viral content into composable narrative atoms, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts. The production pipeline (script → audio → video) is a replaceable commodity layer.
 
 Current focus:
 - FP3 narrative atom extraction and injection
