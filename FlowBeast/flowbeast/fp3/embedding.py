@@ -8,6 +8,15 @@ def embed_text(text: str) -> list:
     return _core_embed(text)
 
 
+def embed_prompt_atom(atom) -> list:
+    """将 PromptAtom 转化为可嵌入文本，然后获取向量。"""
+    text = (
+        f"layer:{atom.layer} role:{atom.role} "
+        f"fragment:{atom.prompt_fragment} tags:{' '.join(atom.tags)}"
+    )
+    return embed_text(text)
+
+
 def embed_unit(unit) -> list:
     """将 ViralUnit 或 ViralScript 转化为可嵌入的文本，然后获取向量。
 

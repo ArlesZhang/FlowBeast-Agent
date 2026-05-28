@@ -337,3 +337,66 @@ def load_all_scene_assets(scene_dir: Path) -> dict:
     for scene_name in discover_scenes(scene_dir):
         assets[scene_name] = get_scene_prompt(scene_name, scene_dir)
     return assets
+
+
+# ====================== Prompt Package Export ======================
+
+def export_prompt_package(
+    shots: list,
+    style_lock: StyleLock,
+    script: dict,
+    output_path: Path,
+) -> Path:
+    """
+    Export a complete prompt package — the final product of the Viral Prompt Compiler.
+
+    The prompt package contains everything an AI video tool (Seedance, Kling, etc.)
+    needs to generate video content: per-shot visual prompts, negative prompts,
+    style lock metadata, script metadata, and audio parameters.
+
+    This is the compiler output: topic → atoms → prompt package.
+    """
+    package = {
+        "title": script.get("title", ""),
+        "genre": script.get("genre", ""),
+        "core_hook": script.get("core_hook", ""),
+        "tags": script.get("tags", []),
+        "emotion_curve_global": script.get("emotion_curve_global", []),
+
+        "style_lock": {
+            "visual_style": style_lock.visual_style_suffix,
+            "negative_prompt": style_lock.negative_prompt,
+            "aspect_ratio": style_lock.aspect_ratio,
+            "color_palette": style_lock.color_palette,
+            "render_rules": style_lock.render_rules,
+        },
+
+        "shots": [],
+    }
+
+    for shot in shots:
+        shot_entry = {
+            "shot_id": shot.shot_id,
+            "scene_id": shot.scene_id,
+            "beat_type": shot.beat_type,
+            "shot_type": shot.shot_type,
+            "camera_motion": shot.camera_motion,
+            "duration_sec": shot.duration_sec,
+            "motion_intensity": shot.motion_intensity,
+            "positive_prompt": shot.visual_prompt,
+            "negative_prompt": shot.negative_prompt,
+            "dialogue": shot.dialogue,
+            "speaker": shot.speaker,
+            "emotion": shot.emotion,
+            "lighting": shot.lighting,
+            "sfx": shot.sfx,
+            "bgm_state": shot.bgm_state,
+        }
+        package["shots"].append(shot_entry)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(package, f, ensure_ascii=False, indent=2)
+
+    logger.info(f"Prompt package exported: {output_path} ({len(shots)} shots)")
+    return output_path

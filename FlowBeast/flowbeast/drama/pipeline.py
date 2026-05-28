@@ -14,6 +14,7 @@ from flowbeast.drama.asset_manager import (
     load_all_character_assets,
     load_all_scene_assets,
     inject_visual_prompts,
+    export_prompt_package,
     DEFAULT_STYLE,
 )
 
@@ -153,6 +154,11 @@ def run_full_pipeline(topic: str):
 
     # Inject visual prompts into all shots
     shots = inject_visual_prompts(shots, style_lock, character_assets, scene_assets)
+
+    # Export prompt package — the compiler output
+    prompt_package_path = base_path / "prompt_package.json"
+    export_prompt_package(shots, style_lock, script, prompt_package_path)
+    logger.success(f"📦 Prompt package exported: {prompt_package_path}")
 
     # Save shot list
     shot_list_file = base_path / "shot_list.json"

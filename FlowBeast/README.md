@@ -1,5 +1,12 @@
-## Text_scripts
+## FlowBeast = Viral Prompt Compiler
 
+**Input: a topic. Output: a complete prompt package ready for AI video tools.**
+
+```
+topic → FP3 检索 + 原子组合 → prompt_package.json → Seedance / Kling / 手动使用
+```
+
+FlowBeast 的护城河不是生产管线（script → audio → video），而是**爆款内容的可组合 Prompt 结构**。模型和视频工具会越来越强，但"什么 prompt 结构产出的内容容易爆"不会自动出现。FlowBeast 编译的不是代码，而是：情绪 · 冲突 · 镜头 · 节奏 · 爽点 · 人设 · 视觉风格 · 音频情绪。
 
 ## Strategic Architecture: What This Project Is Actually About
 

@@ -4,14 +4,14 @@
 
 ## Project Overview
 
-FlowBeast is an AI-powered viral short-drama engine. The core moat is the **FP3 Viral Memory System** — decomposing viral content into composable narrative atoms, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts. The production pipeline (script → audio → video) is a replaceable commodity layer.
+FlowBeast is a **Viral Prompt Compiler**: input a topic, output a complete prompt package (`prompt_package.json`) ready for AI video tools. The core moat is the **FP3 Viral Memory System** — decomposing viral content into composable PromptAtom instances, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts with proven viral DNA. The production pipeline (script → audio → video) is a replaceable commodity layer.
 
 Current focus:
-- FP3 narrative atom extraction and injection
-- Latent grammar learning for viral content
+- PromptAtom schema and FP3 injection
+- Prompt package export (script JSON + shot prompts + style lock + audio params)
+- Ingestion gate QualityGate for FP3 data quality
 - VTO-guided script generation (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
-- QualityGate calibration
-- MCP integration for audio/video production
+- Latent grammar learning for viral content
 
 ## Core Principles
 

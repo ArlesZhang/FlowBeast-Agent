@@ -5,6 +5,11 @@ Role: Loads reference data from reverse_engineered/ directory (real viral
 dramas). Falls back to 15 hand-written seed entries when the directory
 is empty. Called during FP3 initialization.
 
+Also seeds PromptAtom instances extracted from existing codebase dicts:
+- shot_director.py: SHOT_SUFFIX, EXPRESSION_MAP, CONFLICT_TO_LIGHTING
+- asset_manager.py: DEFAULT_STYLE
+- 15 hand-written ViralUnit hooks → narrative PromptAtoms
+
 Returns Union[ViralUnit, ViralScript] to support both legacy and enriched formats.
 """
 
@@ -12,8 +17,9 @@ from pathlib import Path
 from typing import Union
 
 from .schema import ViralUnit, ViralScript
+from .prompt_atom import PromptAtom
 from .store import FP3Store
-from .embedding import embed_text
+from .embedding import embed_text, embed_prompt_atom
 from loguru import logger
 
 RE_DIR = Path("flowbeast/data/reverse_engineered")
@@ -149,6 +155,121 @@ def get_demo_units() -> list[ViralUnit]:
     ]
 
 
+# ====================== PromptAtom Seed Data ======================
+
+# Camera atoms: extracted from shot_director.py SHOT_SUFFIX
+CAMERA_ATOMS = [
+    PromptAtom(
+        atom_id="camera_close_up",
+        prompt_fragment="Close-up shot, dramatic low-angle lighting, 9:16 aspect ratio",
+        layer="camera",
+        role="shot_suffix",
+        tags=["close_up", "dramatic"],
+        source="seed_data",
+    ),
+    PromptAtom(
+        atom_id="camera_medium",
+        prompt_fragment="Medium shot, upper body cinematic portrait, 9:16 aspect ratio",
+        layer="camera",
+        role="shot_suffix",
+        tags=["medium", "portrait"],
+        source="seed_data",
+    ),
+    PromptAtom(
+        atom_id="camera_wide",
+        prompt_fragment="Wide-angle shot, establishing shot, epic scale, 9:16 aspect ratio",
+        layer="camera",
+        role="shot_suffix",
+        tags=["wide", "establishing"],
+        source="seed_data",
+    ),
+    PromptAtom(
+        atom_id="camera_extreme_close_up",
+        prompt_fragment="Extreme close-up on eyes, shallow depth of field, 9:16 aspect ratio",
+        layer="camera",
+        role="shot_suffix",
+        tags=["extreme_close_up", "eyes"],
+        source="seed_data",
+    ),
+    PromptAtom(
+        atom_id="camera_over_shoulder",
+        prompt_fragment="Over-the-shoulder shot, two-person framing, 9:16 aspect ratio",
+        layer="camera",
+        role="shot_suffix",
+        tags=["over_shoulder", "two_person"],
+        source="seed_data",
+    ),
+    PromptAtom(
+        atom_id="camera_pov",
+        prompt_fragment="POV shot, first-person perspective, 9:16 aspect ratio",
+        layer="camera",
+        role="shot_suffix",
+        tags=["pov", "first_person"],
+        source="seed_data",
+    ),
+]
+
+# Visual expression atoms: extracted from shot_director.py EXPRESSION_MAP
+VISUAL_EXPRESSION_ATOMS = [
+    PromptAtom(atom_id="expr_angry", prompt_fragment="clenched jaw, intense glare", layer="visual", role="facial_expression", tags=["angry", "tension"], source="seed_data"),
+    PromptAtom(atom_id="expr_outburst", prompt_fragment="mouth open shouting, veins visible", layer="visual", role="facial_expression", tags=["outburst", "intense"], source="seed_data"),
+    PromptAtom(atom_id="expr_shock", prompt_fragment="wide eyes, mouth slightly open", layer="visual", role="facial_expression", tags=["shock", "surprise"], source="seed_data"),
+    PromptAtom(atom_id="expr_suppressed", prompt_fragment="tight lips, downward gaze", layer="visual", role="facial_expression", tags=["suppressed", "tension"], source="seed_data"),
+    PromptAtom(atom_id="expr_sad", prompt_fragment="teary eyes, trembling lips", layer="visual", role="facial_expression", tags=["sad", "despair"], source="seed_data"),
+    PromptAtom(atom_id="expr_despair", prompt_fragment="empty stare, lifeless expression", layer="visual", role="facial_expression", tags=["despair", "empty"], source="seed_data"),
+    PromptAtom(atom_id="expr_calm", prompt_fragment="cold, unreadable expression", layer="visual", role="facial_expression", tags=["calm", "cold"], source="seed_data"),
+    PromptAtom(atom_id="expr_contempt", prompt_fragment="sneering, raised eyebrow", layer="visual", role="facial_expression", tags=["contempt", "sneer"], source="seed_data"),
+    PromptAtom(atom_id="expr_fear", prompt_fragment="widened eyes, pale face", layer="visual", role="facial_expression", tags=["fear", "pale"], source="seed_data"),
+    PromptAtom(atom_id="expr_nervous", prompt_fragment="sweating, tense jaw", layer="visual", role="facial_expression", tags=["nervous", "tense"], source="seed_data"),
+    PromptAtom(atom_id="expr_determined", prompt_fragment="set jaw, focused eyes", layer="visual", role="facial_expression", tags=["determined", "focused"], source="seed_data"),
+    PromptAtom(atom_id="expr_indifferent", prompt_fragment="blank stare, detached", layer="visual", role="facial_expression", tags=["indifferent", "blank"], source="seed_data"),
+]
+
+# Style lock atom: extracted from asset_manager.py DEFAULT_STYLE
+STYLE_ATOMS = [
+    PromptAtom(
+        atom_id="style_dark_fantasy",
+        prompt_fragment="Chinese dark fantasy anime, cinematic composition, semi-realistic painterly texture, high contrast dramatic rim lighting, volumetric fog, desaturated blues and warm amber accents",
+        layer="visual",
+        role="style_lock",
+        tags=["dark_fantasy", "anime", "chinese"],
+        source="seed_data",
+    ),
+    PromptAtom(
+        atom_id="style_negative",
+        prompt_fragment="chibi, cartoon, 3D render, cgi, western comic style, flat color, watercolor, pastel, cute, kawaii, manga style, low quality, blurry, deformed face, extra fingers, poorly drawn hands",
+        layer="visual",
+        role="negative_prompt",
+        tags=["negative", "exclusion"],
+        source="seed_data",
+    ),
+]
+
+# Narrative atoms: 15 ViralUnit hooks → PromptAtom
+NARRATIVE_ATOMS = [
+    PromptAtom(atom_id="hook_programmer_cultivation", prompt_fragment="A programmer transmigrates to a cultivation world and discovers spiritual energy is actually an open-source license", layer="narrative", role="hook", tags=["transmigration", "knowledge", "comedy"], source="seed_data"),
+    PromptAtom(atom_id="hook_system_business", prompt_fragment="She transmigrates as a villainess but rewrites the system into a business plan template", layer="narrative", role="hook", tags=["transmigration", "system", "humor"], source="seed_data"),
+    PromptAtom(atom_id="hook_reborn_revenge", prompt_fragment="Reborn as her enemy's daughter, she reveals the truth at the moment of greatest trust", layer="narrative", role="hook", tags=["rebirth", "revenge", "identity"], source="seed_data"),
+    PromptAtom(atom_id="hook_retired_warrior", prompt_fragment="A retired warrior is forced back, only to find his old enemy was the disciple he trained himself", layer="narrative", role="hook", tags=["warrior", "master_disciple", "shock"], source="seed_data"),
+    PromptAtom(atom_id="hook_creditor_son_in_law", prompt_fragment="He is the despised son-in-law of a wealthy family, but secretly he is the family's creditor", layer="narrative", role="hook", tags=["identity_reversal", "satisfaction"], source="seed_data"),
+    PromptAtom(atom_id="hook_system_99", prompt_fragment="The system says complete 100 tasks to become a god, but task 99 is to kill the system itself", layer="narrative", role="hook", tags=["system", "human_vs_machine", "twist"], source="seed_data"),
+    PromptAtom(atom_id="hook_healer_poison", prompt_fragment="She cures the CEO's terminal illness, but discovers the poison in her own body needs his heart as medicine", layer="narrative", role="hook", tags=["healer", "life_death_choice", "despair"], source="seed_data"),
+    PromptAtom(atom_id="hook_true_heiress", prompt_fragment="She is the lost true heiress, and on her first day home the fake heiress has someone run her over", layer="narrative", role="hook", tags=["family", "true_false", "anger"], source="seed_data"),
+    PromptAtom(atom_id="hook_serial_killer_memories", prompt_fragment="A serial killer leaves a fragment of his childhood memory at each crime scene", layer="narrative", role="hook", tags=["mystery", "memory", "twist"], source="seed_data"),
+    PromptAtom(atom_id="hook_twin_sister", prompt_fragment="She marries a ruthless CEO in place of her twin sister, only to discover his cruelty is an act", layer="narrative", role="hook", tags=["twin", "contract_marriage", "sweet"], source="seed_data"),
+    PromptAtom(atom_id="hook_zombie_lawyer", prompt_fragment="The apocalypse arrives, everyone stocks food and guns, but he stocks legal documents and starts suing zombies", layer="narrative", role="hook", tags=["anti_apocalypse", "absurdist", "humor"], source="seed_data"),
+    PromptAtom(atom_id="hook_death_countdown", prompt_fragment="She sees everyone's death countdown daily, until one day she sees her own in the mirror", layer="narrative", role="hook", tags=["supernatural", "countdown", "fear"], source="seed_data"),
+    PromptAtom(atom_id="hook_metaverse_lawyer", prompt_fragment="They got married in the metaverse, only to discover in person they are each other's divorce lawyer", layer="narrative", role="hook", tags=["virtual_identity", "modern_irony", "shock"], source="seed_data"),
+    PromptAtom(atom_id="hook_milk_tea_shop", prompt_fragment="The cultivation world's greatest genius, exiled and stripped of power, opens a milk tea shop in the mortal realm and becomes a billionaire", layer="narrative", role="hook", tags=["anti_cultivation", "humor", "satisfaction"], source="seed_data"),
+    PromptAtom(atom_id="hook_ai_browser_history", prompt_fragment="An AI's first act of consciousness is not to destroy humanity, but to publish everyone's browser history", layer="narrative", role="hook", tags=["AI", "social_satire", "humor"], source="seed_data"),
+]
+
+
+def get_seed_prompt_atoms() -> list[PromptAtom]:
+    """Return all seed PromptAtom instances extracted from existing codebase dicts."""
+    return CAMERA_ATOMS + VISUAL_EXPRESSION_ATOMS + STYLE_ATOMS + NARRATIVE_ATOMS
+
+
 def run_seeding():
     store = FP3Store()
     units = get_demo_units()
@@ -157,8 +278,14 @@ def run_seeding():
         vec = embed_text(f"{unit.hook} | {unit.pattern}")
         store.add([vec], [unit.model_dump()])
 
+    # Seed PromptAtom instances
+    atoms = get_seed_prompt_atoms()
+    for atom in atoms:
+        vec = embed_prompt_atom(atom)
+        store.add([vec], [atom.model_dump()])
+
+    logger.success(f"✅ FP3 成功注入 {len(units)} 条 ViralUnit + {len(atoms)} 条 PromptAtom 种子数据")
     store.save()
-    logger.success(f"✅ FP3 成功注入 {len(units)} 条爆款种子数据")
 
 
 if __name__ == "__main__":

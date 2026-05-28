@@ -92,6 +92,10 @@ class ViralScript(BaseModel):
     visual_style_notes: Optional[str] = None
     special_techniques: List[str] = []
 
+    # Prompt-centric fields (v0.4.0 — Viral Prompt Compiler)
+    prompt_atoms: List[str] = []              # atom_id references to PromptAtom instances
+    vertical_name: Optional[str] = None       # which vertical library this script uses
+
     # 语义层（保留 latent 表达空间，防过度模板化）
     latent_embedding: Optional[List[float]] = None
     semantic_summary: Optional[str] = None   # "这部剧为什么火"一句话
