@@ -44,6 +44,9 @@ dev = [
     "ipython",                # 交互式调试
 ]
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 [tool.uv]
 # 确保 uv 同步时更加严格
 managed = true
