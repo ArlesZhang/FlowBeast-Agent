@@ -45,8 +45,8 @@ uvicorn flowbeast.api.main:app --reload --port 8000
 # Run tests
 uv run pytest tests/ -q
 
-# Initialize FP3 knowledge base (first-time setup)
-python -m scripts.init_fp3
+# Seed FP3 (ViralUnit + PromptAtom)
+uv run python -m flowbeast.fp3.seed_data
 ```
 
 ## Troubleshooting

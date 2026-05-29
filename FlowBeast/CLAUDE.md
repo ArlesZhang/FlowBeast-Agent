@@ -28,7 +28,7 @@ The project prioritizes practical execution, modularity, automation, and iterati
 
 **The real moat is the "Brain"** — deciding *what* to produce, not *how* to render it.
 
-### FP3 is a Viral Memory System — Composable Narrative Atoms
+### FP3 is a Viral Memory System — Composable Narrative Atomss
 
 The competitive advantage is **not** "having a vector database of viral scripts." Anyone can embed text and do similarity search.
 
@@ -105,6 +105,40 @@ The generation policy layer. Each operator is a transformation function that com
               人工发布 → 互动数据 → feedback_ingest → FP3回流
 ```
 
+Data Flywheel (1→0 Reverse Deconstruction Engine)
+
+```
+人工筛选市场爆款
+    ↓
+reverse_engineer CLI → ViralScript 拆解为叙事原子
+    ↓
+FP3 Viral Memory: 原子化存储 + Latent Grammar 学习
+    ↓
+Observe QualityGate Calibrator (参考集分布对比, z-score 冷启动防御)
+    ↓
+VTO Operators: GRAFT / PARASITE / DISTORT / MISDIRECT / THEFT
+    ↓
+Script Generation (原子组合 + VTO 变换 + 热点嫁接)
+    ↓
+prompt_package.json → 音频验证 → 人工发布
+    ↓
+收集互动数据 (views/likes/shares/completion)
+    ↓
+feedback_ingest → 回流 FP3 (强化有效原子, 惩罚无效组合)
+```
+
+Stages:
+- **A (1→0):** Manual curation → reverse engineering → atom-level injection (positive + negative samples)
+- **B (0→1):** Latent grammar calibration → atom combination quality improvement
+- **C (self-reinforcing):** Real-world data → atom weight updates → better generation
+
+**Key principle:** The system should not retrieve and copy full scripts. It should retrieve compatible atoms, compose them via latent grammar rules, transform them via VTO operators, and generate structurally novel scripts with proven viral DNA.
+
+- Reverse engineer: `flowbeast/reverse/reverse_engineer.py`
+- Feedback ingest: `flowbeast/fp3/feedback_ingest.py`
+- Calibrator reads from `flowbeast/data/reverse_engineered/` and produces QualityGate recommendations.
+
+
 ### Development Priority
 
 1. **Build FP3-S:** Reverse-engineer viral content into computable `ViralScript` state data; inject with positive/negative labels
@@ -153,11 +187,11 @@ python main.py
 # Run the FastAPI server (hot reload)
 uvicorn flowbeast.api.main:app --reload --port 8000
 
-# Initialize the FP3 vector knowledge base (first-time setup)
-python -m scripts.init_fp3
+# Seed FP3 (ViralUnit + PromptAtom)
+uv run python -m flowbeast.fp3.seed_data
 
-# Process generation feedback and update FP3 knowledge base
-python scripts/feedback_loop.py --dir ./flowbeast/data/outputs --yes
+# Feedback ingest (engagement → atom scoring)
+uv run python -m flowbeast.fp3.feedback_ingest --report production_report.json --views N --likes N
 
 
 # Run tests
@@ -215,21 +249,6 @@ Independent quality assessment and feedback learning:
 ### LLM Routing (`flowbeast/core/config.py`)
 
 `ACTIVE_VENDOR` env var selects the provider. Default: `gemini` (`gemini-1.5-flash`). Supported: `gemini`, `qwen`, `openai`, `openrouter`, `ollama`.
-
-
-### Pipeline Flow
-
-```
-topic → build_prompt() → FP3 retrieval → inject_prompt() → generate_script()
-                                              ↓
-                                       (LLM call)
-                                              ↓
-                                       script.json
-                                          ↓    ↓
-                              audio (validation)  prompt_package.json
-                              (hear pacing,          (shots, style,
-                              fix dialogue)          camera, BGM, SFX)
-```
 
 
   ### Testing Strategy
@@ -358,40 +377,6 @@ ViralScript:                  # enriched drama anatomy (alongside ViralUnit)
   → to_viral_unit() for legacy backward compatibility
 
 ```
-
-## Data Flywheel (1→0 Reverse Deconstruction Engine)
-
-```
-人工筛选市场爆款
-    ↓
-reverse_engineer CLI → ViralScript 拆解为叙事原子
-    ↓
-FP3 Viral Memory: 原子化存储 + Latent Grammar 学习
-    ↓
-Observe QualityGate Calibrator (参考集分布对比, z-score 冷启动防御)
-    ↓
-VTO Operators: GRAFT / PARASITE / DISTORT / MISDIRECT / THEFT
-    ↓
-Script Generation (原子组合 + VTO 变换 + 热点嫁接)
-    ↓
-prompt_package.json → 音频验证 → 人工发布
-    ↓
-收集互动数据 (views/likes/shares/completion)
-    ↓
-feedback_ingest → 回流 FP3 (强化有效原子, 惩罚无效组合)
-```
-
-Stages:
-- **A (1→0):** Manual curation → reverse engineering → atom-level injection (positive + negative samples)
-- **B (0→1):** Latent grammar calibration → atom combination quality improvement
-- **C (self-reinforcing):** Real-world data → atom weight updates → better generation
-
-**Key principle:** The system should not retrieve and copy full scripts. It should retrieve compatible atoms, compose them via latent grammar rules, transform them via VTO operators, and generate structurally novel scripts with proven viral DNA.
-
-- Reverse engineer: `flowbeast/reverse/reverse_engineer.py`
-- Feedback ingest: `flowbeast/fp3/feedback_ingest.py`
-- Calibrator reads from `flowbeast/data/reverse_engineered/` and produces QualityGate recommendations.
-
 
 ## Package Manager
 

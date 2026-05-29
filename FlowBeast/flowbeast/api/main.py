@@ -1,10 +1,18 @@
-from flowbeast.core.config import settings
+"""
+API: FastAPI server for FlowBeast.
+
+Role: Web interface for topic-to-prompt-package generation.
+Currently serves health check only; generation endpoint pending.
+
+Workflow: POST /v1/generate {topic} → generate_script() → prompt_package.json
+"""
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 # ==================== 初始化 ====================
-app = FastAPI(title="FlowBeast", version="0.3.2")
+app = FastAPI(title="FlowBeast", version="0.4.1")
 
 # 跨域支持
 app.add_middleware(
@@ -23,8 +31,3 @@ async def health():
         "status": "healthy",
         "service": "FlowBeast Engine",
     }
-
-
-@app.get("/v1/user/info")
-async def get_user_placeholder():
-    return {"tier": "architect_preview", "status": "active"}
