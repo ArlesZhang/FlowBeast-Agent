@@ -253,11 +253,14 @@ Independent quality assessment and feedback learning:
 
   ### Testing Strategy
 
-- **tests/test_fp3_quality.py**: Observe quality gate scoring, dedup, and calibration
+All tests live in `tests/`:
+
+- **tests/test_fp3_quality.py**: QualityGate scoring, dedup, and calibration
 - **tests/test_hooks_import_checker.py**: Import boundary enforcement
 - **tests/test_main.py**: Entry point logic (mocked, no LLM)
+- **tests/test_main_script.py**: Quick main.py validation (standalone runner)
 - **tests/test_config.py**: Configuration validation
-- **scripts/test_main_script.py**: Quick main.py validation
+- **tests/test_hooks_fp3_guard.py**: FP3 integrity guard checks
 
 
 ## Engineering Principles

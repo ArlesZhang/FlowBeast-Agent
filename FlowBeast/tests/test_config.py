@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""快速配置验证 - 运行: python3 scripts/test_config.py"""
+"""快速配置验证 - 运行: uv run pytest tests/test_config.py -q"""
 
 import sys
 from pathlib import Path
