@@ -49,6 +49,7 @@ flowbeast/data/*.json
 # 彻底封锁数据文件夹但保留目录结构
 flowbeast/data/*
 !flowbeast/data/.gitkeep
+!flowbeast/data/raw/
 
 # 忽略生成的代码中间产物
 flowbeast/tmp/
