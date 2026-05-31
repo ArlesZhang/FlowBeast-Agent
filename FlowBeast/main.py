@@ -1,3 +1,4 @@
+import argparse
 import sys
 from pathlib import Path
 
@@ -22,6 +23,15 @@ logger.success("✅ FlowBeast 核心模块加载成功")
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="FlowBeast Viral Prompt Compiler")
+    parser.add_argument(
+        "--topic",
+        type=str,
+        default=None,
+        help="Topic for drama generation (default: hardcoded xianxia topic)",
+    )
+    args = parser.parse_args()
+
     logger.info("🔥 FlowBeast 启动（全链路：剧本 JSON + 配音 + 报告）...")
 
     if not FP3_INDEX_PATH.exists():
@@ -38,7 +48,8 @@ def main() -> None:
         logger.info("✅ 已检测到知识库索引，跳过种子注入。")
 
     target_topic = (
-        "程序员穿越到修仙界，发现灵气其实是某种高维代码，"
+        args.topic
+        or "程序员穿越到修仙界，发现灵气其实是某种高维代码，"
         "他通过重构底层逻辑实现 root 权限"
     )
     logger.info(f"🚀 主题: {target_topic}")

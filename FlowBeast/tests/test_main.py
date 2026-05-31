@@ -53,7 +53,9 @@ def test_main_skips_seeding_and_calls_pipeline_when_index_exists(import_main):
     }
     with patch.object(m, "FP3_INDEX_PATH", mock_path), patch.object(
         m, "run_full_pipeline", return_value=result
-    ) as mock_pipe, patch.object(m, "run_seeding") as mock_seed:
+    ) as mock_pipe, patch.object(m, "run_seeding") as mock_seed, patch.object(
+        sys, "argv", ["main.py"]
+    ):
         m.main()
     mock_seed.assert_not_called()
     mock_pipe.assert_called_once()
@@ -75,7 +77,9 @@ def test_main_runs_seeding_when_index_missing(import_main):
     }
     with patch.object(m, "FP3_INDEX_PATH", mock_path), patch.object(
         m, "run_full_pipeline", return_value=result
-    ) as mock_pipe, patch.object(m, "run_seeding") as mock_seed:
+    ) as mock_pipe, patch.object(m, "run_seeding") as mock_seed, patch.object(
+        sys, "argv", ["main.py"]
+    ):
         m.main()
     mock_seed.assert_called_once()
     mock_pipe.assert_called_once()
@@ -88,7 +92,9 @@ def test_main_handles_pipeline_failure(import_main):
     mock_path.exists.return_value = True
     with patch.object(m, "FP3_INDEX_PATH", mock_path), patch.object(
         m, "run_full_pipeline", return_value=None
-    ), patch.object(m, "run_seeding") as mock_seed:
+    ), patch.object(m, "run_seeding") as mock_seed, patch.object(
+        sys, "argv", ["main.py"]
+    ):
         m.main()
     mock_seed.assert_not_called()
 
@@ -99,3 +105,27 @@ def test_no_drama_pipeline_name_in_source():
     assert "DramaPipeline" not in text
     assert "execute_workflow" not in text
     assert "run_full_pipeline" in text
+
+
+def test_main_accepts_topic_flag(import_main):
+    """main 支持 --topic 参数，传入自定义主题。"""
+    m = import_main
+    mock_path = MagicMock()
+    mock_path.name = "fp3.index"
+    mock_path.exists.return_value = True
+    result = {
+        "run_id": "topic_test",
+        "base_path": Path("/tmp/fb"),
+        "script_path": Path("/tmp/fb/script.json"),
+        "report_path": Path("/tmp/fb/report.json"),
+        "audio_path": Path("/tmp/fb/audio"),
+    }
+    with patch.object(m, "FP3_INDEX_PATH", mock_path), patch.object(
+        m, "run_full_pipeline", return_value=result
+    ) as mock_pipe, patch.object(m, "run_seeding"), patch.object(
+        sys, "argv", ["main.py", "--topic", "custom topic here"]
+    ):
+        m.main()
+    mock_pipe.assert_called_once()
+    (topic_arg,) = mock_pipe.call_args[0]
+    assert topic_arg == "custom topic here"

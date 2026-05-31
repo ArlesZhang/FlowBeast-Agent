@@ -1,47 +1,43 @@
-# Current Goal: Phase 1 — End-to-End Web Demo
+# Current Goal: Demo Validation MVP (14 days / 250 turns)
 
-## What "Done" Looks Like
+## Mission
 
-A person opens a browser, types a topic, and sees a complete `prompt_package.json` with scene-by-scene breakdown — all within 60 seconds, no manual steps.
+Prove that FlowBeast can:
+1. Retrieve proven viral structures from FP3
+2. Apply GRAFT transformation to a new Topic
+3. Generate a structurally differentiated script
+4. Produce a complete content asset package
+5. Demonstrate the full workflow through a minimal local UI
 
-## Success Criteria (must all be true)
+**Validation sprint — evidence over completeness.**
 
-- [ ] `POST /v1/generate {"topic": "..."}` returns a valid prompt_package.json
-- [ ] Response includes: title, core_hook, scenes[], shot_list[], quality_gate result
-- [ ] Frontend shows the output in a human-readable format (not raw JSON)
-- [ ] QualityGate score is visible in the response (score + ACCEPT/REVIEW/REJECT)
-- [ ] At least 5 successful demo runs recorded in `flowbeast/data/outputs/`
+## Core Hypothesis
 
-## What This Is NOT
+FlowBeast's unique value: Viral Structure Retrieval → Structure Transfer (GRAFT) → New Topic Generation.
 
-- Not "VTO operators working" — GRAFT/PARASITE are Phase 2
-- Not "PromptAtom composition working" — PromptAtom is an unused schema, not a product requirement
-- Not "Feedback loop working" — feedback.py exists but the weight-update loop is Phase 3
-- Not "AI video generation" — we output prompt_package.json, Seedance/Kling handle video
+A human observer must clearly distinguish Original vs GRAFT-enhanced generation.
+
+## Deliverables
+
+- [x] **D1. Baseline Pipeline Verification** — `python main.py --topic "test"` works, all artifacts produced, 58 tests green
+- [ ] **D2. FastAPI Wrapper** — POST /api/v1/generate + GET /api/v1/tasks/{id} (BackgroundTasks, in-memory state)
+- [ ] **D3. GRAFT v0** — Hook + Conflict extraction from ViralScript, structure transfer to new topic
+- [ ] **D4. FP3 Retrieval** — Use existing FP3 assets, expose in output and UI
+- [ ] **D5. Minimal Streamlit UI** — Single page: input, status, retrieved structure, script, audio, download
+- [ ] **D6. Evidence Package** — 5 successful runs with prompt packages, production reports, audio
+- [ ] **D7. Demo Recording** — 1-3 min recording showing full workflow
 
 ## Constraints
 
-- No new modules. No new abstractions. Wire what exists.
-- `shot_director.py` and `asset_manager.py` are already built. Use them.
-- `QualityGate` is already built. Use it.
-- `FP3 store + retriever` is already built. Use it.
-- The only new code is: `api/main.py` endpoint + minimal HTML frontend.
+- Wrap instead of rewrite
+- Simple functions over abstractions
+- JSON over infrastructure
+- No new databases, agent frameworks, orchestration systems, RAG systems
+- No refactoring working pipeline code
 
-## Parallel Work: Phase 0 (Viral Corpus Building)
+## Day 1 Gate: ✅ PASSED
 
-**While Phase 1 engineering is happening, start collecting viral scripts in parallel.**
-
-- **Sprint model:** 2-3 scripts per day × 4 weeks = 30 scripts (Phase 2 entry gate)
-- Human watches viral short dramas, fills `raw/NNN_title/` directory
-- Agent runs `reverse_engineer.py --dir raw/` to extract ViralScripts
-- **Target: 15 scripts by end of Week 2, 30 scripts by end of Week 4**
-
-**🔴 Hard constraint:** No Phase 0 optimization before 30 real samples. Focus on acquisition only.
-
-This does NOT block Phase 1. It prepares for Phase 2.
-
-See: `.ai/tasks/000_viral_corpus_building.md`
-
-## Stop Condition
-
-I can open the browser, type a topic, and see a prompt package. Then I can show it to someone and they understand what FlowBeast does in 30 seconds.
+- Baseline pipeline runs with `--topic` flag
+- Script, audio, production_report.json, prompt_package.json all produced
+- 58 tests pass
+- FP3 retrieval works (2 cases from seed data)

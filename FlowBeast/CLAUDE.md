@@ -17,12 +17,14 @@ You MUST always respond in English. This applies to: explanations, code comments
 ```bash
 uv sync                                              # Install dependencies (uv, not pip)
 python main.py                                       # Run drama generation pipeline
+python main.py --topic "your topic"                  # Run with custom topic
 uvicorn flowbeast.api.main:app --reload --port 8000  # FastAPI server
+uv run streamlit run flowbeast/demo/app.py           # Streamlit demo UI (port 8501)
 uv run python -m flowbeast.fp3.seed_data             # Seed FP3 (ViralUnit + PromptAtom)
 uv run python -m flowbeast.fp3.feedback_ingest \     # Feedback ingest
   --report production_report.json --views N --likes N
 uv run pytest tests/ -q                              # Run all tests
-uv run pytest tests/test_fp3_quality.py -q           # Run single test file
+uv run pytest tests/test_graft.py -q                 # Run GRAFT tests
 docker-compose up --build                           # Docker
 ```
 

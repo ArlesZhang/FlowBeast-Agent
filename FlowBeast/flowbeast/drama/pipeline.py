@@ -73,12 +73,13 @@ def _run_output_quality_gate(script: dict) -> dict:
 
 
 # ====================== 主流水线 ======================
-def run_full_pipeline(topic: str):
+def run_full_pipeline(topic: str, graft_prompt: str | None = None):
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    logger.info(f"🚀 FlowBeast 启动 | topic={topic} | run_id={run_id}")
+    mode_label = "GRAFT" if graft_prompt else "STANDARD"
+    logger.info(f"🚀 FlowBeast 启动 | topic={topic} | mode={mode_label} | run_id={run_id}")
 
-    # ====================== 1. 生成脚本（FP3 增强）======================
+    # ====================== 1. 生成脚本（FP3 增强 / GRAFT）======================
     script = None
     meta = None
     quality_result = None
@@ -89,7 +90,7 @@ def run_full_pipeline(topic: str):
         logger.info(f"📝 第 {generation_attempts} 次脚本生成...")
 
         try:
-            result = generate_script(topic, auto_trend=True)
+            result = generate_script(topic, auto_trend=True, custom_prompt=graft_prompt)
             script = result["script"]
             meta = result["meta"]
 
@@ -228,6 +229,7 @@ failed      : {fail_count}
     report = {
         "run_id": run_id,
         "topic": topic,
+        "mode": "graft" if graft_prompt else "standard",
         "model": meta.get("model"),
         "status": "completed" if fail_count == 0 else "partial",
         "generation_attempts": generation_attempts,
