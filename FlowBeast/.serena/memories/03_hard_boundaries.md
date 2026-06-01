@@ -4,6 +4,12 @@
 
 **Every time tempted to build something new, check this list first.**
 
+## Success Metric
+
+**Can a new topic inherit proven viral mechanics and outperform baseline generation?**
+
+Use this as the decision filter. If a proposed change doesn't help answer "yes" to this question, don't build it.
+
 ## 1. No Video Generation Code
 - Do NOT call video APIs (Runway, Kling, Seedance, HeyGen)
 - Output: `prompt_package.json` only

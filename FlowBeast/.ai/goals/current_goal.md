@@ -17,6 +17,12 @@ FlowBeast's unique value: Viral Structure Retrieval → Structure Transfer (GRAF
 
 A human observer must clearly distinguish Original vs GRAFT-enhanced generation.
 
+## Success Metric
+
+**Can a new topic inherit proven viral mechanics and outperform baseline generation?**
+
+Use this as the decision filter for every proposed feature. If a change doesn't help answer "yes" to this question, don't build it.
+
 ## Deliverables
 
 - [x] **D1. Baseline Pipeline Verification** — `python main.py --topic "test"` works, all artifacts produced, 58 tests green
