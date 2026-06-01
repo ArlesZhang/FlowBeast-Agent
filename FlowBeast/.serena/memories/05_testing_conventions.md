@@ -34,4 +34,4 @@ uv run pytest tests/test_graft.py -q  # specific file
 - `tests/evidence_package.py` — Script to generate evidence runs for demo validation
 - Each evidence run produces: script.json, prompt_package.json, production_report.json, audio
 
-## Test Count: 57 passing (as of 2026-05-31)
+## Test Count: 57 passing (as of 2026-06-01)

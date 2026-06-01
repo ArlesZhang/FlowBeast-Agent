@@ -3,6 +3,7 @@
 **Date:** 2026-05-30
 **Scope:** Full project audit — architecture, code, configuration, documentation, tasks, tests
 **Assessment:** Independent review from first principles
+**Last Updated:** 2026-06-01 — RESOLVED annotations added after v0.5.0-mvp and Corpus Factory completion
 
 ---
 
@@ -71,6 +72,8 @@ async def health():
 
 **Impact:** Without this, there is no web demo, which is the Phase 1 goal.
 
+> **✅ RESOLVED (2026-06-01):** 4 endpoints shipped in v0.5.0-mvp: `/health`, `POST /api/v1/generate`, `GET /api/v1/tasks/{task_id}`, `GET /api/v1/download/{file_type}/{run_id}`. Streamlit demo UI also complete.
+
 #### 3.2 FP3 Corpus = Hand-Written Seeds Only
 
 **File:** `flowbeast/data/reverse_engineered/` is empty (only `TEMPLATE_viral_analysis.json` exists).
@@ -93,6 +96,26 @@ The entire FP3 moat, latent grammar learning, and QualityGate calibration depend
 The VTO concept (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT) is well-documented in README and architecture docs, but **there is zero implementation code**. The generator uses FP3 retrieval + RAG injection, not VTO transformations.
 
 **Impact:** Phase 2 goals cannot be executed. The architecture docs describe what they should do, but no code implements them.
+
+> **🟡 PARTIALLY RESOLVED (2026-06-01):** GRAFT v0 shipped (`flowbeast/vto/graft.py`, 231 lines, 9 tests, 5 evidence runs). PARASITE, DISTORT, MISDIRECT, THEFT still not implemented. GRAFT works with seed data only — needs real corpus.
+
+---
+
+### RESOLVED Issues (as of 2026-06-01)
+
+| # | Issue | Status | Notes |
+|---|-------|--------|-------|
+| 3.1 | API has no generation endpoint | ✅ | 4 endpoints shipped in v0.5.0-mvp |
+| 3.2 | FP3 corpus = seed only | ⚠️ Still open | 0 real scripts. See `.ai/reports/001_corpus_factory.md` |
+| 3.3 | VTO operators don't exist | 🟡 | GRAFT v0 shipped. PARASITE+ not started |
+| 3.4 | `asyncio.run()` anti-pattern | ⚠️ Still open | 5 occurrences remain |
+| 3.5 | No `.env.example` | ⚠️ Still open | Being created now |
+| 3.6 | Hardcoded paths | ⚠️ Still open | `parent.parent.parent` chain |
+| 3.7 | Feedback directory empty | ⚠️ Still open | Expected (blocked by Phase 0) |
+| 3.8 | Test coverage gaps | 🟡 | 57 tests (was 67, now cleaned). Added generator/prompt/feedback tests |
+| 3.9 | langgraph/langchain unused | ⚠️ Still open | No usage found |
+| 3.12 | `site/` in repo | ⚠️ Still open | Should be in `.gitignore` |
+| 3.13 | Detached HEAD | ✅ | Now on `develop` branch |
 
 ---
 

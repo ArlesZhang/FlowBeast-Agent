@@ -25,3 +25,6 @@ topic → FP3 retrieval → LLM script → QualityGate → shots → prompt_pack
 **Package manager:** `uv` (not pip). `uv sync`, `uv run pytest`, `uv run ...`
 
 **Test command:** `uv run pytest tests/ -q` (57 tests, all passing)
+
+**Current Phase:** 0 (Corpus Building) — 0/30 real reverse-engineered scripts
+**Next Milestone:** v0.6.0-corpus-30 (30 real scripts → Phase 2 entry gate)

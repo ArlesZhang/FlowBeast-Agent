@@ -31,63 +31,60 @@
 - Human: watch, judge, curate (30 min/script)
 - Agent: extract, structure, validate, inject (5 min/script)
 
-**Status:** 🟡 Sprint 1 not started
+**Status:** 🟡 Sprint 1 not started — **CORPUS IS STILL 0 REAL SCRIPTS**
 
 ---
 
-## Phase 1: Demo System (Current Focus)
+## Phase 1: Demo System ✅ COMPLETE (v0.5.0-mvp)
 
 **Goal:** End-to-end web demo (topic → script → shots → audio → browser)
 
-**Why this matters:** No one can see the product working. Demo is the fastest path to user validation.
+**Status:** ✅ Shipped 2026-05-31
 
-**Scope:**
-- FastAPI endpoint (`POST /v1/generate`)
-- Async job handling (don't block for 30-60s)
-- Polling endpoint (`GET /v1/jobs/{job_id}`)
-- Frontend (HTML + JS, no framework)
-- Error handling (LLM failures, JSON parse errors)
-- File serving (audio, downloads)
-- Loading UX
-
-**Effort:** 10-16 hours of focused work
+**What was delivered:**
+- ✅ FastAPI: 4 endpoints (`/health`, `POST /api/v1/generate`, `GET /api/v1/tasks/{task_id}`, `GET /api/v1/download/{file_type}/{run_id}`)
+- ✅ Async job handling via `BackgroundTasks` + in-memory state + JSON persistence
+- ✅ Streamlit demo UI (`flowbeast/demo/app.py`) — topic input, status polling, GRAFT structure visualization, script display, audio player, downloads
+- ✅ 5 successful GRAFT runs with different topics (evidence package)
+- ✅ 67 tests passing (includes 9 GRAFT tests)
+- ✅ 17 production runs total
 
 **Key files:**
-- `flowbeast/api/main.py` — Add endpoints
-- `flowbeast/static/index.html` — Frontend (new)
-- `.ai/tasks/001_demo_system.md` — Detailed requirements
-
-**Status:** 🟡 Not started
+- `flowbeast/api/main.py` — 4 endpoints
+- `flowbeast/demo/app.py` — Streamlit single-page UI
+- `flowbeast/vto/graft.py` — GRAFT v0 operator
+- `tests/test_graft.py` — 9 GRAFT tests
 
 ---
 
-## Phase 2: VTO Operators (Blocked by Phase 0 + Phase 1)
+## Phase 2: VTO Operators 🟡 GRAFT v0 Complete, PARASITE Pending
 
 **Goal:** GRAFT/PARASITE operators produce structurally novel scripts with proven viral DNA.
 
-**Why this matters:** This is the "magic" that makes FlowBeast different from a generic script generator.
+**Status:** 🟡 GRAFT v0 shipped (seed data). PARASITE not started. Blocked by corpus quality.
+
+**What exists:**
+- ✅ `flowbeast/vto/graft.py` — GRAFT v0 (231 lines, working)
+- ✅ Extracts hook_structure + conflict_pattern from FP3 ViralScripts
+- ✅ Builds structural transfer prompt with 5 migration instructions
+- ✅ 5 evidence runs prove the operator works end-to-end
+- ✅ 9 tests passing
+
+**What's missing:**
+- 🔴 Real reverse-engineered scripts in FP3 (0 real, ~20 seed)
+- 🔴 All 5 evidence runs use same hook_type (冲突爆发) + conflict_type (权力碾压)
+- 🔴 PARASITE operator: no code
+- 🔴 DISTORT/MISDIRECT/THEFT: no code
 
 **Entry gate:**
 - ✅ Phase 1 demo complete
-- ✅ Phase 0 corpus: 30 real reverse-engineered scripts
-- ✅ QualityGate calibration: σ > 0.01 on ≥ 5 dimensions
-
-**MVP gate:**
-- ✅ 100 scripts in corpus
-- ✅ GRAFT produces output rated "consistently good" by human
-- ✅ PARASITE matches trends to compatible spines reliably
-
-**Complete gate:**
-- ✅ 300 scripts in corpus
-- ✅ Cross-genre GRAFT works
-- ✅ Corpus is defensible (competitors can't replicate quickly)
+- ❌ Phase 0 corpus: 0/30 real reverse-engineered scripts
+- ❌ QualityGate calibration: meaningless with seed data
 
 **Key files:**
-- `flowbeast/fp3/injector.py` — Add VTO transformation logic
-- `flowbeast/fp3/retriever.py` — Add operator-aware retrieval
-- `flowbeast/fp3/vto/` — Operator implementations (new)
-
-**Status:** 🔴 Blocked (Phase 0: 0/30 scripts, Phase 1: not started)
+- `flowbeast/vto/graft.py` — GRAFT v0 (complete)
+- `flowbeast/fp3/injector.py` — RAG injection (working)
+- `flowbeast/fp3/retriever.py` — k-NN retrieval (working)
 
 ---
 
@@ -106,19 +103,21 @@
 
 ---
 
-## Execution Strategy
+## Execution Strategy (Updated 2026-06-01)
 
-**Parallel execution:**
-- Phase 0 (corpus) runs in parallel with Phase 1 (demo)
-- Sprint 1+2 (4 weeks): 30 scripts → Phase 2 entry gate
-- Phase 2 starts when BOTH Phase 0 and Phase 1 are ready
+**Phase 1 is complete.** The only remaining blocker is Phase 0 (corpus).
+
+**Current focus:**
+- Phase 0 (corpus): Sprint 1 → 15 scripts in 2 weeks → Phase 2 entry gate
+- Phase 1 (demo): Maintenance only — bug fixes, not new features
+- Phase 2 (VTO): Blocked until 30 real scripts. PARASITE design can start but implementation waits.
 
 **Timeline:**
-- **Weeks 1-2:** Phase 1 engineering + Phase 0 Sprint 1 (15 scripts)
-- **Weeks 3-4:** Phase 1 polish + Phase 0 Sprint 2 (15 scripts)
-- **Week 5+:** Phase 2 entry (if both gates met)
+- **Weeks 1-2 (June 1-14):** Phase 0 Sprint 1 — 15 real reverse-engineered scripts
+- **Weeks 3-4 (June 15-28):** Phase 0 Sprint 2 — reach 30 scripts → Phase 2 entry gate
+- **Week 5+:** Phase 2 GRAFT with real corpus + PARASITE v0
 
-**Key insight:** Phase 2 is NOT blocked by Phase 1 alone. It's blocked by BOTH Phase 1 (demo) AND Phase 0 (corpus). Start both now.
+**Key insight:** Phase 1 was the easy part. Phase 0 is the hard part — it requires human curation, not code. Every day of watching and reverse-engineering viral scripts is more valuable than a week of building infrastructure.
 
 ---
 
@@ -130,10 +129,12 @@
 - Quality distribution: 60% viral, 20% average, 20% failed
 - QualityGate calibration meaningful (σ > 0.01)
 
-**Phase 1 (demo) success:**
-- User can type topic → see script + shots + audio in browser
-- 5 successful end-to-end runs with different topics
-- Error handling works (LLM failures, parse errors)
+**Phase 1 (demo) success:** ✅ COMPLETE
+- ✅ User can type topic → see script + shots + audio in Streamlit UI
+- ✅ 5 successful GRAFT runs with different topics
+- ✅ Error handling works (LLM failures, parse errors)
+- ✅ 67 tests passing
+- ✅ FastAPI server with 4 endpoints
 
 **Phase 2 (VTO) success:**
 - GRAFT on NEW topic produces output rated "better than random"

@@ -1,11 +1,25 @@
 # Task 002: Implement GRAFT Operator
 
-## Status: ⬜ Not Started
-## Priority: 🟡 High (Phase 2, after Phase 1 demo works)
+## Status: ✅ Complete (v0.5.0-mvp — GRAFT v0)
+## Priority: 🟡 High (Phase 2, after Phase 1 demo works) — v0 SHIPPED
 ## Depends on: `001_demo_ui_endpoint.md`
 ## Related: `.ai/skills/skill_vto.md` (if it existed — now in CLAUDE.md)
 
-## Objective
+## Shipped (v0.5.0-mvp, 2026-05-31)
+
+- ✅ `flowbeast/vto/graft.py` — GRAFT v0 operator (231 lines)
+- ✅ Extracts `hook_structure` (type, opening_line, time_to_hook, audience_question, emotional_payload)
+- ✅ Extracts `conflict_pattern` (type, escalation_curve, reversal_count, highest_stakes)
+- ✅ Builds structural transfer prompt with 5 migration instructions
+- ✅ 9 tests (`tests/test_graft.py`)
+- ✅ 5 evidence runs with different topics, all show `mode: graft` in production_report.json
+- ✅ Integrated in pipeline.py and API endpoints
+
+**Limitation:** Currently uses seed data (hand-written ViralUnit entries), not real reverse-engineered scripts. Quality will improve dramatically once 30+ real scripts are in FP3.
+
+---
+
+## Objective (Original)
 
 Implement the GRAFT transformation operator: preserve a proven viral structure (hook atom) and graft it onto a new topic/context, producing a structurally familiar but semantically novel script.
 

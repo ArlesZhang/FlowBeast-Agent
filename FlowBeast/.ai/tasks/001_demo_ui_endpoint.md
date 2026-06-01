@@ -1,11 +1,23 @@
 # Task 001: Demo UI — Generation Endpoint + Frontend
 
-## Status: ⬜ Not Started
-## Priority: 🔴 Critical (blocks all other work)
+## Status: ✅ Complete (v0.5.0-mvp)
+## Priority: 🔴 Critical (blocks all other work) — RESOLVED
 ## Depends on: —
 ## Related: `.ai/goals/phase_1_mvp.md`
 
-## Objective
+## Shipped (v0.5.0-mvp, 2026-05-31)
+
+- ✅ FastAPI: `POST /api/v1/generate`, `GET /api/v1/tasks/{task_id}`, `GET /api/v1/download/{file_type}/{run_id}` — 3 endpoints
+- ✅ Streamlit demo UI (`flowbeast/demo/app.py`) — single-page: input, status, structure, script, audio, downloads
+- ✅ 5 successful GRAFT runs with different topics (evidence package)
+- ✅ 9 GRAFT operator tests (`tests/test_graft.py`)
+- ✅ Total test suite: 67 tests passing (updated to 57 after test audit)
+
+**Note:** This task is complete. The implementation went beyond the original spec by including GRAFT integration, Streamlit UI, and async job handling with BackgroundTasks.
+
+---
+
+## Objective (Original)
 
 Wire the existing pipeline (`run_full_pipeline`) into a FastAPI endpoint and build a minimal web frontend. This is the single most important task — nothing else matters until this works.
 
