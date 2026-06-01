@@ -1,0 +1,94 @@
+{
+    "source_title": "重生回到高考前一天",
+    "source_platform": "抖音",
+    "source_url": "https://www.douyin.com/...",
+    "viral_metrics": {
+        "views": "800万",
+        "likes": "95万",
+        "comments": "5万"
+    },
+    "quality_label": "viral",
+    "genre": "重生",
+    "tags": [
+        "重生",
+        "逆袭",
+        "爽点",
+        "校园",
+        "阶层焦虑",
+        "代入感"
+    ],
+    "hook_structure": {
+        "opening_line": "他睁开眼，看到黑板上写着'距高考还有1天'。手机上显示着：2014年6月6日。他重生了——回到了改变命运的那一天。",
+        "hook_type": "超自然介入",
+        "time_to_hook": "within_3s",
+        "audience_question": "如果他带着未来的记忆回到过去，他会怎么做？他能改变命运吗？",
+        "emotional_payload": "希望"
+    },
+    "conflict_pattern": {
+        "conflict_type": "规则博弈",
+        "escalation_curve": [
+            "铺垫",
+            "升级",
+            "悬念",
+            "爆发",
+            "反转"
+        ],
+        "reversal_count": 3,
+        "highest_stakes": "生存"
+    },
+    "emotional_curve": {
+        "curve_sequence": [
+            "震惊",
+            "希望",
+            "紧张",
+            "爽点",
+            "希望"
+        ],
+        "peak_emotion": "爽点",
+        "peak_position": "late",
+        "resolution_type": "爽点收尾"
+    },
+    "pacing_profile": {
+        "duration_sec": 210,
+        "scene_count": 7,
+        "beat_distribution": {
+            "setup": 2,
+            "tension": 2,
+            "reveal": 1,
+            "payoff": 2
+        },
+        "avg_scene_duration": 30.0
+    },
+    "characters": [
+        {
+            "name": "陈然",
+            "role": "protagonist",
+            "archetype": "隐忍逆袭",
+            "transformation_arc": "从普通差生带着未来记忆逆袭为高考状元"
+        },
+        {
+            "name": "李老师",
+            "role": "mentor",
+            "archetype": "严师慈父",
+            "transformation_arc": "从质疑主角到全力支持"
+        },
+        {
+            "name": "赵明",
+            "role": "antagonist",
+            "archetype": "学霸傲慢",
+            "transformation_arc": "从嘲笑主角到被主角超越后的不甘心"
+        }
+    ],
+    "music_style": "空灵开场 → 紧张备考节奏加快 → 出分时刻史诗感",
+    "voice_style": "男主内心独白温暖坚定，配角语速快制造紧张感",
+    "visual_style_notes": "回忆场景用暖黄色调，考试场景冷色调突出紧张",
+    "special_techniques": [
+        "重生瞬间用镜头旋转+画面倒流特效",
+        "倒计时数字叠加在画面上制造紧迫感",
+        "出分瞬间全场安静3秒后爆发欢呼"
+    ],
+    "prompt_atoms": [],
+    "vertical_name": "重生逆袭",
+    "latent_embedding": null,
+    "semantic_summary": "这部剧火在满足了'如果能重新选择一次'的集体幻想——高考是中国年轻人共同的命运转折点，重生回到这一天让每个人都有代入感。"
+}
