@@ -40,7 +40,7 @@ app.add_middleware(
 
 # ==================== 任务状态存储 ====================
 # In-memory task registry (JSON-backed for persistence)
-TASKS_FILE = BASE_DIR / "flowbeast" / "data" / "tasks_state.json"
+TASKS_FILE = BASE_DIR / "flowbeast" / "data" / "runtime" / "tasks_state.json"
 _task_state: dict = {}
 
 
