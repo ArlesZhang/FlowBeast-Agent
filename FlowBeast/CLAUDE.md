@@ -4,7 +4,8 @@
 
 FlowBeast is a **Viral Prompt Compiler**: input a topic, output a complete prompt package (`prompt_package.json`) ready for AI video tools (Seedance, Kling, HeyGen). The core moat is the **FP3 Viral Memory System** — composable narrative atoms + VTO operators + QualityGate. The production pipeline (script → audio → video) is a replaceable commodity layer.
 
-For current status, goals, and task breakdowns, see `.ai/`.
+For current status, goals, and task breakdowns, see `.ai/current/`.
+Historical reports, milestones, and reviews are in `.ai/archive/`.
 
 
 ## Language Policy (STRICT)
@@ -68,8 +69,8 @@ When multiple sources conflict, prioritize:
 
 When working on a specific task:
 
-1. Read `.ai/goals/current_goal.md` to understand the current phase
-2. Read `.ai/status/current_status.md` to see what's wired vs stub
-3. Read `.ai/decisions/002_what_we_do_not_do.md` to avoid scope creep
-4. Pick the next task from `.ai/tasks/` (ordered by priority)
+1. Read `.ai/current/goal.md` to understand the current phase
+2. Read `.ai/current/status.md` to see what's wired vs stub
+3. Read `.ai/current/decisions/002_what_we_do_not_do.md` to avoid scope creep
+4. Pick the next task from `.ai/current/tasks/` (ordered by priority)
 5. Execute. Do not propose work outside the current phase.

@@ -26,7 +26,7 @@ Workflow: upstream.py → this_module() → downstream.py
 - Entry point: `main.py` (project root)
 - Tests: `tests/` (pytest, run via `uv run pytest tests/ -q`)
 - Dev configs: `.devcontainer/`, `.cursor/rules/`, `CLAUDE.md`
-- Project goals/status: `.ai/goals/`, `.ai/status/`, `.ai/decisions/`
+- Project goals/status: `.ai/current/` (goal.md, status.md, decisions/, tasks/)
 
 ## Git Workflow
 - Branch: `develop` (main working branch)

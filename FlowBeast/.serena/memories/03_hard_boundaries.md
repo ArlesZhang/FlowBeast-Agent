@@ -1,6 +1,6 @@
 # Hard Boundaries — What FlowBeast Does NOT Do
 
-**Source:** `.ai/decisions/002_what_we_do_not_do.md`
+**Source:** `.ai/current/decisions/002_what_we_do_not_do.md`
 
 **Every time tempted to build something new, check this list first.**
 

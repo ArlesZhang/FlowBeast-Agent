@@ -35,9 +35,11 @@
 **Before 30 real samples: NO corpus system redesign, NO new databases, NO schema optimization, NO automation, NO new VTO operators.** Focus on acquiring and reverse-engineering scripts only.
 
 ## Key Files
-- `.ai/goals/current_goal.md` — current milestone goal
-- `.ai/milestones/v0.6.0-corpus-30.md` — sprint tracker
-- `.ai/reports/001_corpus_factory.md` — full audit
-- `.ai/reports/002_gold_standard_vocab.md` — controlled vocabularies
-- `.ai/reports/003_human_annotation_checklist.md` — annotation guide
-- `.ai/reports/004_corpus_quality_criteria.md` — quality scoring
+- `.ai/current/goal.md` — current milestone goal
+- `.ai/current/roadmap.md` — project roadmap
+- `.ai/current/status.md` — current status
+- `.ai/archive/milestones/v0.6.0-corpus-30.md` — sprint tracker
+- `.ai/archive/reports/001_corpus_factory.md` — full audit
+- `.ai/archive/reports/002_gold_standard_vocab.md` — controlled vocabularies
+- `.ai/archive/reports/003_human_annotation_checklist.md` — annotation guide
+- `.ai/archive/reports/004_corpus_quality_criteria.md` — quality scoring
