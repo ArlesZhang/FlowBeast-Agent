@@ -11,10 +11,6 @@ build/
 .specstory/
 *.egg
 
-# Railway auto-generated files (force Dockerfile usage)
-railpack.json
-start.sh
-
 # ==================== Documentation ====================
 # Project root docs (docs/) - keep .md files, ignore generated
 docs/_build/
