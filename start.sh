@@ -22,4 +22,4 @@ echo "    pytest           # 运行自动化测试"
 echo "========================================"
 
 # 4. 保持终端开启
-exec bash
+exec bash start_dev.sh
