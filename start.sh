@@ -1,6 +1,6 @@
 #!/bin/bash
 # 1. 进入项目根目录
-cd ~/FlowBeast-p1/FlowBeast
+cd "$(dirname "$0")"
 
 # 2. 激活虚拟环境
 if [ -f ".venv/bin/activate" ]; then
