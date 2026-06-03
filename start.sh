@@ -1,6 +1,6 @@
 #!/bin/bash
-# 1. 进入项目根目录
-cd "$(dirname "$0")"
+# 1. 进入 Python 项目子目录
+cd /app/FlowBeast
 
 # 2. 激活虚拟环境
 if [ -f ".venv/bin/activate" ]; then
