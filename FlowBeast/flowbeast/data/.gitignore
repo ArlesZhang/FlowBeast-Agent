@@ -1,0 +1,12 @@
+# Runtime state files (not version controlled)
+runtime/
+
+# Output files
+outputs/
+quality_audit/
+
+# Vector store (generated)
+vector_store/
+
+# Feedback data
+feedback/
