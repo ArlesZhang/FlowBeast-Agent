@@ -1,0 +1,3 @@
+# Ignore actual sample directories (NNN_name format)
+# but keep README.md and template files
+[0-9][0-9][0-9]_*/

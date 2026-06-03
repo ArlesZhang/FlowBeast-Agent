@@ -1,106 +1,76 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> This project uses Cursor Rules - see [.cursor/rules/](./.cursor/rules/) for detailed development guidelines.
 
-## Project Overview
+FlowBeast is a **Viral Prompt Compiler**: input a topic, output a complete prompt package (`prompt_package.json`) ready for AI video tools (Seedance, Kling, HeyGen). The core moat is the **FP3 Viral Memory System** — composable narrative atoms + VTO operators + QualityGate. The production pipeline (script → audio → video) is a replaceable commodity layer.
 
-**FlowBeast** is an AI-powered short-form drama content generation engine. The core pipeline is: **Topic → Viral Script (JSON) → Audio → Video-ready output**.
+For current status, goals, and task breakdowns, see `.ai/current/`.
+Historical reports, milestones, and reviews are in `.ai/archive/`.
 
-Current phase: **v0.3.2** (FP3 Quality Control). The system uses RAG (FP3 knowledge base) to inject viral patterns into LLM prompts for generating hook-driven short drama scripts.
+
+## Language Policy (STRICT)
+
+You MUST always respond in English. This applies to: explanations, code comments, commit messages, debug output, any generated text. DO NOT use Chinese unless the user explicitly requests it. If the user writes in another language, you STILL respond in English.
+
 
 ## Commands
 
 ```bash
-# Install dependencies (uses uv, not pip)
-uv sync
-
-# Run the main drama generation pipeline
-python main.py
-
-# Run the FastAPI server (hot reload)
-uvicorn flowbeast.api.main:app --reload --port 8000
-
-# Initialize the FP3 vector knowledge base (first-time setup)
-python -m scripts.init_fp3
-
-# Process generation feedback and update FP3 knowledge base
-python scripts/feedback_loop.py --dir ./flowbeast/data/outputs --yes
-
-# Run tests
-pytest tests/
-
-# Run a single test file
-pytest tests/full_pipeline_test.py
-
-# Docker
-docker-compose up --build
+uv sync                                              # Install dependencies (uv, not pip)
+python main.py                                       # Run drama generation pipeline
+python main.py --topic "your topic"                  # Run with custom topic
+uvicorn flowbeast.api.main:app --reload --port 8000  # FastAPI server
+uv run streamlit run flowbeast/demo/app.py           # Streamlit demo UI (port 8501)
+uv run python -m flowbeast.fp3.seed_data             # Seed FP3 (ViralUnit + PromptAtom)
+uv run python -m flowbeast.fp3.feedback_ingest \     # Feedback ingest
+  --report production_report.json --views N --likes N
+uv run pytest tests/ -q                              # Run all tests
+uv run pytest tests/test_graft.py -q                 # Run GRAFT tests
+docker-compose up --build                           # Docker
 ```
 
-## Architecture
-
-The system has two core engines working together:
-
-### IP2 — Drama Generation Layer (`flowbeast/drama/`)
-Generates viral short-drama scripts via LLM calls. The main components:
-- `pipeline.py`: Top-level orchestrator — calls generator, saves JSON, triggers audio
-- `generator.py`: Builds the LLM prompt (with FP3 injection), calls the active vendor, parses JSON output
-- `prompt.py`: The structured prompt template for hook-driven storytelling
-- `audio.py`: Converts dialogue lines to MP3 (Edge TTS primary, ElevenLabs premium)
-- `schema.py`: TypedDict definitions — `Script → [Scene] → [Dialogue]`
-
-### FP3 — Viral Gene Knowledge Base (`flowbeast/fp3/`)
-RAG layer that enriches prompts with retrieved viral patterns:
-- `store.py` / `retriever.py`: FAISS-backed vector search
-- `embedding.py`: Text → vector via sentence-transformers
-- `injector.py`: Injects retrieved `ViralUnit` examples into the prompt
-- `feedback.py`: Feeds successful scripts back into the knowledge base
-
-### LLM Routing (`flowbeast/core/config.py`)
-`ACTIVE_VENDOR` env var selects the provider. Default: `gemini` (`gemini-1.5-flash`). Supported: `gemini`, `qwen`, `openai`, `openrouter`, `ollama`.
-
-### Data Flow
-```
-Topic
-→ build_prompt (drama/prompt.py)
-→ FP3Retriever.query() → inject viral examples (fp3/injector.py)
-→ llm_call (active vendor)
-→ extract_json → Script TypedDict
-→ save JSON (data/outputs/)
-→ generate_audio per dialogue line (drama/audio.py)
-→ Production Report JSON
-→ feedback_loop updates FP3
-```
-
-## Configuration
-
-All configuration is in `.env` (gitignored; see `.env.example`):
-- `ACTIVE_VENDOR` — LLM provider (`gemini` default)
-- `GOOGLE_API_KEY`, `DASHSCOPE_API_KEY`, `OPENAI_API_KEY`, `OPENROUTER_API_KEY`
-- `FLOWBEAST_OUTPUT_DIR` — where scripts/audio land
-- `FLOWBEAST_VECTOR_DIR` — FAISS index location
-
-`flowbeast/core/config.py` uses `pydantic-settings` to load these and auto-creates required directories on startup.
-
-## Key Data Structures
-
-```python
-# drama/schema.py
-Script: title, genre, core_hook, scenes: List[Scene]
-Scene:  id, hook, conflict, emotion_curve, dialogue: List[Dialogue]
-Dialogue: speaker, text, emotion, intensity
-
-# fp3/schema.py
-ViralUnit: hook: str, pattern: str, emotion: List[str]
-```
 
 ## Package Manager
 
-This project uses **`uv`** (not pip). Always use `uv sync` to install dependencies and `uv run` to execute scripts when inside Docker. Do not use `pip install`.
+This project uses **`uv`** (not pip). Always use `uv sync` to install dependencies and `uv run` to execute scripts. Do not use `pip install`.
 
-## Agent/Compiler Layer (`flowbeast/agent/`, `flowbeast/compiler/`)
 
-These modules (`compiler.py`, `codegen.py`) are a separate sub-system for NL → IR → Python (Pandas) workflow compilation. They are not part of the drama generation pipeline — they power the `/v1/execute` API endpoint for data transformation use cases.
+## Core File Header Docstrings
 
-## Testing Notes
+Every core module file must begin with a module-level docstring:
 
-Tests in `tests/` cover the agent/compiler layer (NL→IR→Pandas codegen) rather than the drama pipeline. The drama pipeline is tested via `tests/full_pipeline_test.py` as an E2E flow. Test runs require valid API keys in `.env`.
+```python
+"""
+FP3 Store: FAISS-backed vector storage for viral content patterns.
+
+Role: Saves, loads, and searches ViralUnit/ViralScript embeddings.
+Provides k-nearest-neighbor search for RAG retrieval.
+
+Workflow: builder.py → add() → save() / load() ← retriever.py
+"""
+```
+
+State: (1) what it is, (2) role + boundaries, (3) upstream/downstream connections.
+
+
+## Context Priority
+
+When multiple sources conflict, prioritize:
+
+1. Existing repository architecture
+2. CLAUDE.md instructions
+3. `.cursor/rules/`
+4. Existing code patterns
+5. User request
+6. General framework conventions
+
+
+## Goal-Driven Workflow
+
+When working on a specific task:
+
+1. Read `.ai/current/goal.md` to understand the current phase
+2. Read `.ai/current/status.md` to see what's wired vs stub
+3. Read `.ai/current/decisions/002_what_we_do_not_do.md` to avoid scope creep
+4. Pick the next task from `.ai/current/tasks/` (ordered by priority)
+5. Execute. Do not propose work outside the current phase.

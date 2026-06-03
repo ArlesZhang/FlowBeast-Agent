@@ -1,112 +1,101 @@
-def build_prompt(topic: str) -> str:
-    return f"""
-你是一个“短视频爆款生成系统”，而不是普通编剧。
+"""
+Drama Prompt: LLM prompt template for hook-driven short-drama storytelling.
 
-你的任务不是写故事，而是：
-👉 生成一个【可用于流量生产系统】的结构化爽剧数据
+Role: Provides the structured prompt template that guides the LLM to generate
+viral drama scripts. Enforces 爽文 (catharsis-first) writing rules, personal
+stakes, and face-slap dialogue patterns.
 
-主题：
-【{topic}】
+Workflow: generator.py → build_prompt() → inject_prompt() → llm_call()
+"""
 
-==============================
-🎯 爆款生成规则（必须严格遵守）
-==============================
+import random
+from typing import Optional
 
-【1】黄金3秒（Hook）
-- 第一幕必须是：羞辱 / 背叛 / 极端冲突
-- 必须让用户“停下来”
 
-【2】冲突驱动（Conflict）
-- 每一幕都必须有冲突升级
-- 常见类型：羞辱 / 打脸 / 逆袭 / 权力反转 / 金钱碾压
+# ====================== Narrative Structures ======================
 
-【3】情绪曲线（Emotion Curve）
-- 必须设计完整情绪路径，例如：
-  压抑 → 屈辱 → 震惊 → 爆发 → 爽
+NARRATIVE_STRUCTURES = [
+    {
+        "name": "classic_reversal",
+        "pattern": "oppression → identity reveal → counterattack → catharsis",
+        "emotion_global": ["suppression", "humiliation", "shock", "vindication", "catharsis"],
+    },
+    {
+        "name": "mystery_reveal",
+        "pattern": "mystery → clue → false truth → real twist → resolution",
+        "emotion_global": ["curiosity", "suspense", "betrayal", "shock", "satisfaction"],
+    },
+    {
+        "name": "double_identity",
+        "pattern": "normal facade → crisis → ability leak → full reveal → face-slap",
+        "emotion_global": ["pity", "mockery", "anticipation", "shock", "catharsis"],
+    },
+    {
+        "name": "deal_with_devil",
+        "pattern": "desperation → forbidden pact → power awakening → enemy crushed",
+        "emotion_global": ["despair", "tension", "power", "shock", "satisfaction"],
+    },
+    {
+        "name": "parallel_perspective",
+        "pattern": "same event → perspective A → perspective B → truth → reversal",
+        "emotion_global": ["confusion", "anger", "shock", "understanding", "catharsis"],
+    },
+]
 
-【4】强反转（Twist）
-- 第3或第4幕必须出现：
-  👉 身份揭露 / 反杀 / 权力翻转
 
-【5】节奏（Pacing）
-- 全剧控制在 5-6 个场景
-- 节奏必须快（short-video风格）
+def build_prompt(
+    topic: str,
+    trend_context: Optional[str] = None,
+    narrative_style: Optional[str] = None,
+    fp3_injected: str = "",
+) -> str:
+    if narrative_style is None:
+        chosen = random.choice(NARRATIVE_STRUCTURES)
+    else:
+        chosen = next(
+            (s for s in NARRATIVE_STRUCTURES if s["name"] == narrative_style),
+            random.choice(NARRATIVE_STRUCTURES),
+        )
 
-==============================
-📊 数据结构要求（极其重要）
-==============================
+    prompt = f"""You are a top-tier writer of viral Chinese short-dramas (短剧/漫剧). These are 爽文 — stories designed for maximum emotional payoff, not literary merit. Write a script about: {topic}
 
-你输出的不是“剧本”，而是“结构化爆款数据”，必须包含：
+Structure: {chosen['name']} — {chosen['pattern']}
 
-- hook（钩子）
-- conflict（冲突类型）
-- emotion_curve（情绪路径）
-- tags（标签系统）
-- summary（场景摘要）
+CRITICAL RULES:
+1. HOOK (0-3s): Start with MAXIMUM conflict — slap, betrayal, public humiliation. The viewer must stop scrolling instantly.
+2. PERSONAL STAKE: Ground every conflict in one person's life — not abstract society. A mother's fear, a worker's last day, a daughter's debt. Make it specific and visceral.
+3. MAKE THE VILLAIN HATEABLE: The villain must do something viscerally insulting within the first 2 scenes — mock the poor, spit on the weak, betray family. The viewer should want them destroyed.
+4. EVERY SCENE ESCALATES: Each scene must raise the stakes. Power reversal, money crush, public face-slap, identity reveal. No filler.
+5. EMOTION CURVE MUST END ON CATHARSIS: suppression → humiliation → shock → 爆发 → 爽. The hero WINS. The villain is crushed. The viewer feels 爽 (deep satisfaction). Never end on existential dread or ambiguity.
+6. FACE-SLAP MOMENT: At the climax, the hero must deliver a brutal callback line — repeating the villain's earlier mockery back at them. This is the moment viewers replay and share.
+7. DIALOGUE: Short, blunt, emotional. Max 20 characters per line. NO technical jargon. NO literary prose. Think: real people screaming at each other.
+8. 5-6 scenes total. Fast pacing. No exposition dumps.
 
-==============================
-🎬 视觉生成要求（用于视频生产）
-==============================
-
-- 每个角色必须有稳定 visual_desc（英文）
-- 每个 scene 必须包含：
-  - visual_prompt（英文，用于MJ/SD）
-  - shot_type（镜头类型）
-
-==============================
-📦 严格 JSON 输出格式（必须完全符合）
-==============================
-
+JSON output format (no markdown, no explanation, no extra text):
 {{
   "title": "{topic}",
-  "genre": "类型（如：逆袭 / 战神 / 校园）",
-  "target_audience": "受众（如下沉市场 / 女性向）",
-
-  "core_hook": "整个故事最强钩子（标题党）",
-  "tags": ["标签1", "标签2"],
-  "emotion_curve_global": ["情绪1", "情绪2"],
-
-  "characters": [
-    {{
-      "name": "角色名",
-      "visual_desc": "英文外貌描述（稳定，用于生成一致角色）",
-      "voice_tag": "语音ID"
-    }}
-  ],
-
-  "scenes": [
-    {{
-      "id": 1,
-      "hook": "本幕钩子",
-      "conflict": "冲突类型",
-      "summary": "一句话描述本场景",
-
-      "emotion_curve": ["情绪变化路径"],
-
-      "shot_type": "Close-up / Wide shot / High-angle",
-      "visual_prompt": "英文提示词（包含角色+动作+环境）",
-
-      "pace": "fast / medium / slow",
-      "climax": true,
-
-      "dialogue": [
-        {{
-          "speaker": "角色名",
-          "text": "短促有力台词",
-          "emotion": "情绪",
-          "intensity": 9
-        }}
-      ]
-    }}
-  ]
+  "genre": "genre tag (e.g. revenge, counterattack, face-slap)",
+  "core_hook": "one sentence: the most shareable moment in this script",
+  "tags": ["tag1", "tag2"],
+  "emotion_curve_global": ["{chosen['emotion_global'][0]}", "...", "{chosen['emotion_global'][-1]}"],
+  "characters": [{{"name": "name", "visual_desc": "physical appearance in English", "voice_tag": "id"}}],
+  "scenes": [{{
+    "id": 1,
+    "hook": "what grabs the viewer in the first 3 seconds of this scene",
+    "conflict": "who vs who, what type",
+    "summary": "one-line summary",
+    "emotion_curve": ["start emotion", "end emotion"],
+    "climax": true or false,
+    "dialogue": [{{"speaker": "name", "text": "line under 20 chars", "emotion": "emotion", "intensity": 7}}]
+  }}]
 }}
 
-==============================
-❗绝对禁止
-==============================
+Output ONLY valid JSON. No markdown code fences. No explanation. No extra text."""
 
-- 不要解释
-- 不要Markdown
-- 不要多余文本
-- 只输出 JSON
-"""
+    if trend_context:
+        prompt += f"\n\nTrending context to weave into the story: {trend_context}\n"
+
+    if fp3_injected:
+        prompt += f"\n\nReference viral patterns to incorporate:\n{fp3_injected}\n"
+
+    return prompt

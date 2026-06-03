@@ -1,4 +1,12 @@
-# flowbeast/drama/audio.py
+"""
+Drama Audio: converts dialogue text to MP3 files.
+
+Role: Generates individual audio files per dialogue line using Edge TTS
+(default, free) or ElevenLabs (premium). Handles emotion/intensity
+parameter routing and output file naming.
+
+Output: individual MP3s in audio/ directory, later assembled by audio_assembly.py.
+"""
 
 import asyncio
 from pathlib import Path
@@ -14,6 +22,9 @@ from flowbeast.core.config import settings
 # ====================== 默认配置 ======================
 EDGE_VOICE = "zh-CN-YunxiNeural"
 ELEVEN_VOICE = "pNInz6obpgDQGcFmaJgB"
+
+EDGE_TTS_MAX_RETRIES = 2
+EDGE_TTS_BACKOFF = 1  # seconds, exponential base
 
 
 # ====================== ElevenLabs ======================
@@ -68,6 +79,22 @@ async def _edge_generate(text, file_path, emotion=None, intensity=None):
     await communicate.save(str(file_path))
 
 
+async def _edge_generate_with_retry(text, file_path, emotion=None, intensity=None, max_retries=EDGE_TTS_MAX_RETRIES):
+    """Edge TTS wrapper with retry + exponential backoff（处理国内网络不稳定）。"""
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            await _edge_generate(text, file_path, emotion=emotion, intensity=intensity)
+            return
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries:
+                delay = EDGE_TTS_BACKOFF ** attempt
+                logger.warning(f"⚠️ Edge TTS 失败 (第 {attempt}/{max_retries} 次)，{delay}s 后重试: {e}")
+                await asyncio.sleep(delay)
+    raise last_error
+
+
 # ====================== ElevenLabs ======================
 def _eleven_generate(text, file_path):
     client = get_eleven_client()
@@ -112,21 +139,25 @@ def generate_audio(
     if output_dir:
         base_path = Path(output_dir)
     else:
-        base_path = Path(settings.DATA_SAVE_PATH) / "audio"
+        base_path = Path(settings.FLOWBEAST_OUTPUT_DIR) / "audio"
 
     base_path.mkdir(parents=True, exist_ok=True)
 
-    file_path = base_path / f"s{scene_id}_l{line_id}_{speaker}.mp3"
+    safe_speaker = "".join(c for c in speaker if c.isalnum() or c in "_- ")
+    file_path = base_path / f"s{scene_id}_l{line_id}_{safe_speaker}.mp3"
 
     # ====================== 执行生成 ======================
     try:
         if provider == "edge":
             asyncio.run(
-                _edge_generate(
-                    text,
-                    file_path,
-                    emotion=emotion,
-                    intensity=intensity
+                asyncio.wait_for(
+                    _edge_generate_with_retry(
+                        text,
+                        file_path,
+                        emotion=emotion,
+                        intensity=intensity,
+                    ),
+                    timeout=30,
                 )
             )
 
@@ -138,6 +169,9 @@ def generate_audio(
 
         logger.success(f"✅ 音频生成完成: {file_path.name}")
 
+    except asyncio.TimeoutError:
+        logger.warning(f"⚠️ S{scene_id}-L{line_id} 超时，跳过")
+        raise TimeoutError(f"Audio generation timeout for S{scene_id}-L{line_id}")
     except Exception as e:
         logger.error(f"❌ 音频生成失败: {e}")
         raise

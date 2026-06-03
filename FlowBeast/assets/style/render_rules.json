@@ -1,0 +1,6 @@
+{
+  "mode": "2D+3D hybrid",
+  "shadow_intensity": 0.7,
+  "grain": 0.1,
+  "line_weight": "medium-thin"
+}

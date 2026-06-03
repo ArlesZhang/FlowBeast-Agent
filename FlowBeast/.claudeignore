@@ -1,0 +1,52 @@
+# =================================================================
+# .claudeignore — Prevent Claude Code from scanning heavy/irrelevant files
+# =================================================================
+
+# Python dependencies (675MB, the #1 cause of context bloat)
+.venv/
+
+# Python bytecode caches
+__pycache__/
+*.pyc
+
+# Build / dist / docs output
+build/
+dist/
+site/
+
+# Git internals
+.git/
+
+# Claude Code own session data (prevent recursive reads)
+.claude/
+
+# AI prompt assets (private collection, not for agent indexing)
+prompt-set/
+
+# Data & outputs (runtime artifacts, not source code)
+flowbeast/data/
+flowbeast/market_material/raw_data/
+
+# Generated media (no need to read binary files)
+*.mp3
+*.mp4
+*.wav
+*.ogg
+*.flac
+*.aac
+*.m4a
+*.mkv
+*.mov
+*.avi
+*.webm
+*.zip
+*.tar.gz
+*.db
+
+# IDE configs (managed externally, no source relevance)
+.vscode/
+.cursor/
+
+# System
+.DS_Store
+Thumbs.db

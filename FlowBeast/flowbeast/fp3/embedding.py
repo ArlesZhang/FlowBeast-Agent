@@ -1,24 +1,43 @@
-from flowbeast.core.config import settings
+"""FP3 Embedding — delegates to core.providers for real vector generation."""
 
-def embed_text(text: str):
-    """延迟导入，确保不发生循环引用"""
-    from flowbeast.drama.generator import get_client
-    client = get_client()
-    
-    provider = settings.MODEL_PROVIDER.lower()
-    if provider == "gemini":
-        # 使用你 v0.2.0 已有的 client 配置
-        result = client.embed_content(
-            model="models/embedding-001",
-            content=text,
-            task_type="retrieval_query"
+from flowbeast.core.providers import embed_text as _core_embed
+
+
+def embed_text(text: str) -> list:
+    """将文本转化为 embedding 向量。"""
+    return _core_embed(text)
+
+
+def embed_prompt_atom(atom) -> list:
+    """将 PromptAtom 转化为可嵌入文本，然后获取向量。"""
+    text = (
+        f"layer:{atom.layer} role:{atom.role} "
+        f"fragment:{atom.prompt_fragment} tags:{' '.join(atom.tags)}"
+    )
+    return embed_text(text)
+
+
+def embed_unit(unit) -> list:
+    """将 ViralUnit 或 ViralScript 转化为可嵌入的文本，然后获取向量。
+
+    ViralScript 使用深层结构拼接的高可读性拉片文本，保留 hook_structure、
+    conflict_pattern、emotional_curve 等字段作为语义锚点，防止降级抹杀灵魂。
+    """
+    if hasattr(unit, "hook_structure"):  # ViralScript
+        text = (
+            f"hook_type: {unit.hook_structure.hook_type} | "
+            f"opening: {unit.hook_structure.opening_line} | "
+            f"audience_question: {unit.hook_structure.audience_question} | "
+            f"genre: {unit.genre} tags: {' '.join(unit.tags)} | "
+            f"conflict: {unit.conflict_pattern.conflict_type} | "
+            f"escalation: {' '.join(unit.conflict_pattern.escalation_curve)} | "
+            f"emotion_curve: {' '.join(unit.emotional_curve.curve_sequence)} | "
+            f"peak: {unit.emotional_curve.peak_emotion} at {unit.emotional_curve.peak_position} | "
+            f"resolution: {unit.emotional_curve.resolution_type} | "
+            f"beats: {unit.pacing_profile.beat_distribution} | "
+            f"techniques: {' '.join(unit.special_techniques)}"
         )
-        return result['embedding']
-    
-    # 兜底：如果配置还没好，返回 Mock
-    return [0.0] * 1536
-
-def embed_unit(unit):
-    """将 ViralUnit 转化为可嵌入的文本"""
-    text = f"hook: {unit.hook} pattern: {unit.pattern} emotion: {' '.join(unit.emotion)}"
+    else:
+        # ViralUnit legacy
+        text = f"hook: {unit.hook} pattern: {unit.pattern} emotion: {' '.join(unit.emotion)}"
     return embed_text(text)
