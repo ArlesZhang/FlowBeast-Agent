@@ -55,23 +55,34 @@ CMD ["sleep", "infinity"]
 # ============================================
 FROM python:3.12-slim AS production
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install uv via pip (works better in China network than ghcr.io)
 RUN pip install --no-cache-dir uv
 
-WORKDIR /app
+WORKDIR /app/FlowBeast
 
 ENV UV_CACHE_DIR=/tmp/uv_cache
 ENV UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 ENV UV_HTTP_TIMEOUT=600
 
+# Copy dependency files first for better caching
 COPY pyproject.toml uv.lock ./
 
+# Install dependencies
 RUN uv sync --frozen --no-cache --no-dev
 
+# Copy application code
 COPY . .
 
-ENV PATH="/app/.venv/bin:$PATH"
+# Make start scripts executable
+RUN chmod +x start.sh start_dev.sh
+
+ENV PATH="/app/FlowBeast/.venv/bin:$PATH"
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uv run uvicorn flowbeast.api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["./start.sh"]
