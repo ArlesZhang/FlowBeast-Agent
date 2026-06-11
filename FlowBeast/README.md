@@ -1,41 +1,43 @@
 # FlowBeast Content Factory
 
 **Branch:** `case-pride-prejudice`  
-**Single Goal:** Complete the Pride & Prejudice Darcy Rain Confession AI Manju case study, and make it a reusable knowledge base template.
+**Current Milestone:** Case Study #001 Complete (v0.1.0-case-study-001)  
+**Status:** Ready for Video Generation
 
 ---
 
 ## What This Is
 
-This is a **content creation workspace** for producing AI Manju (漫剧) — AI-generated visual storytelling.
+This is a **content production workspace** for AI Manju (漫剧) — AI-generated visual storytelling.
 
 **Not a Python project.** Not a framework. Not infrastructure.
 
-Just a focused workspace for one case study that will become the template for all future case studies.
+A focused workspace that transforms classic literature into AI-ready visual narratives through a proven 9-skill workflow.
 
 ---
 
-## The Mission
+## Case Study #001: Complete ✅
 
-### Case Study #001: Pride & Prejudice — Darcy Rain Confession
+### Pride & Prejudice — Darcy Rain Confession
 
-Transform Jane Austen's iconic rain confession scene (Chapter 34) into a complete AI Manju prompt package.
+Jane Austen's iconic rain confession scene (Chapter 34) has been successfully transformed into a complete AI Manju prompt package.
 
-**Deliverable:** A `prompt_package.json` ready for AI video tools (Seedance, Kling, HeyGen) that produces a 2-minute visual story.
+**Deliverables:**
+- ✅ 48-shot storyboard with camera directions
+- ✅ 2-minute dramatic script
+- ✅ Character bibles for Elizabeth & Darcy
+- ✅ Style lock & negative prompts
+- ✅ `prompt_package.json` ready for AI video tools
 
-**Success Criteria:**
-- [ ] Story analysis captures the emotional core
-- [ ] Adaptation preserves Austen's wit while making it visual
-- [ ] Character consistency maintained across all shots
-- [ ] Style lock prevents visual drift
-- [ ] Prompt package exports correctly to target platforms
+**Target Platforms:** Jimeng AI (即梦), Seedance, Kling, HeyGen
+
+**Tag:** `v0.1.0-case-study-001`
 
 ---
 
 ## The Three Layers
 
-### Content Layer (40% of effort)
-**决定观众是否愿意看**
+### Content Layer (40% of effort) — 决定观众是否愿意看
 
 - **剧本理解** — Deconstruct the source material
 - **情绪提炼** — Map emotional states and conflict structure  
@@ -43,8 +45,9 @@ Transform Jane Austen's iconic rain confession scene (Chapter 34) into a complet
 
 **Directories:** `01_story_analysis/`, `02_emotion_extraction/`, `03_adaptation/`
 
-### Director Layer (30% of effort)
-**决定观众是否留下来看完**
+**Status:** ✅ Complete
+
+### Director Layer (30% of effort) — 决定观众是否留下来看完
 
 - **场景设计** — Break script into visual scenes
 - **镜头设计** — Design every shot: framing, motion, camera
@@ -52,13 +55,16 @@ Transform Jane Austen's iconic rain confession scene (Chapter 34) into a complet
 
 **Directories:** `04_scene_design/`, `05_storyboard/`, `06_character_constraints/`
 
-### Prompt Layer (30% of effort)
-**AI生成约束与提示词工程**
+**Status:** ✅ Complete
+
+### Prompt Layer (30% of effort) — AI生成约束与提示词工程
 
 - **提示词工程** — Compile everything into AI-ready prompts
 - **AI生成约束** — Visual style, negative prompts, platform specs
 
 **Directories:** `07_generation_rules/`, `08_prompts/`
+
+**Status:** ✅ Complete
 
 ---
 
@@ -67,44 +73,88 @@ Transform Jane Austen's iconic rain confession scene (Chapter 34) into a complet
 ```
 lab/
 ├── _templates/                              # Reusable templates for future cases
-│   ├── story_analysis_template.md
-│   ├── emotion_map_template.md
-│   ├── storyboard_template.md
-│   ├── character_bible_template.md
-│   ├── style_lock_template.md
-│   └── prompt_package_template.md
+│   ├── 01-story-analysis.md
+│   ├── 02-emotion-extraction.md
+│   ├── 03-adaptation-strategy.md
+│   ├── 04-script-writing.md
+│   ├── 05-scene-design.md
+│   ├── 06-storyboard.md
+│   ├── 07-character-bible.md
+│   ├── 08-style-lock.md
+│   └── 09-prompt-package.md
 │
-└── pride_prejudice_rain_confession/         # Case Study #001
-    ├── 01_story_analysis/                   # Content Layer
-    ├── 02_emotion_extraction/               # Content Layer
-    ├── 03_adaptation/                       # Content Layer
-    ├── 04_scene_design/                     # Director Layer
-    ├── 05_storyboard/                       # Director Layer
-    ├── 06_character_constraints/            # Director Layer
-    ├── 07_generation_rules/                 # Prompt Layer
-    └── 08_prompts/                          # Prompt Layer
+└── pride_prejudice_rain_confession/         # Case Study #001 (Complete)
+    ├── 01_story_analysis/                   # ✅ Story analysis complete
+    ├── 02_emotion_extraction/               # ✅ Emotional arcs mapped
+    ├── 03_adaptation/                       # ✅ Script & strategy complete
+    ├── 04_scene_design/                     # ✅ 5 scenes designed
+    ├── 05_storyboard/                       # ✅ 48 shots designed
+    ├── 06_character_constraints/            # ✅ Character bibles complete
+    ├── 07_generation_rules/                 # ✅ Style lock & negatives ready
+    ├── 08_prompts/                          # ✅ Prompt package exported
+    └── 09_retrospective/                    # ⏳ Pending (post-generation)
 ```
 
 ---
 
-## How to Use This Workspace
+## Current Phase: Video Generation
 
-### For Content Creators
+### Next Steps
 
-1. Start with `01_story_analysis/story_analysis.md`
-2. Work through each directory in order
-3. Use templates from `lab/_templates/` for consistency
-4. When complete, export `08_prompts/prompt_package.json`
+1. **Import prompt package** into Jimeng AI (即梦) / Seedance / Kling
+   - File: `lab/pride_prejudice_rain_confession/08_prompts/prompt_package.json`
+   
+2. **Generate 48 shots** using the prompts
+   - Review character consistency across shots
+   - Check visual style matches style lock
+   - Verify emotional beats land correctly
 
-### For Future Case Studies
+3. **Assemble into 2-minute video**
+   - Sequence shots according to storyboard
+   - Add transitions and sound design
+   - Final color grading
+
+4. **Review and iterate**
+   - Does it capture the emotional core?
+   - Is character consistency maintained?
+   - Does it work as AI Manju (not cheesy/melodramatic)?
+
+5. **Document learnings** in `09_retrospective/`
+   - What worked well?
+   - What could be improved?
+   - How to apply to Case Study #002?
+
+---
+
+## Reusable Skills Framework
+
+The 9 skills used to complete Case Study #001 are now **proven templates** for future case studies:
+
+| Skill | Phase | Output |
+|-------|-------|--------|
+| `01-story-analysis` | Content | Story analysis document |
+| `02-emotion-extraction` | Content | Emotional arc maps |
+| `03-adaptation-strategy` | Content | Adaptation decisions |
+| `04-script-writing` | Content | 2-minute script |
+| `05-scene-design` | Director | Scene breakdown |
+| `06-storyboard` | Director | Shot list & camera directions |
+| `07-character-bible` | Director | Character sheets |
+| `08-style-lock` | Prompt | Visual style & negatives |
+| `09-prompt-package` | Prompt | AI-ready prompt package |
+
+**For Case Study #002:** Invoke skills sequentially using the same workflow.
+
+---
+
+## Future Case Studies
 
 This case study becomes the template. Future cases:
-- 罗密欧与朱丽叶 (Romeo and Juliet)
-- 基督山伯爵 (The Count of Monte Cristo)
-- 悲惨世界 (Les Misérables)
-- 原创短剧 (Original short dramas)
+- 罗密欧与朱丽叶 (Romeo and Juliet) — Balcony scene
+- 基督山伯爵 (The Count of Monte Cristo) — Revelation scene
+- 悲惨世界 (Les Misérables) — Jean Valjean's redemption
+- 原创短剧 (Original short dramas) — Contemporary stories
 
-Each will follow the same 8-directory structure.
+Each will follow the same 9-skill workflow, building on refined templates.
 
 ---
 
@@ -118,12 +168,27 @@ Every case study is a knowledge base entry for FlowBeast. The goal is not just t
 
 ---
 
-## Status
+## Technical Details
 
-**Current Phase:** Week 1 — Story Analysis
+**Branch:** `case-pride-prejudice`  
+**Base Commit:** `0ab8a37` (same as `develop` and `main`)  
+**Current Commit:** `7e54ced`  
+**Current Tag:** `v0.1.0-case-study-001`
 
-**Next Task:** Write `01_story_analysis/story_analysis.md` answering:
-1. Why does Darcy confess?
-2. Why does Elizabeth refuse?
-3. What is the real conflict?
-4. Why is the audience moved?
+**Archived Infrastructure:** All Python code, tests, and infrastructure remain in `main` and `develop` branches for future use.
+
+**Git Strategy:** This branch focuses on content creation. When ready to merge back to `main`, only merge the `lab/` directory and updated documentation.
+
+---
+
+## Quick Links
+
+- **Prompt Package:** `lab/pride_prejudice_rain_confession/08_prompts/prompt_package.json`
+- **Script:** `lab/pride_prejudice_rain_confession/03_adaptation/script.md`
+- **Storyboard:** `lab/pride_prejudice_rain_confession/05_storyboard/shot_list.md`
+- **Character Bibles:** `lab/pride_prejudice_rain_confession/06_character_constraints/`
+- **Templates:** `lab/_templates/`
+
+---
+
+**Case Study #001 is complete. Ready for production. 🎬**

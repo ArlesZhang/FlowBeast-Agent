@@ -1,115 +1,87 @@
-# FlowBeast Content Factory — Case Study #001
+# FlowBeast Content Factory
 
 **Branch:** `case-pride-prejudice`  
-**Single Goal:** 完成《傲慢与偏见》达西雨中表白的 AI 漫剧案例，沉淀为可复用的知识库模板。
+**Current Milestone:** Case Study #001 Complete (v0.1.0-case-study-001)  
+**Next Phase:** Video Generation & Case Study #002 Preparation
 
 ---
 
-## Absolute Focus
+## Status: Case Study #001 Complete ✅
 
-This workspace exists for **one purpose only**:
+The Pride & Prejudice Darcy Rain Confession case study has been successfully completed with all 9 skills executed:
 
-> Complete the Pride & Prejudice Darcy Rain Confession AI Manju case study.
+- ✅ Story analysis (Chapter 34 deep dive)
+- ✅ Emotion extraction (character emotional arcs)
+- ✅ Adaptation strategy (literary to visual)
+- ✅ Script writing (2-minute dramatic script)
+- ✅ Scene design (5-scene breakdown)
+- ✅ Storyboard (48 shots with camera directions)
+- ✅ Character bibles (Elizabeth & Darcy)
+- ✅ Style lock & negative prompts
+- ✅ Prompt package (JSON ready for AI tools)
 
-**Not a Python project. Not a framework. Not infrastructure.**
-
-If a task doesn't directly advance this case study, **don't do it.**
+**Deliverable:** `lab/pride_prejudice_rain_confession/08_prompts/prompt_package.json`
 
 ---
 
-## Goal-Driven Workflow with Skills
+## Current Focus
 
-This project uses **9 sequential skills** to complete the case study. Each skill corresponds to a phase of work and produces specific deliverables.
+This workspace has transitioned from **content creation** to **content production**:
 
-### How to Use
+> Generate video from the completed prompt package, then apply the reusable template to Case Study #002.
 
-Invoke skills by saying:
-- "使用 story-analysis skill" or "开始故事分析" or "step 1"
-- "使用 emotion-extraction skill" or "情绪提炼" or "step 2"
-- Continue through all 9 steps
+**Two parallel tracks:**
+1. **Video Generation:** Import `prompt_package.json` into Jimeng AI (即梦) / Seedance / Kling
+2. **Template Refinement:** Review Case Study #001, improve templates based on learnings
 
-Or invoke any skill directly by name at any time.
+---
 
-### The 9 Skills
+## Reusable Skills Framework (9 Skills)
+
+The 9 skills used to complete Case Study #001 are now **proven templates** for future case studies:
 
 #### Content Layer (内容层)
 
-1. **`story-analysis`** — 剧本理解
-   - Output: `01_story_analysis/story_analysis.md`
-   - User role: Read source, provide interpretation
-   - Claude role: Structure analysis, supplement perspectives
-
-2. **`emotion-extraction`** — 情绪提炼
-   - Output: `02_emotion_extraction/emotion_map.md`, `conflict_structure.md`
-   - User role: Describe emotional beats
-   - Claude role: Generate documents, visualize curves
-
-3. **`adaptation-strategy`** — 编剧改编策略
-   - Output: `03_adaptation/adaptation_strategy.md`
-   - User role: Make creative decisions (keep/cut/amplify)
-   - Claude role: Present options, analyze tradeoffs
-
-4. **`script-writing`** — 写剧本
-   - Output: `03_adaptation/script.md`
-   - User role: Review and approve
-   - Claude role: Write script based on strategy
+1. **`01-story-analysis`** — 剧本理解
+2. **`02-emotion-extraction`** — 情绪提炼
+3. **`03-adaptation-strategy`** — 编剧改编策略
+4. **`04-script-writing`** — 写剧本
 
 #### Director Layer (导演层)
 
-5. **`scene-design`** — 场景设计
-   - Output: `04_scene_design/scene_breakdown.md`
-   - User role: Visualize scenes, make decisions
-   - Claude role: Structure scenes, provide references
-
-6. **`storyboard`** — 分镜设计
-   - Output: `05_storyboard/shot_list.md`, `camera_directions.md`
-   - User role: Make directorial decisions
-   - Claude role: Generate shot list, suggest camera work
-
-7. **`character-bible`** — 角色一致性体系
-   - Output: `06_character_constraints/*.md` (4 files)
-   - User role: Define character vision
-   - Claude role: Structure character sheets, provide era references
+5. **`05-scene-design`** — 场景设计
+6. **`06-storyboard`** — 分镜设计
+7. **`07-character-bible`** — 角色一致性体系
 
 #### Prompt Layer (提示词层)
 
-8. **`style-lock`** — 风格锁定与约束
-   - Output: `07_generation_rules/style_lock.md`, `negative_prompts.md`
-   - User role: Define visual style preferences
-   - Claude role: Structure constraints, generate negative prompts
+8. **`08-style-lock`** — 风格锁定与约束
+9. **`09-prompt-package`** — 提示词包生成
 
-9. **`prompt-package`** — 提示词包生成
-   - Output: `08_prompts/prompt_package.json`, `per_shot_prompts.md`
-   - User role: Review and approve
-   - Claude role: Compile all work into final prompt package
-
-### Workflow Sequence
-
-```
-story-analysis → emotion-extraction → adaptation-strategy → script-writing
-    ↓                                                              ↓
-scene-design ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ←
-    ↓
-storyboard → character-bible → style-lock → prompt-package
-```
-
-Each skill builds on previous outputs. Complete them in order for best results.
+**For Case Study #002:** Invoke skills by saying "开始故事分析" or "step 1", then proceed through all 9 steps.
 
 ---
 
 ## Current Phase
 
-**Week 1: Story Analysis**
+**Phase 2: Video Generation & Template Refinement**
 
-You are helping the user deconstruct Jane Austen's rain confession scene (Chapter 34) and prepare it for AI visual storytelling.
+### Track 1: Video Generation (User Action)
+1. Import `lab/pride_prejudice_rain_confession/08_prompts/prompt_package.json` into Jimeng AI (即梦) / Seedance / Kling
+2. Generate 48 shots using the prompts
+3. Assemble shots into 2-minute video
+4. Review visual quality, character consistency, emotional impact
 
-**Immediate task:** Invoke `story-analysis` skill to create `01_story_analysis/story_analysis.md`
+### Track 2: Template Refinement (Claude + User Collaboration)
+1. Review Case Study #001 outputs (all 8 directories)
+2. Identify what worked well and what could be improved
+3. Update templates in `lab/_templates/` based on learnings
+4. Document lessons learned in `lab/pride_prejudice_rain_confession/09_retrospective/`
 
-This file must answer:
-1. 达西为什么要表白？
-2. 伊丽莎白为什么拒绝？
-3. 这场戏真正的冲突是什么？
-4. 观众为什么会被打动？
+### Track 3: Case Study #002 Preparation (Future)
+1. Select next classic scene (e.g., Romeo & Juliet balcony, Monte Cristo revelation)
+2. Apply refined templates to new case study
+3. Execute 9-skill workflow with improved efficiency
 
 ---
 
@@ -175,19 +147,30 @@ When multiple sources conflict, prioritize:
 
 ## Success Metrics
 
-This branch succeeds when:
+### Phase 1 Complete ✅ (v0.1.0-case-study-001)
+- [x] All 9 skills completed
+- [x] Story analysis captures emotional core of Chapter 34
+- [x] Emotion maps track both characters' arcs
+- [x] Adaptation strategy makes clear creative decisions
+- [x] Script approved (2 minutes, 48 shots)
+- [x] Storyboard designs every shot with camera directions
+- [x] Character bibles ensure AI consistency
+- [x] Prompt package exports to AI video tools
+- [x] Templates created for reuse
 
-- [ ] All 9 skills completed
-- [ ] `01_story_analysis/story_analysis.md` is complete and insightful
-- [ ] `02_emotion_extraction/emotion_map.md` captures the emotional arc
-- [ ] `03_adaptation/adaptation_strategy.md` makes clear creative decisions
-- [ ] `03_adaptation/script.md` is approved by user
-- [ ] `05_storyboard/shot_list.md` designs every shot
-- [ ] `06_character_constraints/` ensures AI consistency
-- [ ] `08_prompts/prompt_package.json` exports to AI video tools
-- [ ] The case study can be reused as a template for future works
+### Phase 2: In Progress
+- [ ] Video generated from prompt package (Jimeng/Seedance/Kling)
+- [ ] Visual quality meets cinematic standards
+- [ ] Character consistency maintained across 48 shots
+- [ ] Emotional impact preserved from script to screen
+- [ ] Templates refined based on Case Study #001 learnings
+- [ ] Retrospective documented in `09_retrospective/`
 
-**Nothing else matters.**
+### Phase 3: Future
+- [ ] Case Study #002 selected and planned
+- [ ] Refined templates applied to new case study
+- [ ] Workflow efficiency improved (faster execution)
+- [ ] Second prompt package ready for generation
 
 ---
 
@@ -209,12 +192,24 @@ Every decision, every template, every file is designed to be **reused** for:
 
 ## Quick Start
 
-To begin the case study:
+### For Video Generation (Current Priority):
+1. Open `lab/pride_prejudice_rain_confession/08_prompts/prompt_package.json`
+2. Import into Jimeng AI (即梦) / Seedance / Kling
+3. Generate shots one by one using the prompts
+4. Assemble into 2-minute video
+5. Review and iterate
 
-1. Say: **"开始故事分析"** or **"使用 story-analysis skill"** or **"step 1"**
+### For Case Study #002 (Future):
+1. Say: **"开始故事分析"** or **"使用 01-story-analysis skill"** or **"step 1"**
 2. Claude will guide you through the skill
 3. When complete, move to next skill: **"情绪提炼"** or **"step 2"**
 4. Continue through all 9 steps
 5. Final deliverable: `08_prompts/prompt_package.json`
 
-**You are now ready to create.**
+### For Template Refinement:
+1. Review outputs in `lab/pride_prejudice_rain_confession/`
+2. Discuss what worked and what could improve
+3. Update templates in `lab/_templates/`
+4. Document learnings in `09_retrospective/`
+
+**Case Study #001 is complete. Ready for production.**
