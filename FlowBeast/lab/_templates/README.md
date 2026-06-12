@@ -14,9 +14,12 @@
 | `storyboard_template.md` | 06-storyboard | Shot-by-shot design | Case Study #001 ✅ |
 | `character_bible_template.md` | 07-character-bible | Character consistency | Case Study #001 ✅ |
 | `style_lock_template.md` | 08-style-lock | Visual style constraints | Case Study #001 ✅ |
+| `scene_lock_template.md` | 08-style-lock | Scene consistency constraints | Case Study #001 ✅ |
 | `prompt_package_template.md` | 09-prompt-package | Final prompt export | Case Study #001 ✅ |
 
 **Note:** Skills 03-05 (adaptation, scene design) use custom outputs based on the specific case, so they don't have separate template files. Their structure is documented in the case study itself.
+
+**New in v0.1.1:** `scene_lock_template.md` added to address the second biggest failure point in AI visual storytelling — scene inconsistency.
 
 ---
 
