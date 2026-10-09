@@ -1,157 +1,57 @@
-# FlowBeast-Agent  
->**The Data Workflow Compiler for LLMops**
+## Flowbeast-Agent｜AI Agent 应用实践
 
----
+重要提醒:该项目虽可demo,但还不完善,简历和个人网站中如果提及,可作为一个钩子或概述,不能过度夸大(除非我更新了相关文档表明有更大新的进展)
 
-## Overview
-**FlowBeast Agent** is an intelligent agent that automates and optimizes data workflows — from raw data ingestion to transformation and deployment — acting like a **compiler** for data engineering tasks.It converts high-level workflow descriptions into executable, efficient pipelines.
+> AI Agent · Growth Operations · Business Automation
 
----
+项目定位：面向业务增长与商业转化场景的 AI Agent 应用与编排项目。
 
-## Core Features
-- **Workflow Compiler** — Translates data flow definitions into optimized DAGs (Directed Acyclic Graphs).  
-- **AI-assisted Optimization** — Uses AI heuristics to suggest pipeline improvements.  
-- **Multi-backend Support** — Integrates with Spark, Airflow, and DVC pipelines.  
-- **Reproducible Builds** — Every data transformation is versioned and trackable.  
-- **Declarative DSL** — Describe what you want, not how to run it.
+以垂直领域的内容生产为入口，通过调用、集成不同的业务 Agent，将内容触达、潜在客户获取与后续客户经营连接起来，探索 AI 如何帮助企业提高增长效率与商业转化能力。
 
-## Tech stack
-
-* **Core Languages:** Python, LLMOps
-* **Agent Frameworks:** LangChain / LlamaIndex
-* **Backend Services:** FastAPI, Uvicorn
-* **Deployment/Containerization:** Docker
-* **Frontend Interaction:** VS Code Extension API
-* **Target Ecosystem:** dbt-core, Apache Airflow / Dagster
-
----
-
-## Project Structure
-```bash
-.
-├── archive
-├── deployments
-├── docker-compose.yml
-├── Dockerfile
-├── docs
-├── flowbeast
-├── __init__.py
-├── market_material
-├── pyproject.toml
-├── README.md
-├── requirements.txt
-├── setup_docker_identity.sh
-├── test_data
-├── tests
-├── uv.lock
-└── vs_code_extension
-
-9 directories, 8 files
-````
-
-## Quick Start (To Be Completed)
-
-1. **Environment:** Clone the repository and create a Python virtual environment.
-2. **API Key:** Configure LLM API Key in the `.env` file.
-3. **Run Backend:** `docker-compose up` (to be implemented) or `uvicorn src.main:app --reload`
-4. **Install Extension:** Build `vsc_extension` and install it into local VS Code.
-5. **Enjoy!** (to be implemented)
-
----
-
-## Installation
-
-```bash
-git clone https://github.com/ArlesZhang/FlowBeast.git
-cd FlowBeast-p1/FlowBeast
-pip install -r requirements.txt
+项目的核心逻辑
+```mermaid
+flowchart TD
+    A["垂直领域内容生产 Agent<br/>持续生产有价值的内容，建立曝光、认知与信任"]
+    B["线索获取与客群经营<br/>承接潜在客户，连接线索管理与客户触达流程"]
+    C["外呼分发及其他业务 Agent 集成<br/>调用或集成现有 Agent，推动线索跟进与商业转化"]
+    A --> B
+    B --> C
 ```
+> **说明：** 上述流程图是根据已保存的方向性记忆整理的概念模型，不代表已完成的产品功能。
 
----
+## 二、项目直接相关的几个关键点
 
-## ▶️ Run Example
+| 维度         | 记忆中的定位                                         |
+| ---------- | ---------------------------------------------- |
+| 项目性质       | AI Agent 应用、调用与多 Agent 编排 / 集成                 |
+| 业务切入点      | 垂直领域内容生产与增长运营                                  |
+| 核心业务链路     | 内容触达 → 建立认知与信任 → 获取线索 → 客群经营 → 外呼分发与转化         |
+| 技术策略       | 不追求所有能力都自己开发；对于线索经营、外呼分发等能力，优先考虑调用或集成现有 Agent  |
+| 商业价值       | 将 AI 能力应用于真实业务流程，帮助企业提高运营效率和线索转化能力             |
+| 长期方向       | 出海增长运营、海外用户增长、AI 产品运营，以及 Agent 开发和多 Agent 编排   |
+| 项目与个人发展的关系 | 既是探索未来创业与商业化的载体，也是积累 Agent 应用、业务理解和增长运营能力的实践项目 |
 
-```bash
-python src/main.py --config examples/sample_workflow.yaml
-```
+其中有一个很重要的区别：并不是想把自己定位成一个单纯的 Agent 开发者。
 
----
+你真正感兴趣的是：理解业务如何获得客户、经营客户、实现收入，再利用 AI Agent 把其中可以自动化、标准化的环节连接起来。
 
-## Roadmap
+这与我之前认可的方向一致：把技术能力沉降到真实业务场景中，理解商业逻辑和财务账本，并最终对商业交付结果负责。
 
-* [ ] Define DSL for workflow description
-* [ ] Implement core compiler engine
-* [ ] Integrate AI optimization agent
-* [ ] Add Airflow backend
-* [ ] Release v0.1.0
+## 三、Flowbeast 与你的职业方向是什么关系？
 
----
+我记忆中的职业规划是分成两个层次的。
 
-## Author
+第一层：现实职业入口
 
-**Arles Zhang**
+出海增长运营（AI Agent 方向）、海外用户增长（AI 应用方向）、AI 产品运营（Agent 方向）。
 
-> Building AI-powered compiler systems for data engineers.
-> GitHub: [@arleszhang](https://github.com/arleszhang)
+先进入真实业务环境，积累用户增长、产品运营、商业化和 AI 应用落地经验。
 
----
+第二层：长期能力与商业化方向
 
-### **requirements.txt**
+Agent 开发、多 Agent 编排与集成，以及将这些能力应用于垂直领域的增长和客户经营场景。
 
-```txt
-# Core dependencies By GPT5 
-fastapi==0.115.0
-uvicorn==0.30.0
+Flowbeast 是你探索这条路线的项目载体，而不是要求你现在就必须把它做成完整商业产品。
 
-# Data workflow & orchestration
-pandas==2.2.3
-pydantic==2.9.0
-networkx==3.3
-
-# ML & optimization
-scikit-learn==1.5.2
-
-# Version control & reproducibility
-dvc==3.50.0
-
-# Testing & linting
-pytest==8.3.3
-black==24.10.0
-````
-
-```txt
-# DataCody Agent Backend Dependencies By Gemini
-
-# Web Framework and Server
-fastapi==0.110.0
-uvicorn[standard]==0.27.1
-
-# LLM & Agent Framework
-langchain==0.1.13  # 或者 llama-index，选择其一
-pydantic==2.6.4    # 用于结构化输出 (JSON Schema)
-
-# LLM Provider (假设使用 OpenAI)
-openai==1.14.3
-# 如果使用其他模型，例如 Claude:
-# anthropic==0.23.1
-
-# Data Engineering Tooling (用于解析 dbt 相关文件)
-pyyaml==6.0.1
-dbt-core==1.7.0  # 用于理解 dbt 的依赖结构和解析器
-
-# 环境和调试
-python-dotenv==1.0.1
-
-# ------------------------------
-# 可选依赖 (后续迭代时加入)
-# ------------------------------
-# 数据库/向量库 (用于 RAG 记忆)
-# chromadb==0.4.24
-# duckdb==0.10.1
-
-# 分布式计算 (Spark集成)
-# pyspark==3.5.0
-
-# 文件操作/AST解析
-# typed-ast==1.5.5
-
+* 基于 Qwen、DeepSeek 等模型开展 AI Agent 应用实践，运用 Prompt、Skills、MCP 组织任务流程、集成工具调用，探索复杂任务的自动化执行。
+* 使用 **Claude Code** 辅助开发与调试，围绕实际任务验证输出结果并迭代实现；项目 Demo 已上线。
