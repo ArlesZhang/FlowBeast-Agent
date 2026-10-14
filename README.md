@@ -136,8 +136,8 @@ FlowBeast 押注的护城河不是生产管线(script → audio → video,那是
 
 ```bash
 # 1. 克隆
-git clone https://github.com/ArlesZhang/FlowBeast.git
-cd FlowBeast
+git clone https://github.com/ArlesZhang/FlowBeast-Agent.git
+cd FlowBeast-Agent
 
 # 2. 配置(只需填一个 API Key)
 cp .env.example .env
