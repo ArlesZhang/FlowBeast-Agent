@@ -63,7 +63,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install uv via pip (works better in China network than ghcr.io)
 RUN pip install --no-cache-dir uv
 
-WORKDIR /app/FlowBeast
+WORKDIR /app
 
 ENV UV_CACHE_DIR=/tmp/uv_cache
 ENV UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
@@ -81,7 +81,7 @@ COPY . .
 # Make start scripts executable
 RUN chmod +x start.sh start_dev.sh
 
-ENV PATH="/app/FlowBeast/.venv/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 

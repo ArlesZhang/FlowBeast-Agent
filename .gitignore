@@ -1,44 +1,196 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
 *.egg-info/
-.installed.cfg
+dist/
+build/
+.specstory/
 *.egg
 
-# Virtual Environment
-datacody-venv/
+# ==================== Documentation ====================
+# Project root docs (docs/) - keep .md files, ignore generated
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# flowbeast/docs/ - keep all source files for internal project docs
+# (This is for developer-facing technical documentation)
+flowbeast/docs/_build/
+flowbeast/docs/_static/
+flowbeast/docs/_templates/
+
+# Sphinx / MkDocs generated files
+docs/*.html
+docs/*.xml
+docs/files/
+flowbeast/docs/*.html
+flowbeast/docs/*.xml
+flowbeast/docs/files/
+
+# ==================== Environments ====================
+.env
+.venv
+.env.docker
 env/
 venv/
 ENV/
+env.bak/
+venv.bak/
 
-# Environment variables
-.env
-.env.local
+# --- Data & Artifacts (FlowBeast 精确忽略) ---
+test_data/
+flowbeast/data/*.csv
+flowbeast/data/*.parquet
+flowbeast/data/*.json
+# 彻底封锁数据文件夹但保留目录结构
+flowbeast/data/*
+!flowbeast/data/.gitkeep
+!flowbeast/data/raw/
 
-# IDE
+# 忽略生成的代码中间产物
+flowbeast/tmp/
+generated_workflow.py
+
+# Logs/Caches
+logs/
+*.log
+*.cache
+tmp/
+.specstory/
+
+# IDE/Editor
 .vscode/
 .idea/
 *.swp
 *.swo
+.cursorindexingignore
+.cursorrules
+.claude/
+.claude/settings.local.json
 
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.dockerignore
+Dockerfile.dev  # 如果有 dev 版
+
+# Secrets
+secrets/
+api_keys.json
+
+# Large files (用 Git LFS 或不 push)
+*.zip
+*.tar.gz
+*.db  # 如 DuckDB 文件
+
+# 忽略 market_material/raw_data 下的所有文件
+flowbeast/market_material/raw_data/*
+
+# 但不要忽略 .gitkeep 文件（前面的感叹号表示排除忽略）
+!flowbeast/market_material/raw_data/.gitkeep
+
+# ==================== AI漫剧生成输出文件（最重要） ====================
+# 生成的最终媒体文件
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.webm
+
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.aac
+*.m4a
+
+# 中间生成文件和缓存
+*.temp
+*.tmp
+*.cache
+*.partial
+
+# 输出目录（建议把所有生成物统一放这里）
+output/
+outputs/
+generated/
+render/
+media/
+videos/
+audio/
+frames/
+temp/
+
+# Manim / Blender / AE / Kling / 即梦 等工具的默认输出
+*/media/
+*/videos/
+*/animations/
+ManimCache/
+.blender/
+
+# ==================== 脚本和临时脚本 ====================
+# 如果你用脚本批量生成，生成的 .sh / .py / .bat 等临时脚本也建议忽略（除非是核心模板）
+*.generated.sh
+*.generated.py
+run_*.sh
+temp_*.sh
+*.tmp.sh
+
+# --- FlowBeast Generated Assets ---
+
+# 忽略所有生成的剧本 JSON 文件
+flowbeast/data/outputs/*.json
+
+# 忽略所有配音音频文件
+flowbeast/data/outputs/audio/
+
+# 忽略所有生成的剧照图片 (为下一步做准备)
+flowbeast/data/outputs/images/
+
+# 忽略所有合成的视频文件
+flowbeast/data/outputs/*
+*.mp4
+
+# 忽略临时的音频/文本拆分片段 (对应你之前的 script_to_audio 逻辑)
+audio_clips/
+
+# 忽略可能产生的日志文件
+flowbeast/data/outputs/logs/
+
+# AI prompt assets (private collection, not for GitHub)
+prompt-set/
+
+# MkDocs generated site
+site/
+
+
+# ==================== 合并自仓库根 .gitignore ====================
+*$py.class
+datacody-venv/
 # Data files
+develop-eggs/
+downloads/
+.eggs/
+eggs/
+# Environment variables
+.env.local
+# IDE
+.installed.cfg
+lib/
+lib64/
+# Logs
+parts/
+.Python
+sdist/
+*.so
 test_data/large_*.csv
 test_data/*.parquet
-
-# Logs
-*.log
+var/
+# Virtual Environment
+wheels/
