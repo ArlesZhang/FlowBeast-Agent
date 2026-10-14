@@ -11,6 +11,8 @@ Not: 远景 → 中景 → 特写
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
+from loguru import logger
+
 
 # ====================== Beat Type Definitions ======================
 
@@ -380,8 +382,17 @@ def build_shot_list(script: dict) -> list[Shot]:
     shots = []
     global_shot_counter = 0
 
-    for scene in script.get("scenes", []):
-        scene_id = scene.get("id", 0)
+    for scene_index, scene in enumerate(script.get("scenes", []), start=1):
+        # LLM output is not type-stable: `id` comes back as "1" (str) about as often
+        # as 1 (int). Coerce here — shot_id below formats it with :02d and Shot.scene_id
+        # is declared int, so a str raises "Unknown format code 'd'" and kills the task.
+        try:
+            scene_id = int(scene.get("id", 0))
+        except (TypeError, ValueError):
+            logger.warning(
+                f"⚠️ 场景 id 不是数字 ({scene.get('id')!r})，回退为序号 {scene_index}"
+            )
+            scene_id = scene_index
         dialogue_list = scene.get("dialogue", [])
         conflict = scene.get("conflict", "")
         emotion_curve = scene.get("emotion_curve", [])
@@ -448,7 +459,6 @@ def build_shot_list(script: dict) -> list[Shot]:
 
             shots.append(shot)
 
-    logger = __import__("loguru").logger
     logger.info(f"Shot Director: built {len(shots)} shots from {len(script.get('scenes', []))} scenes")
 
     # Validation: close-up motion clamp audit

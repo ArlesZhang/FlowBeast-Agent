@@ -98,13 +98,25 @@ with col3:
     generate_clicked = st.button("🚀 Generate", type="primary")
 
 # Topic selector
+def _select_topic(t: str) -> None:
+    """Set the topic input via callback — runs BEFORE the widget is instantiated
+    on the next rerun, which is what Streamlit requires. Assigning
+    st.session_state.topic_input inline after st.text_input() has already been
+    created raises StreamlitWidgetAlreadyInstantiatedError."""
+    st.session_state.topic_input = t
+
+
 st.caption("Recommended topics:")
 cols = st.columns(5)
 for i, t in enumerate(recommended_topics):
     with cols[i % 5]:
-        if st.button(t, key=f"topic_{i}", use_container_width=True):
-            st.session_state.topic_input = t
-            st.rerun()
+        st.button(
+            t,
+            key=f"topic_{i}",
+            use_container_width=True,
+            on_click=_select_topic,
+            args=(t,),
+        )
 
 # ==================== Generate ====================
 if generate_clicked and topic:
