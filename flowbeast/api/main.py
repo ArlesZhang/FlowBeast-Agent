@@ -1,10 +1,10 @@
 """
 API: FastAPI server for FlowBeast.
 
-Role: Web interface for topic-to-prompt-package generation.
+Role: Web interface for topic-to-production-package generation.
 Endpoints: POST /api/v1/generate, GET /api/v1/tasks/{task_id}, GET /health
 
-Workflow: POST /api/v1/generate {topic} → background task → prompt_package.json
+Workflow: POST /api/v1/generate {topic} → background task → prompt_package.json + audio
 """
 
 import sys
@@ -28,7 +28,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 # ==================== 初始化 ====================
-app = FastAPI(title="FlowBeast", version="0.5.0-mvp")
+app = FastAPI(title="FlowBeast", version="0.7.0")
 
 app.add_middleware(
     CORSMiddleware,

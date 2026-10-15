@@ -1,7 +1,7 @@
 # Skill: PromptAtom — Composable Prompt Fragments
 
 ## Purpose
-PromptAtom is the basic unit of the Viral Prompt Compiler. Each atom is one independently embeddable, searchable, and composable piece of a viral content prompt — analogous to an AST node in a compiler.
+PromptAtom is one composable fragment of a shot prompt. Each atom is independently embeddable, searchable, and composable — analogous to an AST node in a compiler.
 
 ## Schema
 

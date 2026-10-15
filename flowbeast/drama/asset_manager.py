@@ -348,13 +348,13 @@ def export_prompt_package(
     output_path: Path,
 ) -> Path:
     """
-    Export a complete prompt package — the final product of the Viral Prompt Compiler.
+    Export the production package — what the pipeline hands off as the deliverable.
 
-    The prompt package contains everything an AI video tool (Seedance, Kling, etc.)
-    needs to generate video content: per-shot visual prompts, negative prompts,
-    style lock metadata, script metadata, and audio parameters.
+    Contains everything an AI video tool (Seedance, Kling, etc.) needs to render the
+    episode: per-shot visual prompts, negative prompts, style lock metadata, script
+    metadata, and audio parameters.
 
-    This is the compiler output: topic → atoms → prompt package.
+    Flow: topic → viral-memory retrieval → script → shots → this package → episode.
     """
     package = {
         "title": script.get("title", ""),

@@ -73,6 +73,11 @@ tmp/
 .claude/
 .claude/settings.local.json
 
+# ==================== Internal business docs (local only) ====================
+# Positioning, goals, roadmaps, commercial analysis — not for a public repo.
+# .ai/skills/ stays tracked; only the strategy folder is private.
+.ai/current/
+
 # OS
 .DS_Store
 Thumbs.db

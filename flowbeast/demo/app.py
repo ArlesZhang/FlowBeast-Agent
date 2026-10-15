@@ -54,8 +54,8 @@ st.set_page_config(
 )
 
 # ==================== Header ====================
-st.title("🎬 FlowBeast — Viral Prompt Compiler")
-st.caption("Retrieve viral structure → Generate new script → Export assets")
+st.title("🎬 FlowBeast — AI Short-Drama Production Engine")
+st.caption("Retrieve viral structure → Generate script → Export production package")
 
 # ==================== Sidebar: Server Status ====================
 with st.sidebar:

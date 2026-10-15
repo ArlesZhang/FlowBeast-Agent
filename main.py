@@ -23,7 +23,9 @@ logger.success("✅ FlowBeast 核心模块加载成功")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="FlowBeast Viral Prompt Compiler")
+    parser = argparse.ArgumentParser(
+        description="FlowBeast — AI short-drama production engine"
+    )
     parser.add_argument(
         "--topic",
         type=str,

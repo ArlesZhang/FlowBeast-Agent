@@ -92,7 +92,7 @@ class ViralScript(BaseModel):
     visual_style_notes: Optional[str] = None
     special_techniques: List[str] = []
 
-    # Prompt-centric fields (v0.4.0 — Viral Prompt Compiler)
+    # Prompt-package fields (v0.4.0)
     prompt_atoms: List[str] = []              # atom_id references to PromptAtom instances
     vertical_name: Optional[str] = None       # which vertical library this script uses
 

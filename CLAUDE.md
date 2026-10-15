@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 > This project uses Cursor Rules — see [.cursor/rules/](./.cursor/rules/) for detailed development guidelines.
-> Positioning, product form and the collaboration rules: [.ai/current/founder_notes.md](.ai/current/founder_notes.md).
+> Positioning, product form and the collaboration rules: `.ai/current/founder_notes.md` (local, not committed).
 
 ---
 
@@ -40,8 +40,8 @@ Writing our own version of something that already exists spends the one resource
 - Adding a dependency? Check whether it is already installed — `uv pip list`.
 - Writing a script? Check whether a CLI already on the machine does it.
 - Building a sub-agent? Check whether an existing Claude Skill or MCP server covers it.
-- Designing a subsystem? Check [capability_map.md](.ai/current/capability_map.md) — it maps our
-  capabilities against off-the-shelf tools.
+- Designing a subsystem? Check `.ai/current/capability_map.md` — it maps our capabilities against
+  off-the-shelf tools.
 - **State your integration choice out loud** ("using X because Y; not writing Z because X covers
   it") so the decision is reviewable.
 
@@ -56,8 +56,12 @@ else's job, already done.
 
 ## What FlowBeast is
 
+**An AI short-drama production engine.** The deliverable is a finished episode; `prompt_package.json`
+is the handoff point where an AI video tool takes over — an artifact, not the product. We do not
+build video generation, but "don't build it" does not mean "stop before the episode exists".
+
 ```
-topic → FP3 viral-memory retrieval → script → shot direction → TTS audio → prompt_package.json
+topic → FP3 viral-memory retrieval → script → shot direction → TTS audio → prompt_package.json → episode
 ```
 
 | Layer | Path | Role |
@@ -68,9 +72,9 @@ topic → FP3 viral-memory retrieval → script → shot direction → TTS audio
 | **Core** | `flowbeast/core/` | Config + multi-vendor LLM registry (8 vendors, `.env`-switchable). |
 | **Interfaces** | `flowbeast/api/`, `flowbeast/demo/` | FastAPI service and Streamlit UI over the same pipeline. |
 
-**Not** a video generator, **not** a publishing platform, **not** a multi-agent framework. We stop
-at `prompt_package.json` and the delivered episode. See
-[decisions/001_project_positioning.md](.ai/current/decisions/001_project_positioning.md).
+**Not** a video model builder, **not** a publishing platform, **not** a multi-agent framework.
+When the delivery path needs rendering, *integrate* an existing API/SDK — never write our own.
+See `.ai/current/decisions/001_project_positioning.md` and `decisions/002_what_we_do_not_do.md`.
 
 ---
 
@@ -134,6 +138,9 @@ When multiple sources conflict, prioritize:
 ---
 
 ## Documentation Map
+
+> `.ai/current/` is **local only** — gitignored on purpose. Business positioning does not belong in
+> a public repo. Paths below exist on your machine but not on GitHub.
 
 | Path | Contents |
 |---|---|

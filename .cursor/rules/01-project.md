@@ -4,11 +4,15 @@
 
 ## Project Overview
 
-FlowBeast is a **Viral Prompt Compiler**: input a topic, output a complete prompt package (`prompt_package.json`) ready for AI video tools. The core moat is the **FP3 Viral Memory System** — decomposing viral content into composable PromptAtom instances, learning their latent grammar, and transforming them via VTO operators to generate structurally novel scripts with proven viral DNA. Audio generation (Edge TTS) runs as a built-in quality validation layer. Video rendering is a replaceable commodity layer.
+FlowBeast is an **AI short-drama production engine**: input a topic, output a complete production package (`prompt_package.json` + episode audio) ready for an AI video tool to render into a finished episode.
+
+**The package is an artifact, not the product.** The business is done-with-you short-drama production for small Chinese teams, priced per delivered episode — a service, not a SaaS. See [CLAUDE.md](../../CLAUDE.md).
+
+The core asset is the **FP3 Viral Memory System** — real viral scripts decomposed into composable narrative atoms (`ViralUnit`: hook / pattern / emotion), retrieved by similarity and injected into the generation prompt. Audio generation (Edge TTS) doubles as a quality-validation layer. Video rendering is a replaceable commodity layer.
 
 Current focus:
 - FP3 injection (viral-memory retrieval → generation prompt)
-- Prompt package export (script JSON + shot prompts + style lock + audio params)
+- Production package export (script JSON + shot prompts + style lock + audio)
 - QualityGate for output quality control
 - End-to-end delivery path: topic → finished episode
 - **Rule 0: never reinvent the wheel** — integrate/borrow before writing
@@ -64,5 +68,5 @@ Never:
 The project is optimized for:
 - AI-assisted development (Claude Code as primary collaborator)
 - Multi-model collaboration (Qwen / Openai / Gemini / Claude)
-- Rapid experimentation with narrative atoms and VTO operators
+- Rapid experimentation with narrative atoms and shot composition
 - Local-first workflows with cloud API fallback for LLM/embedding

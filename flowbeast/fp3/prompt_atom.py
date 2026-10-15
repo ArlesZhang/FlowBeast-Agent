@@ -1,7 +1,7 @@
 """
 FP3 PromptAtom: composable prompt fragment — one atomic piece of viral content prompt.
 
-Role: The basic unit of the Viral Prompt Compiler. Each atom is independently
+Role: One composable fragment of a shot prompt. Each atom is independently
 embeddable, searchable in FP3, and directly consumable by AI video tools.
 
 Workflow: seed_data.py → PromptAtom → embed_prompt_atom() → store.add()

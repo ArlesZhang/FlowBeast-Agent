@@ -4,7 +4,7 @@
 
 **给一个话题，交付一集短剧。**
 
-从一句话题到可直接投产的提示词包 —— 剧本 · 分镜 · 配音 · `prompt_package.json`
+从话题到成片所需的全套素材 —— 剧本 · 分镜 · 配音 · `prompt_package.json`
 
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![uv](https://img.shields.io/badge/managed%20by-uv-DE5FE9)](https://docs.astral.sh/uv/)
@@ -20,17 +20,17 @@
 
 ## 这是什么
 
-FlowBeast 把**已经爆过的内容结构**变成可检索、可复用的记忆，再重组到新话题上，最终产出一份可以直接投喂 AI 视频工具的提示词包。
+FlowBeast 是一套 **AI 短剧生产引擎**：把**已经爆过的内容结构**变成可检索、可复用的记忆，再重组到新话题上，产出一集短剧从剧本到渲染所需的全部素材。
 
 ```
 传统做法    话题 ──► LLM ──► 一段文本                    结构随机 · 不可复用 · 无校验
-FlowBeast   话题 ──► 爆款记忆检索 ──► 质量门禁 ──► 交付包   结构来自已验证的爆款
+FlowBeast   话题 ──► 爆款记忆检索 ──► 质量门禁 ──► 生产包   结构来自已验证的爆款
                      (FP3 ViralUnit)    (QualityGate)
 ```
 
-它**止步于** `prompt_package.json` 和交付的成片 —— 最后一步渲染交给 Seedance / 可灵 / HeyGen。
+`prompt_package.json` 是**交接点，不是终点** —— 渲染那一步交给 Seedance / 可灵 / HeyGen 这类现成工具，FlowBeast 负责把前面所有环节变成一个可交付的整体。
 
-**它不是**：又一个「调 GPT 写文案」的壳，也不是视频生成器、发布平台或多智能体框架。
+**它不是**：又一个「调 GPT 写文案」的壳，也不是视频生成模型、发布平台或多智能体框架。
 
 ---
 
@@ -357,8 +357,7 @@ FlowBeast-p1/
 │   └── data/                  # 运行产物（输出 / 向量库）
 │
 ├── assets/style/              # 视觉风格资产：调色板 / 渲染规则 / 负面提示词
-├── tests/                     # 34 个 pytest 用例
-└── .ai/current/               # 项目内部文档：目标 / 状态 / 决策记录
+└── tests/                     # 34 个 pytest 用例
 ```
 
 ---
@@ -380,14 +379,16 @@ uv run pytest -k "fp3" -v                    # 按关键字筛选
 
 ## Roadmap
 
-- [x] 端到端管线跑通：话题 → 剧本 → 分镜 → 配音 → 交付包
+**主线：从「生产包」走到「成片」。**
+
+- [x] 端到端管线跑通：话题 → 剧本 → 分镜 → 配音 → 生产包
 - [x] 多厂商 LLM 适配（8 家）+ 本地 embedding
 - [x] FastAPI 异步任务服务 + Streamlit 界面
 - [x] 质量门禁：9 维评分 + 向量去重 + 审计
+- [ ] **渲染适配层** —— 把 `prompt_package.json` 接到现成视频生成 API，产出可交付的成片
 - [ ] **扩充 FP3 真实爆款语料** —— 当前仅种子数据，是输出多样性的主要瓶颈
 - [ ] **标定 QualityGate 权重** —— 现有权重未经数据拟合
 - [ ] Docker 镜像补齐 ffmpeg 与字体
-- [ ] 提示词包直连视频生成工具的适配层
 
 ---
 
