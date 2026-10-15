@@ -1,24 +1,7 @@
 # CLAUDE.md
 
 > This project uses Cursor Rules — see [.cursor/rules/](./.cursor/rules/) for detailed development guidelines.
-
-## ⚠️ Read this first
-
-> 市场反馈表明，静态语料壁垒、低价抽取服务、特定品牌命名以及提示词包等四条早期创业路径已被证伪。
-> AI 2.0 时代轻资产模式已难以为继，从业者需要转向更深层的系统级工作流集成与业务结果交付。
-
-**FlowBeast is not sold as a compiler, and not sold as prompt packs.** The productized form is
-**done-with-you AI short-drama production for small Chinese teams, priced per finished episode** —
-a service, not a SaaS. The free public scorer is the top of funnel, not the product.
-
-**The one acceptance test for everything: 有真实付费证据 (there is real payment evidence).**
-No feature, refactor, or document counts until a customer has paid for a delivered episode.
-
-**Optimize for: usable · landable · integrable · deliverable · profitable.** Not for completeness,
-not for elegance, not for architectural purity. A working integration beats a better invention.
-
-Full reasoning and the 30-day plan: [.ai/current/commercialization_playbook.zh.md](.ai/current/commercialization_playbook.zh.md)
-(English: [commercialization_playbook.md](.ai/current/commercialization_playbook.md)).
+> Positioning, product form and the collaboration rules: [.ai/current/founder_notes.md](.ai/current/founder_notes.md).
 
 ---
 
@@ -35,7 +18,7 @@ Writing our own version of something that already exists spends the one resource
 ### The default order of operations
 
 1. **Search first.** Before writing a module, search GitHub / PyPI / npm / the MCP registry / the
-   Claude Skills ecosystem for an existing solution. Say what you found.
+   Claude Skills ecosystem. Say what you found.
 2. **Integrate** — use it as a dependency (best outcome: zero lines of our own code).
 3. **Borrow** — port the proven design or algorithm, with attribution and a license check.
 4. **Write our own** — only if 1–3 genuinely failed, and only after stating *why* they failed.
@@ -52,42 +35,41 @@ Writing our own version of something that already exists spends the one resource
 - **When a tool almost fits, extend it** (plugin, config, wrapper, upstream PR) rather than forking
   the concept into our own parallel implementation.
 
-### In practice
+### Before you build anything
 
-- Before adding a dependency, check whether it is already installed — `uv pip list`.
-- Before writing a script, check whether a CLI already on the machine does it.
-- Before building a sub-agent, check whether an existing Claude Skill or MCP server covers it.
-- Before designing a subsystem, check `[.ai/current/capability_map.md](.ai/current/capability_map.md)`
-  — it already maps our capabilities against off-the-shelf tools.
+- Adding a dependency? Check whether it is already installed — `uv pip list`.
+- Writing a script? Check whether a CLI already on the machine does it.
+- Building a sub-agent? Check whether an existing Claude Skill or MCP server covers it.
+- Designing a subsystem? Check [capability_map.md](.ai/current/capability_map.md) — it maps our
+  capabilities against off-the-shelf tools.
 - **State your integration choice out loud** ("using X because Y; not writing Z because X covers
   it") so the decision is reviewable.
 
 ### What we *do* build ourselves
 
-Only the parts that are the actual business: the workflow glue that ties tools into one deliverable,
-and the domain logic that no generic tool can know (drama structure, Chinese short-drama pacing,
-per-episode delivery packaging). Everything under those — infrastructure, plumbing, formats,
-protocols — is somebody else's job, already done.
+Only the actual business: the workflow glue that ties tools into one deliverable, and the domain
+logic no generic tool can know (drama structure, Chinese short-drama pacing, per-episode delivery
+packaging). Everything underneath — infrastructure, plumbing, formats, protocols — is somebody
+else's job, already done.
 
 ---
 
-## What FlowBeast Is (code-level)
-
-A pipeline that turns a topic into a delivered short-drama episode:
+## What FlowBeast is
 
 ```
 topic → FP3 viral-memory retrieval → script → shot direction → TTS audio → prompt_package.json
 ```
 
-- **FP3 Viral Memory System** — composable narrative atoms (ViralUnit: hook / pattern / emotion)
-  stored in a FAISS index, retrieved by similarity and injected into the generation prompt.
-  This is the piece that makes output better than a bare LLM call.
-- **QualityGate** — rule-based scorer + dedup, gating generated scripts.
-- The production pipeline (script → audio → shots → package) is a **replaceable commodity layer**;
-  swap any stage for an off-the-shelf tool whenever a better one exists.
+| Layer | Path | Role |
+|---|---|---|
+| **Memory** | `flowbeast/fp3/` | Composable narrative atoms (`ViralUnit`: hook / pattern / emotion) in a FAISS index, retrieved by similarity and injected into the generation prompt. This is what makes output better than a bare LLM call. |
+| **Gate** | `flowbeast/observe/quality/` | Rule-based 9-dimension scorer + embedding dedup. **Weak signal, not a judge** — it has never returned ACCEPT and its weights are unfitted. Do not treat its score as a verdict. |
+| **Production** | `flowbeast/drama/` | Script → shot list → TTS audio → package. A **replaceable commodity layer**: swap any stage for an off-the-shelf tool the moment a better one exists. |
+| **Core** | `flowbeast/core/` | Config + multi-vendor LLM registry (8 vendors, `.env`-switchable). |
+| **Interfaces** | `flowbeast/api/`, `flowbeast/demo/` | FastAPI service and Streamlit UI over the same pipeline. |
 
-**Not** a video generator, **not** a publishing platform, **not** a multi-agent framework.
-We stop at `prompt_package.json` and the delivered episode. See
+**Not** a video generator, **not** a publishing platform, **not** a multi-agent framework. We stop
+at `prompt_package.json` and the delivered episode. See
 [decisions/001_project_positioning.md](.ai/current/decisions/001_project_positioning.md).
 
 ---
@@ -96,22 +78,22 @@ We stop at `prompt_package.json` and the delivered episode. See
 
 ```bash
 uv sync                                              # Install dependencies (uv, not pip)
-python main.py                                       # Run drama generation pipeline
-python main.py --topic "your topic"                  # Run with custom topic
+python main.py --topic "your topic"                  # Run the full pipeline (CLI)
 uvicorn flowbeast.api.main:app --reload --port 8000  # FastAPI server
-uv run streamlit run flowbeast/demo/app.py           # Streamlit demo UI (port 8501)
+uv run streamlit run flowbeast/demo/app.py           # Streamlit UI (port 8501)
 uv run python -m flowbeast.fp3.seed_data             # Seed FP3 (ViralUnit)
 uv run python -m flowbeast.fp3.feedback_ingest \     # Feedback ingest
   --report production_report.json --views N --likes N
-uv run pytest tests/ -q                              # Run all tests
+uv run pytest tests/ -q                              # Run all tests (34)
 docker-compose up --build                            # Docker
 ```
+
+Outputs land in `flowbeast/data/outputs/<timestamp>/`.
 
 ## Package Manager
 
 This project uses **`uv`** (not pip). Always use `uv sync` to install dependencies and `uv run` to
 execute scripts. Do not use `pip install`.
-
 
 ## Core File Header Docstrings
 
@@ -130,6 +112,13 @@ Workflow: builder.py → add() → save() / load() ← retriever.py
 
 State: (1) what it is, (2) role + boundaries, (3) upstream/downstream connections.
 
+## Tests
+
+Keep tests that catch **real regressions** in the delivery path. Do not write tests that assert
+constant shapes, source text, or environment state — those never catch a bug and only add
+maintenance cost.
+
+---
 
 ## Context Priority
 
@@ -142,14 +131,19 @@ When multiple sources conflict, prioritize:
 5. User request
 6. General framework conventions
 
+---
 
 ## Documentation Map
 
-- `.ai/current/` — current phase, status, roadmap, positioning decisions
-- `.ai/current/commercialization_playbook.zh.md` — the commercial plan, in Chinese (**read first**)
-- `.ai/current/capability_map.md` — capability → off-the-shelf tool mapping (for Rule 0)
-- `.ai/skills/` — task-specific playbooks
-
+| Path | Contents |
+|---|---|
+| `.ai/current/founder_notes.md` | Positioning, Rule 0, collaboration rules (**read first**) |
+| `.ai/current/goal.md` | Current phase goal — what to work on now |
+| `.ai/current/status.md` | What is wired vs. stubbed |
+| `.ai/current/capability_map.md` | Capability → off-the-shelf tool mapping (for Rule 0) |
+| `.ai/current/commercialization_playbook.zh.md` | Commercial plan, in Chinese |
+| `.ai/current/decisions/` | Positioning and scope-boundary decisions |
+| `.ai/skills/` | Task-specific playbooks |
 
 ## Working Style
 

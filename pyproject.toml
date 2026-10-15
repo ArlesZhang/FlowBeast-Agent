@@ -1,7 +1,7 @@
 [project]
 name = "flowbeast"
 version = "0.2.0"
-description = "FlowBeast: 高性能 AI 数据编排与智能体框架"
+description = "FlowBeast: turn a topic into a deliverable short-drama episode — script, shot list, voiceover and prompt_package.json"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
