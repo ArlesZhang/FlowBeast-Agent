@@ -154,7 +154,7 @@ def run_full_pipeline(topic: str):
     # Inject visual prompts into all shots
     shots = inject_visual_prompts(shots, style_lock, character_assets, scene_assets)
 
-    # Export prompt package — the compiler output
+    # Export prompt package — the handoff artifact for the rendering step
     prompt_package_path = base_path / "prompt_package.json"
     export_prompt_package(shots, style_lock, script, prompt_package_path)
     logger.success(f"📦 Prompt package exported: {prompt_package_path}")

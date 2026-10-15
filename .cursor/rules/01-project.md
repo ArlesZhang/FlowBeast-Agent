@@ -6,15 +6,15 @@
 
 FlowBeast is an **AI short-drama production engine**: input a topic, output a complete production package (`prompt_package.json` + episode audio) ready for an AI video tool to render into a finished episode.
 
-**The package is an artifact, not the product.** The business is done-with-you short-drama production for small Chinese teams, priced per delivered episode — a service, not a SaaS. See [CLAUDE.md](../../CLAUDE.md).
+**The package is an artifact, not the product.** The product is an episode that can be published as-is. Positioning and product form are deliberately **not** specified here — see [CLAUDE.md](../../CLAUDE.md), which defers them to `.ai/current/founder_notes.md` (local, not committed).
 
 The core asset is the **FP3 Viral Memory System** — real viral scripts decomposed into composable narrative atoms (`ViralUnit`: hook / pattern / emotion), retrieved by similarity and injected into the generation prompt. Audio generation (Edge TTS) doubles as a quality-validation layer. Video rendering is a replaceable commodity layer.
 
 Current focus:
-- FP3 injection (viral-memory retrieval → generation prompt)
+- A **fixed format** — same characters, same sets, one vertical niche, one repeatable structure
+- Marginal cost per episode low enough to publish daily
 - Production package export (script JSON + shot prompts + style lock + audio)
-- QualityGate for output quality control
-- End-to-end delivery path: topic → finished episode
+- End-to-end delivery path: topic → episode that ships
 - **Rule 0: never reinvent the wheel** — integrate/borrow before writing
 
 ## Core Principles
