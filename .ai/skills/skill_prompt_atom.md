@@ -12,8 +12,8 @@ class PromptAtom(BaseModel):
     layer: str                      # "narrative" | "visual" | "camera" | "audio"
     role: str                       # "hook", "style_lock", "shot_suffix", etc.
     embedding: Optional[List[float]]
-    vto_metadata: dict              # {"graft_compatible": True, ...}
-    source: str                     # "seed_data" | "reverse_engineered" | "generated"
+    vto_metadata: dict              # legacy field, retained for schema compatibility
+    source: str                     # "seed_data" | "generated"
     version: int
     tags: List[str]
 ```
@@ -36,7 +36,7 @@ class PromptAtom(BaseModel):
 
 ## Workflow
 ```
-seed_data.py / reverse_engineer.py
+seed_data.py
     → PromptAtom → embed_prompt_atom() → store.add() → FAISS index
     → retriever.search(query_embedding) → List[PromptAtom]
     → compose into prompt_package.json

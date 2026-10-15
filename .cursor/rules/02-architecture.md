@@ -11,13 +11,11 @@ Reverse engineering → FP3 Viral Memory → VTO Operators → Script Generation
 ## Layer Definitions
 
 - **FP3** = Viral Memory System (the core moat)
-  - Composable narrative atoms (hook, conflict, character, emotion, pacing)
-  - Dual schema: `ViralUnit` (3-field legacy) + `ViralScript` (enriched drama anatomy)
-  - Reverse engineering CLI converts real dramas into structured ViralScript records
-  - VTO operators (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT) for generation strategy
+  - Composable narrative atoms (hook, pattern, emotion)
+  - `ViralUnit` — 3 fields, deliberately minimal
   - `feedback.py` — output feedback reinforces winning atom combinations
 - **Observe** = Quality & feedback layer (`flowbeast/observe/`)
-  - `quality/` — QualityGate scorer, dedup, calibrator (independent of FP3 internals)
+  - `quality/` — QualityGate scorer + dedup + audit (independent of FP3 internals)
   - Future: metrics, tracing, monitoring
 - **Drama** = Script generation pipeline (`flowbeast/drama/`)
   - `pipeline.py` → `generator.py` → `prompt.py` → `audio.py`
@@ -25,24 +23,22 @@ Reverse engineering → FP3 Viral Memory → VTO Operators → Script Generation
 - **Core** = Configuration, routing (`flowbeast/core/`)
 - **Production** = Script → audio → video (commodity, MCP-integrated)
 
-## Data Flywheel Pattern (1→0 Reverse Deconstruction Engine)
-
-FlowBeast uses a human-in-the-loop data flywheel for quality improvement:
+## Delivery Flow (current)
 
 ```
-Manual curation (market viral dramas)
-    → reverse_engineer CLI → ViralScript anatomy (composable narrative atoms)
-    → FP3 Viral Memory (atom-level injection, positive/negative labels)
-    → Observe QualityGate calibrator (reference-distribution scoring, z-score cold-start defense)
-    → VTO Operators (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
-    → Script generation (atom composition + VTO transformation)
-    → High-quality output → feedback loops back to FP3
+Topic → FP3 Viral Memory retrieval (atom injection)
+    → Script generation
+    → QualityGate (rule-based scorer + dedup)
+    → Shot direction → TTS audio
+    → prompt_package.json + episode_audio.mp3  ← delivered to the customer
+    → Real engagement data → feedback_ingest → atom weights
 ```
 
 Key rules:
-- FP3 quality depends on real viral content injection, not hand-written seeds
-- Calibration requires >= 5 reverse-engineered samples for meaningful z-score statistics
-- QualityGate falls back to rule-based scoring when no calibration report exists
+- **Rule 0: never reinvent the wheel.** Integrate or borrow before writing (see CLAUDE.md).
+- FP3 quality improves from **real delivery data**, not from reverse-engineering other people's hits
+- QualityGate is currently uncalibrated — treat its score as a signal, not a verdict
+- The only acceptance test is **有真实付费证据** (real payment evidence)
 - ViralScript backward-compatible with ViralUnit via `to_viral_unit()`
 
 ## Module Boundaries

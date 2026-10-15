@@ -38,8 +38,7 @@ OUTPUT_QUALITY_MAX_RETRIES = 2
 def _run_output_quality_gate(script: dict) -> dict:
     """
     Score generated script through QualityGate.
-    Uses calibrated mode if calibration report exists, otherwise falls back
-    to rule-based scoring with default thresholds.
+    Uses rule-based scoring with default thresholds.
     Returns {"passed": bool, "score": float, "action": str, "reason": str}
     """
     try:
@@ -55,7 +54,7 @@ def _run_output_quality_gate(script: dict) -> dict:
         )
 
         store = FP3Store()
-        gate = create_quality_gate(store=store, calibrated=True)
+        gate = create_quality_gate(store=store)
 
         import asyncio
         decision = asyncio.run(gate.evaluate(unit))
@@ -73,13 +72,12 @@ def _run_output_quality_gate(script: dict) -> dict:
 
 
 # ====================== 主流水线 ======================
-def run_full_pipeline(topic: str, graft_prompt: str | None = None):
+def run_full_pipeline(topic: str):
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    mode_label = "GRAFT" if graft_prompt else "STANDARD"
-    logger.info(f"🚀 FlowBeast 启动 | topic={topic} | mode={mode_label} | run_id={run_id}")
+    logger.info(f"🚀 FlowBeast 启动 | topic={topic} | run_id={run_id}")
 
-    # ====================== 1. 生成脚本（FP3 增强 / GRAFT）======================
+    # ====================== 1. 生成脚本（FP3 爆款基因增强）======================
     script = None
     meta = None
     quality_result = None
@@ -90,7 +88,7 @@ def run_full_pipeline(topic: str, graft_prompt: str | None = None):
         logger.info(f"📝 第 {generation_attempts} 次脚本生成...")
 
         try:
-            result = generate_script(topic, auto_trend=True, custom_prompt=graft_prompt)
+            result = generate_script(topic, auto_trend=True)
             script = result["script"]
             meta = result["meta"]
 
@@ -229,7 +227,7 @@ failed      : {fail_count}
     report = {
         "run_id": run_id,
         "topic": topic,
-        "mode": "graft" if graft_prompt else "standard",
+        "mode": "standard",
         "model": meta.get("model"),
         "status": "completed" if fail_count == 0 else "partial",
         "generation_attempts": generation_attempts,

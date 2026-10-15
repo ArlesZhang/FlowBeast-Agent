@@ -24,14 +24,3 @@ def extract_unit_from_script(script_data: dict) -> ViralUnit:
     emotion = script_body.get("emotion_curve_global", ["neutral"])
 
     return ViralUnit(hook=hook, pattern=pattern, emotion=emotion)
-
-
-def extract_viral_script_from_script(script_data: dict):
-    """
-    Extract full ViralScript anatomy from generated script JSON.
-    Delegates to reverse_engineer.analyze_generated_script.
-    """
-    from flowbeast.reverse.reverse_engineer import analyze_generated_script
-
-    script_body = script_data.get("script", script_data)
-    return analyze_generated_script(script_body)

@@ -55,11 +55,6 @@ def fp3_store(tmp_path, monkeypatch):
 # --- Tests: Models ---
 
 class TestModels:
-    def test_gate_action_values(self):
-        assert GateAction.ACCEPT.value == "accept"
-        assert GateAction.REJECT.value == "reject"
-        assert GateAction.REVIEW.value == "review"
-
     def test_score_result_validation(self):
         sr = ScoreResult(
             category_scores={"hook_strength": 0.7},

@@ -6,7 +6,7 @@ QualityGate is the type checker of the FP3 Latent Grammar. It rejects atom combi
 ## Decision Pipeline
 ```
 ViralUnit candidate
-    → Stage 1: Score (RuleBasedScorer or ReferenceAnchoredScorer)
+    → Stage 1: Score (RuleBasedScorer)
     → Stage 2: Dedup (EmbeddingDeduplicator against FP3 store)
     → Stage 3: Gate rules → GateDecision {ACCEPT | REVIEW | REJECT}
     → Stage 4: Audit log (JSON file per decision)
@@ -25,8 +25,8 @@ ViralUnit candidate
 ### RuleBasedScorer
 Heuristic regex-based scoring. Each dimension scans for keyword markers (e.g., shock/twist/secret for hook_strength, cliffhanger phrases for retention_potential).
 
-### ReferenceAnchoredScorer
-Wraps RuleBasedScorer, then maps each raw score to a z-score percentile against the real viral reference distribution. Cold-start defense: when σ < 0.01, falls back to raw score (z-score too unstable with few samples).
+> The former `ReferenceAnchoredScorer` and its calibrator were deleted — the reference distribution
+> they scored against was never fitted to real outcomes, so the percentile mapping was circular.
 
 ## Data Models
 ```python
@@ -38,9 +38,8 @@ GateDecision  # candidate_hook, action, score_result, dedup_result, reason, audi
 
 ## Key Files
 - `flowbeast/observe/quality/gate.py` — orchestrator (evaluate, evaluate_and_store)
-- `flowbeast/observe/quality/scorer.py` — RuleBasedScorer + ReferenceAnchoredScorer
+- `flowbeast/observe/quality/scorer.py` — RuleBasedScorer
 - `flowbeast/observe/quality/dedup.py` — EmbeddingDeduplicator
-- `flowbeast/observe/quality/calibrator.py` — calibration against reference distribution
 - `flowbeast/observe/quality/config.py` — thresholds and weights
 - `flowbeast/observe/quality/models.py` — typed Pydantic models
 

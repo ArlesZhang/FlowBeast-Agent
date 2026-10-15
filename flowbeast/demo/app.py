@@ -2,7 +2,7 @@
 FlowBeast Demo UI — Minimal Streamlit single-page demo.
 
 Role: Demonstrates the full FlowBeast workflow:
-Topic Input → FP3 Retrieval → GRAFT Structure → Generated Script → Audio → Prompt Package
+Topic Input → FP3 Retrieval → Generated Script → Audio → Prompt Package
 
 Run: uv run streamlit run flowbeast/demo/app.py --server.port 8501
 """
@@ -55,7 +55,7 @@ st.set_page_config(
 
 # ==================== Header ====================
 st.title("🎬 FlowBeast — Viral Prompt Compiler")
-st.caption("Retrieve viral structure → GRAFT transfer → Generate new script → Export assets")
+st.caption("Retrieve viral structure → Generate new script → Export assets")
 
 # ==================== Sidebar: Server Status ====================
 with st.sidebar:
@@ -89,12 +89,10 @@ recommended_topics = [
     "太空虫族入侵",
 ]
 
-col1, col2, col3 = st.columns([3, 1, 1])
+col1, col2 = st.columns([4, 1])
 with col1:
     topic = st.text_input("Enter a topic:", value="", key="topic_input")
 with col2:
-    use_graft = st.checkbox("Use GRAFT", value=True)
-with col3:
     generate_clicked = st.button("🚀 Generate", type="primary")
 
 # Topic selector
@@ -122,7 +120,7 @@ for i, t in enumerate(recommended_topics):
 if generate_clicked and topic:
     # Submit task
     with st.spinner("Submitting generation task..."):
-        resp = api_post("/api/v1/generate", {"topic": topic, "use_graft": use_graft})
+        resp = api_post("/api/v1/generate", {"topic": topic})
         task_id = resp["task_id"]
         st.session_state["last_task_id"] = task_id
         st.success(f"Task submitted: `{task_id}`")
@@ -166,34 +164,9 @@ if "last_task_id" in st.session_state:
     if final_task and final_task.get("status") == "COMPLETE":
         st.success("✅ Generation complete!")
         result = final_task.get("result", {})
-        graft_info = final_task.get("graft_info")
 
-        # 3. Retrieved Viral Structure
-        if graft_info and graft_info.get("graft_applied"):
-            st.subheader("3. Retrieved Viral Structure (GRAFT)")
-            col_a, col_b = st.columns(2)
-            with col_a:
-                st.markdown("#### Hook Structure")
-                hs = graft_info.get("extracted_hook_structure", {})
-                st.json({
-                    "hook_type": hs.get("hook_type"),
-                    "time_to_hook": hs.get("time_to_hook"),
-                    "emotional_payload": hs.get("emotional_payload"),
-                    "audience_question": hs.get("audience_question"),
-                })
-            with col_b:
-                st.markdown("#### Conflict Pattern")
-                cp = graft_info.get("extracted_conflict_pattern", {})
-                st.json({
-                    "conflict_type": cp.get("conflict_type"),
-                    "escalation_curve": " → ".join(cp.get("escalation_curve", [])),
-                    "reversal_count": cp.get("reversal_count"),
-                    "highest_stakes": cp.get("highest_stakes"),
-                })
-            st.markdown(f"**Source:** {graft_info.get('source_viral_script', {}).get('source_title', 'N/A')}")
-
-        # 4. Generated Script
-        st.subheader("4. Generated Script")
+        # 3. Generated Script
+        st.subheader("3. Generated Script")
         st.markdown(f"**Title:** {result.get('title', '')}")
         st.markdown(f"**Core Hook:** {result.get('core_hook', '')}")
         st.markdown(f"**Genre:** {result.get('genre', '')} | **Quality:** {result.get('quality_score', 0):.2f} ({result.get('quality_action', '')})")
@@ -212,7 +185,7 @@ if "last_task_id" in st.session_state:
                     st.divider()
 
         # 5. Audio Player
-        st.subheader("5. Audio")
+        st.subheader("4. Audio")
         episode_audio_path = result.get("episode_audio_path")
         if episode_audio_path and Path(episode_audio_path).exists():
             st.audio(episode_audio_path)
@@ -220,7 +193,7 @@ if "last_task_id" in st.session_state:
             st.info(f"Audio files are in: `{result.get('script_path', '').replace('script.json', 'audio/')}`")
 
         # 6. Downloads
-        st.subheader("6. Downloads")
+        st.subheader("5. Downloads")
         run_id = result.get("run_id", "")
         if run_id:
             col_dl1, col_dl2, col_dl3, col_dl4 = st.columns(4)

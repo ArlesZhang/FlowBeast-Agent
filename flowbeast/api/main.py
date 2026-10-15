@@ -1,10 +1,10 @@
 """
 API: FastAPI server for FlowBeast.
 
-Role: Web interface for topic-to-prompt-package generation with GRAFT support.
+Role: Web interface for topic-to-prompt-package generation.
 Endpoints: POST /api/v1/generate, GET /api/v1/tasks/{task_id}, GET /health
 
-Workflow: POST /api/v1/generate {topic, use_graft} → background task → prompt_package.json
+Workflow: POST /api/v1/generate {topic} → background task → prompt_package.json
 """
 
 import sys
@@ -71,7 +71,6 @@ def _update_task(task_id: str, **kwargs):
 # ==================== Pydantic 模型 ====================
 class GenerateRequest(BaseModel):
     topic: str
-    use_graft: bool = True  # GRAFT enabled by default for demo
 
 
 class GenerateResponse(BaseModel):
@@ -86,9 +85,7 @@ class TaskStatusResponse(BaseModel):
     current_stage: str
     progress: int
     topic: str
-    use_graft: bool
     result: Optional[dict] = None
-    graft_info: Optional[dict] = None
     error: Optional[str] = None
 
 
@@ -112,15 +109,13 @@ async def generate(req: GenerateRequest, background_tasks: BackgroundTasks):
         "current_stage": "queued",
         "progress": 0,
         "topic": req.topic,
-        "use_graft": req.use_graft,
         "created_at": datetime.now().isoformat(),
         "result": None,
-        "graft_info": None,
         "error": None,
     }
     _save_tasks()
 
-    background_tasks.add_task(_run_generation, task_id, req.topic, req.use_graft)
+    background_tasks.add_task(_run_generation, task_id, req.topic)
 
     return GenerateResponse(
         task_id=task_id,
@@ -141,42 +136,21 @@ async def get_task_status(task_id: str):
         current_stage=task["current_stage"],
         progress=task["progress"],
         topic=task["topic"],
-        use_graft=task["use_graft"],
         result=task.get("result"),
-        graft_info=task.get("graft_info"),
         error=task.get("error"),
     )
 
 
 # ==================== 后台任务 ====================
 
-def _run_generation(task_id: str, topic: str, use_graft: bool):
-    """Background task: runs the full FlowBeast pipeline with optional GRAFT."""
+def _run_generation(task_id: str, topic: str):
+    """Background task: runs the full FlowBeast pipeline."""
     try:
         from flowbeast.drama.pipeline import run_full_pipeline
-        from flowbeast.vto.graft import graft_operator
 
-        _update_task(task_id, status="RUNNING", current_stage="GRAFT_RETRIEVAL", progress=10)
+        _update_task(task_id, status="RUNNING", current_stage="GENERATION", progress=10)
 
-        graft_info = None
-        graft_prompt = None
-
-        if use_graft:
-            # Step 1: GRAFT structure extraction and transfer
-            graft_result = graft_operator(topic)
-
-            graft_info = graft_result.to_dict()
-            _update_task(task_id, current_stage="GRAFT_APPLIED", progress=25, graft_info=graft_info)
-
-            if graft_result.graft_applied:
-                graft_prompt = graft_result.graft_prompt
-            else:
-                logger.info("GRAFT: no structure retrieved, falling back to standard generation")
-
-        # Step 2: Run pipeline
-        _update_task(task_id, current_stage="GENERATION", progress=35)
-
-        result = run_full_pipeline(topic, graft_prompt=graft_prompt)
+        result = run_full_pipeline(topic)
 
         if result is None:
             _update_task(
@@ -212,7 +186,6 @@ def _run_generation(task_id: str, topic: str, use_graft: bool):
         result_summary = {
             "run_id": run_id,
             "topic": topic,
-            "mode": "graft" if use_graft and graft_prompt else "standard",
             "title": script_data.get("title", ""),
             "core_hook": script_data.get("core_hook", ""),
             "genre": script_data.get("genre", ""),
@@ -230,7 +203,7 @@ def _run_generation(task_id: str, topic: str, use_graft: bool):
 
         _update_task(task_id, status="COMPLETE", current_stage="COMPLETE", progress=100, result=result_summary)
 
-        logger.success(f"✅ Task {task_id} completed | mode={'graft' if use_graft else 'standard'}")
+        logger.success(f"✅ Task {task_id} completed")
 
     except Exception as e:
         logger.error(f"❌ Task {task_id} failed: {e}")

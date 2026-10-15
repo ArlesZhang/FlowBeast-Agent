@@ -26,11 +26,11 @@ These rules are designed to:
 
 ## Current Focus
 
-- FP3 Viral Memory System (narrative atom extraction + injection)
-- Latent grammar learning for viral content generation
-- VTO-guided script generation (GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT)
-- QualityGate calibration against reference distribution
+- FP3 Viral Memory System (narrative atom injection into generation)
+- End-to-end delivery path: topic → finished episode
+- QualityGate for output quality control
 - MCP integration for audio/video production (commodity layer)
+- **Rule 0: never reinvent the wheel** — integrate/borrow before writing
 
 ## Project Priorities
 

@@ -1,5 +1,28 @@
 # Decision: What FlowBeast Is
 
+## ⚠️ Update 2026-10-15 — Commercial positioning has changed
+
+> 市场反馈表明，静态语料壁垒、低价抽取服务、特定品牌命名以及提示词包等四条早期创业路径已被证伪。AI 2.0 时代轻资产模式已难以为继，从业者需要转向更深层的系统级工作流集成与业务结果交付。
+>
+> *Four early-stage playbooks — a static-corpus moat, cheap extraction services, a distinctive
+> brand name, and prompt packs — have been empirically falsified by the market. Light-asset models
+> no longer work in the AI 2.0 era; the way forward is deeper system-level workflow integration and
+> delivery of business outcomes.*
+
+**FlowBeast is not sold as a compiler, and not sold as prompt packs.** The productized form is
+**done-with-you AI short-drama production for small Chinese teams, priced per finished episode** —
+a service, not a SaaS. The free public scorer is the top of funnel, not the product.
+
+**The one acceptance test for everything below: 有真实付费证据 (there is real payment evidence).**
+No positioning claim counts until a customer has paid for a delivered episode.
+
+**Why the sections below still stand:** they describe what the *code* is and is not. They are
+architectural boundaries and remain correct. What changed is who pays and for what.
+
+Full reasoning, evidence, and the 30-day plan: [commercialization_playbook.md](../commercialization_playbook.md).
+
+---
+
 ## Positioning
 
 **FlowBeast is a Viral Prompt Compiler.**

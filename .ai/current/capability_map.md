@@ -1,15 +1,20 @@
 # FlowBeast 能力映射表 (Capability Map)
 
-> **这份文档解决什么问题:** FlowBeast 目前离商业化 SaaS 还很远。但在把它继续做下去的过程中,
+> **⚠️ 商业化定位（2026-10-15）。** 见 [commercialization_playbook.zh.md](commercialization_playbook.zh.md)。
+> 静态语料壁垒 / 低价抽取服务 / 品牌命名 / 提示词包四条路径已证伪；方向是**系统级工作流集成 + 业务结果交付**。
+> **唯一验收标准：有真实付费证据。**
+> VTO 算子、逆向工程、语料库流水线、QualityGate 校准器**已从代码库删除** —— 下表中指向它们的锚点已同步清理。
+
+> **这份文档解决什么问题:** FlowBeast 目前离商业化还很远。但在把它继续做下去的过程中,
 > 我要顺带练出六项能力 —— 多 Agent 协同、部署与 workflow 搭建、流程编排、Prompt 调优、
 > Agent 调试与效果评估、训练效果量化。这份文档把**每一项能力锚定到项目里具体的模块和文件**,
 > 并指定**可以直接拿来用的行业标杆**,避免重复造轮子。
 >
 > **核心原则:基础设施抄,领域知识自己造。**
-> 追踪、评估、编排、调优的**管道**一律用成熟开源项目;只有 FP3 原子、VTO 算子、
-> QualityGate 的评分维度、语料库这四样是护城河,必须自己写。
+> 追踪、评估、编排、调优的**管道**一律用成熟开源项目;只有 **FP3 原子**和 **QualityGate 的评分维度**
+> 是领域资产,才考虑自己写 —— 而且能集成就不写。
 
-创建于 2026-10-14。最后更新:2026-10-14。
+创建于 2026-10-14。最后更新:2026-10-15。
 
 ---
 
@@ -20,13 +25,14 @@
 | 1 | 多 Agent 协同 | `drama/pipeline.py` 的线性调用链 | 🔴 无线程,但 `langgraph` 已装未用 | **LangGraph** | 中 |
 | 2 | 部署与 workflow 搭建 | `Dockerfile` / `start_dev.sh` / `railpack.json` | 🟡 本地能跑通,**云端跑不起来、零 CI** | **GitHub Actions** + Railway/HF Spaces | 中 |
 | 3 | Workflow 流程编排 | `run_full_pipeline()` 五阶段同步阻塞 | 🔴 手写重试循环 | **Prefect** | 中 |
-| 4 | Prompt 指令调优 | `drama/prompt.py` / `vto/graft.py:_build_graft_prompt` | 🔴 全部靠肉眼调 | **DSPy** | 🔥 **高** |
+| 4 | Prompt 指令调优 | `drama/prompt.py` | 🔴 全部靠肉眼调 | **DSPy** | 🔥 **高** |
 | 5 | Agent 调试与效果评估 | `observe/quality/` 手搓评估器 | 🟡 有评估,**无追踪** | **Langfuse** + **RAGAS** | 🔥 **高** |
-| 6 | 训练效果量化 | `observe/quality/calibrator.py` / `fp3/feedback*` | 🟡 有校准器,无实验追踪 | **RAGAS** + **W&B/MLflow** | 中 |
+| 6 | 训练效果量化 | `fp3/feedback*` | 🟡 无实验追踪 | **RAGAS** + **W&B/MLflow** | 中 |
 
 **建议顺序:5 → 4 → 1 → 3 → 6 → 2。**
 先能看见(5),再能改进(4);有了评估基线,多 Agent 和编排才有意义。
-部署放最后 —— 现在部署出去,只是把一个 0/30 语料库的系统暴露给用户,没有收益。
+部署放最后 —— 现在部署出去,只是把一个质量分不可信的系统暴露给用户,没有收益。
+**但在拿到第一个付费客户之前,以上全部让位给 Phase A/B。**
 
 ---
 
@@ -36,10 +42,9 @@
 
 | 位置 | 现状 |
 |------|------|
-| [flowbeast/drama/pipeline.py](../../flowbeast/drama/pipeline.py) | `run_full_pipeline(topic, graft_prompt)` —— **一条同步直线**:生成剧本 → 质量门禁 → 分镜 → 逐句 TTS → 拼接。不是 Agent,是函数调用链 |
+| [flowbeast/drama/pipeline.py](../../flowbeast/drama/pipeline.py) | `run_full_pipeline(topic)` —— **一条同步直线**:生成剧本 → 质量门禁 → 分镜 → 逐句 TTS → 拼接。不是 Agent,是函数调用链 |
 | 同上,重试逻辑 | `max 2 retries` 的 `for` 循环 —— 这是**手写的、退化版的** LangGraph 条件边 |
 | [flowbeast/observe/quality/scorer.py](../../flowbeast/observe/quality/scorer.py) | 9 维评分器 —— 它**已经是一个 evaluator 角色**,只是没人这么用它 |
-| [flowbeast/reverse/reverse_engineer.py](../../flowbeast/reverse/reverse_engineer.py) | 逆向拆解 —— 一个独立的提取型 Agent,但目前是单次调用,无反思 |
 | `langgraph` | **已在 `pyproject.toml` 依赖里,全项目零引用** |
 
 ### 缺口
@@ -95,7 +100,7 @@ Railway 注入 `$PORT`,脚本据此绑定端口;Railpack 负责构建。**它只
    [`flowbeast/fp3/retriever.py:21`](../../flowbeast/fp3/retriever.py#L21) 的 `retrieve()` 第一行就是
    `embed_text(query)` → [`core/providers/embedding.py`](../../flowbeast/core/providers/embedding.py)
    的 ollama 分支 → HTTP 打到 `OLLAMA_BASE_URL`(本地 `localhost:11434`)。
-   云上没有这个进程 → 连接被拒 → **检索直接抛异常,GRAFT 整条路死掉** —— 也就是护城河死掉。
+   云上没有这个进程 → 连接被拒 → **检索直接抛异常,整条生成链路死掉** —— 也就是护城河死掉。
 
 2. **不能靠改一行 `.env` 换成 API embedding。**
    各家维度不同:ollama `nomic-embed-text` **768** 维、qwen `text-embedding-v3` **1024** 维、
@@ -180,8 +185,6 @@ Ollama、临时磁盘、成本裸露、2-4 分钟延迟这四个问题。
 | 位置 | 现状 |
 |------|------|
 | [flowbeast/drama/prompt.py](../../flowbeast/drama/prompt.py) `build_prompt()` + `NARRATIVE_STRUCTURES` | 剧本生成的主 prompt,**纯手写字符串** |
-| [flowbeast/vto/graft.py](../../flowbeast/vto/graft.py) `_build_graft_prompt()` | GRAFT 的"5 条迁移指令",**整个算子的效果全押在这段文字上** |
-| [flowbeast/reverse/reverse_engineer.py](../../flowbeast/reverse/reverse_engineer.py) | 逆向拆解的提取 prompt |
 | [flowbeast/observe/quality/scorer.py](../../flowbeast/observe/quality/scorer.py) | **现成的评估指标** —— 9 维打分 |
 
 ### 缺口
@@ -208,8 +211,8 @@ Prompt 调优最难的部分就是"怎么知道改得更好",而这部分你已�
 
 ### 第一个可执行动作
 
-用 **Promptfoo**(不是 DSPy)给 `_build_graft_prompt` 建 5–10 条回归用例:
-输入话题 → 断言输出的 `hook_structure` 非空、`conflict_pattern.escalation_curve` 长度 ≥ 3。
+用 **Promptfoo**(不是 DSPy)给 `build_prompt` 建 5–10 条回归用例:
+输入话题 → 断言输出的 `core_hook` 非空、`scenes` 数量 ≥ 3、`emotion_curve_global` 长度 ≥ 3。
 这一步不优化任何东西,只是**给现在的手写 prompt 装上安全网**。有了网,后面才敢动。
 
 ---
@@ -220,8 +223,7 @@ Prompt 调优最难的部分就是"怎么知道改得更好",而这部分你已�
 
 | 位置 | 现状 |
 |------|------|
-| [flowbeast/observe/quality/](../../flowbeast/observe/quality/) | `scorer.py`(9 维)/ `gate.py`(门禁)/ `dedup.py`(去重)/ `calibrator.py`(参考集校准)—— **一套手搓的评估体系** |
-| [tests/evidence_package.py](../../tests/evidence_package.py) | 证据包生成 —— 5 次 GRAFT 运行的对比 |
+| [flowbeast/observe/quality/](../../flowbeast/observe/quality/) | `scorer.py`(9 维)/ `gate.py`(门禁)/ `dedup.py`(去重)—— **一套手搓的评估体系** |
 | `pyproject.toml` | `# "ragas"` **被注释掉了** —— 你当时已经想到了,只是没做 |
 | `flowbeast/data/quality_audit/` | 审计目录,已有落盘习惯 |
 | 全项目 | **无任何 tracing** —— 不知道哪次 LLM 调用产生了哪个输出 |
@@ -230,7 +232,7 @@ Prompt 调优最难的部分就是"怎么知道改得更好",而这部分你已�
 
 你**已经在做评估**(QualityGate),但**看不见执行**。具体缺:
 
-- 没有 span 级视图:一次生成里,检索花了多久?GRAFT prompt 多长?LLM 返回了几次才解析成功?
+- 没有 span 级视图:一次生成里,检索花了多久?prompt 多长?LLM 返回了几次才解析成功?
 - 没有跨运行对比:本周的 5 次运行和上周的 5 次,质量分布变了吗?
 - FP3 检索本身是一个 **RAG 系统**,但**从未用 RAG 指标衡量过** —— 检索回来的原子到底相不相关?
 
@@ -260,10 +262,9 @@ Prompt 调优最难的部分就是"怎么知道改得更好",而这部分你已�
 
 | 位置 | 现状 |
 |------|------|
-| [flowbeast/observe/quality/calibrator.py](../../flowbeast/observe/quality/calibrator.py) | 与参考集分布对比做校准,含 `_pearson_corr` —— **已经是量化分析的雏形** |
-| [flowbeast/fp3/feedback.py](../../flowbeast/fp3/feedback.py) | `extract_unit_from_script` / `extract_viral_script_from_script` |
+| [flowbeast/fp3/feedback.py](../../flowbeast/fp3/feedback.py) | `extract_unit_from_script` —— 把生成脚本映射回 FP3 原子 |
 | `flowbeast/fp3/feedback_ingest.py` | CLI:摄入 views/likes 回流 FP3 |
-| [.ai/current/roadmap.md](roadmap.md) | 明确写了验收标准 `QualityGate calibration meaningful (σ > 0.01)` —— **这就是一条量化指标** |
+| `flowbeast/data/quality_audit/` | 每次门禁决策落盘 —— **这就是可量化的原始数据** |
 
 ### 重要澄清
 
@@ -281,15 +282,16 @@ Prompt 调优最难的部分就是"怎么知道改得更好",而这部分你已�
 | 项目 | 说明 |
 |------|------|
 | **[Weights & Biases](https://github.com/wandb/wandb)** / **[MLflow](https://github.com/mlflow/mlflow)** | 实验追踪。每次改 prompt / 改权重跑一次,记录指标曲线。**"效果量化"的载体就是它** |
-| **[Evidently](https://github.com/evidentlyai/evidently)** | 数据漂移与分布对比。对应 `calibrator.py` 想做的事 —— 你的参考集分布 vs 生成分布 |
-| **[scipy.stats](https://docs.scipy.org/doc/scipy/reference/stats.html)** | 你已经有 `_pearson_corr` 手写实现。做显著性检验(t-test / Mann-Whitney)直接用 scipy,别自己写 |
+| **[Evidently](https://github.com/evidentlyai/evidently)** | 数据漂移与分布对比 —— 生成分布 vs 交付后真实反馈分布 |
+| **[scipy.stats](https://docs.scipy.org/doc/scipy/reference/stats.html)** | 显著性检验(t-test / Mann-Whitney / 二项检验)直接用 scipy,别自己写 |
 | **将来再说:** [PEFT/LoRA](https://github.com/huggingface/peft) · [TRL](https://github.com/huggingface/trl) · [Unsloth](https://github.com/unslothai/unsloth) | 微调工具链。**现在不要碰** |
 
 ### 第一个可执行动作
 
-把 `calibrator.py` 的手写 `_pearson_corr` 换成 `scipy.stats.pearsonr`,并输出 p 值。
-然后问自己一个问题:**我现在这个相关系数,统计上显著吗?**
-在 20 条演示数据上,答案几乎肯定是"不显著" —— 而这正是你需要 30 条真实语料的最硬的定量理由。
+把 `flowbeast/data/quality_audit/` 里已有的评分记录读出来,用 `scipy.stats` 算一件事:
+**9 个维度和总分之间的相关性是多少?**
+如果某个维度和总分的相关性接近 1,说明它没有独立信息 —— 它只是在给别的维度加权。
+这一步不改任何代码,只回答一个问题:**我现在这套 9 维评分,到底有几个维度是真在起作用的?**
 
 ---
 
@@ -328,11 +330,12 @@ Instructor / Pydantic AI)在源头约束,而不是在每个消费点防御。
 
 | ✅ 必须自己写 | 为什么 |
 |--------------|--------|
-| **FP3 原子 schema**([fp3/schema.py](../../flowbeast/fp3/schema.py)) | HookStructure / ConflictPattern / EmotionalCurve / PacingProfile —— 这是领域知识,没有现成库 |
-| **VTO 算子语义**([vto/graft.py](../../flowbeast/vto/graft.py)) | GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT 是你的发明 |
+| **FP3 原子 schema**([fp3/schema.py](../../flowbeast/fp3/schema.py)) | Hook / Pattern / Emotion —— 这是领域知识,没有现成库 |
+| **交付流程本身** | 「话题 → 成片」这条链路的编排,以及按集交付的打包方式 —— 这是生意,不是代码 |
 | **QualityGate 的维度与权重**([quality/config.py](../../flowbeast/observe/quality/config.py)) | 9 个维度、`hook_strength=0.20` 这些数字 —— 是判断力,不是代码。**但承载它的管道应该换成库** |
-| **语料库**([.ai/current/goal.md](goal.md)) | 30 部真实短剧的逆向拆解。**这是唯一真正稀缺的东西** |
-| **Latent Grammar** | "哪些原子组合合法"—— 你的核心假设 |
+| **Latent Grammar** | "哪些原子组合合法"—— 核心假设 |
+| ~~VTO 算子语义~~ | ❌ 已证伪,代码已删 |
+| ~~静态语料库~~ | ❌ 已证伪 —— 能被轻易复制的东西撑不起定价 |
 
 **判据:** 如果一段代码换掉之后,FlowBeast 就不再是 FlowBeast 了,那它是护城河,自己写。
 如果换掉之后只是"用了另一家的工具",那就该换。
@@ -345,7 +348,6 @@ Instructor / Pydantic AI)在源头约束,而不是在每个消费点防御。
 
 | 扩展点 | 现状 | 应该变成 |
 |--------|------|----------|
-| **VTO 算子** | [vto/](../../flowbeast/vto/) 是个 docstring,`graft.py` 硬编码 | 注册表模式(照抄 `core/providers/` 的写法,那个写得很对)。新增算子 = 新增一个文件 + 注册 |
 | **QualityGate 维度** | 9 个维度在 `scorer.py` 里硬编码 | 插件式:每个维度一个类,可增删、可重组权重,可被外部工具(RAGAS)替换 |
 | **LLM 厂商** | ✅ `core/providers/` 注册表,7 家厂商 | **保持,这是范本** |
 | **执行层** | `run_full_pipeline()` 写死五阶段 | 定义 stage 接口,允许 Prefect/LangGraph 接管编排 |
@@ -374,10 +376,10 @@ Instructor / Pydantic AI)在源头约束,而不是在每个消费点防御。
 
 ## 11. 检查清单:每完成一项就打勾
 
-- [ ] **CI 存在** —— `.github/workflows/test.yml` 跑通 67 个测试
+- [ ] **CI 存在** —— `.github/workflows/test.yml` 跑通 34 个测试
 - [ ] **能看见执行** —— Langfuse(或 Phoenix)里能看到一次完整生成的 span 树
 - [ ] **检索质量有数字** —— RAGAS 给出 FP3 top-k 检索的相关度基线
-- [ ] **Prompt 有回归测试** —— Promptfoo 覆盖 `_build_graft_prompt`
+- [ ] **Prompt 有回归测试** —— Promptfoo 覆盖 `drama/prompt.py:build_prompt`
 - [ ] **重试不再是手写的** —— `run_full_pipeline` 用 LangGraph 图或 Prefect flow 表达
 - [ ] **Prompt 可编译** —— DSPy 用 QualityGate 指标优化过至少一个 prompt
 - [ ] **指标可对比** —— W&B/MLflow 里有跨版本的指标曲线

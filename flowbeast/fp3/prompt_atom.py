@@ -26,8 +26,8 @@ class PromptAtom(BaseModel):
     layer: str                             # "narrative" | "visual" | "camera" | "audio"
     role: str                              # "hook", "style_lock", "shot_suffix", etc.
     embedding: Optional[List[float]] = None
-    vto_metadata: dict = {}                # {"graft_compatible": True, ...}
-    source: str = ""                       # "seed_data", "reverse_engineered", "generated"
+    vto_metadata: dict = {}                # legacy field, retained for schema compatibility
+    source: str = ""                       # "seed_data", "generated"
     version: int = 1
     tags: List[str] = []
 

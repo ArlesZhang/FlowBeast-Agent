@@ -59,11 +59,10 @@ def validate_script_structure(script: dict) -> list[str]:
 def generate_script(
     topic: str,
     auto_trend: bool = True,
-    custom_prompt: str | None = None,
 ) -> dict:
     # --- 1. 获取基础 Prompt (含实时热点注入) ---
     trend_context = None
-    if auto_trend and custom_prompt is None:
+    if auto_trend:
         try:
             from flowbeast.drama.trending import fetch_trending_context
 
@@ -78,46 +77,39 @@ def generate_script(
             logger.warning(f"⚠️ 实时热搜抓取失败，使用纯话题生成: {e}")
             trend_context = None
 
-    # --- 2. FP3 爆款基因增强 / GRAFT prompt 注入 ---
+    # --- 2. FP3 爆款基因增强 ---
     fp3_used = False
     fp3_examples_used = []
 
-    if custom_prompt is not None:
-        # GRAFT mode: use the provided prompt directly
-        prompt = custom_prompt
-        fp3_used = True
-        logger.info("🌿 GRAFT: 使用自定义 GRAFT prompt")
-    else:
-        base_prompt = build_prompt(
-            topic=topic,
-            trend_context=trend_context.creative_brief() if trend_context else None,
-        )
+    base_prompt = build_prompt(
+        topic=topic,
+        trend_context=trend_context.creative_brief() if trend_context else None,
+    )
 
-        # --- 2a. FP3 增强 ---
-        try:
-            from flowbeast.fp3.retriever import FP3Retriever
-            from flowbeast.fp3.injector import inject_prompt
+    try:
+        from flowbeast.fp3.retriever import FP3Retriever
+        from flowbeast.fp3.injector import inject_prompt
 
-            logger.info(f"🔍 正在检索爆款基因: {topic[:15]}...")
-            retriever = FP3Retriever()
-            viral_examples = retriever.retrieve(topic, k=2, use_feedback_boost=True)
+        logger.info(f"🔍 正在检索爆款基因: {topic[:15]}...")
+        retriever = FP3Retriever()
+        viral_examples = retriever.retrieve(topic, k=2, use_feedback_boost=True)
 
-            if viral_examples:
-                prompt = inject_prompt(base_prompt, viral_examples)
-                fp3_used = True
-                for ex in viral_examples:
-                    fp3_examples_used.append({
-                        "hook": ex.get("hook", "")[:60],
-                        "pattern": ex.get("pattern", ""),
-                        "atom_id": ex.get("atom_id", ""),
-                    })
-                logger.info(f"🚀 FP3 注入完成，检索到 {len(viral_examples)} 条案例")
-            else:
-                prompt = base_prompt
-                logger.info("FP3 检索结果为空，使用增强 prompt")
-        except Exception as e:
-            logger.warning(f"⚠️ FP3 增强失败，使用增强 prompt: {e}")
+        if viral_examples:
+            prompt = inject_prompt(base_prompt, viral_examples)
+            fp3_used = True
+            for ex in viral_examples:
+                fp3_examples_used.append({
+                    "hook": ex.get("hook", "")[:60],
+                    "pattern": ex.get("pattern", ""),
+                    "atom_id": ex.get("atom_id", ""),
+                })
+            logger.info(f"🚀 FP3 注入完成，检索到 {len(viral_examples)} 条案例")
+        else:
             prompt = base_prompt
+            logger.info("FP3 检索结果为空，使用基础 prompt")
+    except Exception as e:
+        logger.warning(f"⚠️ FP3 增强失败，使用基础 prompt: {e}")
+        prompt = base_prompt
 
     # --- 3. 循环重试生成 ---
     last_error = None

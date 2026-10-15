@@ -1,83 +1,86 @@
-# Current Goal: v0.6.0 — 30 Real Reverse-Engineered Scripts
+# Current Goal: 拿到第一笔真实付费证据
 
-**Phase:** 0 (Corpus Building)  
-**Sprint 1:** June 1-14 (15 scripts)  
-**Sprint 2:** June 15-28 (15 scripts)  
-**Target:** 30 real scripts → Phase 2 entry gate
+> **⚠️ 商业化定位（2026-10-15）。** 完整论证见
+> [commercialization_playbook.zh.md](commercialization_playbook.zh.md)。
+>
+> 市场反馈表明，静态语料壁垒、低价抽取服务、特定品牌命名以及提示词包等四条早期创业路径已被证伪。
+> AI 2.0 时代轻资产模式已难以为继，从业者需要转向更深层的系统级工作流集成与业务结果交付。
+>
+> **新方向：** 面向中国小型短剧团队的陪跑式 AI 短剧制作，**按交付成片集数收费**（服务，不是 SaaS）。
+> 免费公开评分器是获客入口，不是产品。
+
+**唯一验收标准：有真实付费证据。** 在客户为一集成片付过钱之前，一切都不算数。
+
+**Phase:** 商业化验证（取代原 Phase 0 语料库阶段）
+**Timeline:** 30 天
 
 ---
 
 ## Mission
 
-Validate that the Corpus Factory process works by reverse-engineering 30 real viral short dramas into GOLD-quality ViralScript artifacts.
+用**现有代码**交付一集成片给一个真实客户，并收到钱。
 
-**Success Metric:** Can a new topic inherit proven viral mechanics and outperform baseline generation?
-
----
-
-## Why This Matters
-
-- GRAFT works with seed data but produces generic output (all 5 runs use same hook: 冲突爆发)
-- With 30 real scripts, GRAFT will have diverse viral structures to transfer
-- QualityGate calibration requires real data for meaningful z-score statistics
-- This is the single highest-leverage thing to do next — everything else is blocked by it
+不是把系统做完美，而是证明「**这套流程能换钱**」。
 
 ---
 
-## What You Do NOT Do
+## 这个阶段的三个任务
 
-- ❌ Do NOT redesign the corpus system (see `.ai/decisions/002_what_we_do_not_do.md` #8)
-- ❌ Do NOT introduce new metadata systems, databases, ingestion frameworks
-- ❌ Do NOT optimize the schema
-- ❌ Do NOT build automation
-- ❌ Do NOT build PARASITE/DISTORT/MISDIRECT/THEFT
-- ❌ Do NOT redesign test infrastructure
-- ❌ Do NOT work on video generation, publishing, analytics
+### 1. 打通交付路径（本地即可）
 
-**Focus exclusively on:** acquiring samples, reverse engineering them, building 30 ViralScripts.
+端到端跑通并产出一份可交给客户的成片包：
 
----
+```
+话题 → FP3 检索 → 剧本 → 分镜 → 配音 → episode_audio.mp3 + prompt_package.json
+```
 
-## How to Do It
+**验收：** 拿一个真实话题，跑完，产物能放进客户手里，不需要我在旁边解释每一步。
 
-1. Watch 1-2 viral short dramas per day
-2. Follow the checklist in `.ai/reports/003_human_annotation_checklist.md`
-3. Run `uv run python -m flowbeast.reverse.reverse_engineer`
-4. Verify output: all GRAFT-critical fields populated, QualityGate ACCEPT/REVIEW
-5. Track progress in `.ai/milestones/v0.6.0-corpus-30.md`
+### 2. 找到第一个客户
 
----
+面向已经在小规模做短剧、但卡在产能或成本上的团队。**不做公开 SaaS，不谈 API**，谈的是：
+「你给我一个方向，我给你一集成片。」
 
-## Controlled Vocabularies
+**验收：** 有人愿意为「一集成片」报价，且不是「先免费试用看看」。
 
-Use the vocabularies in `.ai/reports/002_gold_standard_vocab.md`:
+### 3. 把免费评分器做成获客入口
 
-- **7 hook types:** 冲突爆发, 身份错位, 悬念开场, 好奇驱动, 情感暴击, 权力反转, 超自然介入
-- **8 conflict types:** 权力碾压, 身份揭露, 逻辑反杀, 情感背叛, 资源争夺, 尊严捍卫, 规则博弈, 立场对立
-- **17 genres:** 逆袭, 身份反转, 重生, 霸总, 家庭伦理, 职场, 玄幻, 系统, 悬疑, 喜剧, 悲剧, 甜宠, 复仇, 穿越, 末日, 校园, 其他
+公开的短剧开场评分器 —— 输入开场文案，得到可解释的反馈。它不赚钱，它**换来对话**。
+
+**验收：** 有陌生人用过，并留下联系方式。
 
 ---
 
-## Acceptance Criteria
+## 明确不做
 
-### Phase 2 Entry (30 scripts)
+- ❌ 不再建静态语料壁垒 / 逆向工程流水线（已证伪，代码已删）
+- ❌ 不再写 VTO 算子（GRAFT/PARASITE/DISTORT/MISDIRECT/THEFT，已证伪）
+- ❌ 不做提示词包生意（已证伪）
+- ❌ 不做低价抽取服务（已证伪）
+- ❌ 不完美化 QualityGate、不追求架构完整
+- ❌ **不重复造轮子** —— 市场上能找到替代的，一律集成 / 借鉴（见 [CLAUDE.md](../../CLAUDE.md) 规则 0）
+- ❌ 项目定型前不修镜像、不修 CI、不写部署文档
 
-- [ ] 30 scripts decomposed and stored in FP3
-- [ ] 5+ genres represented (minimum 3 per genre)
-- [ ] Quality distribution: ~60% viral, ~20% average, ~20% failed
-- [ ] QualityGate calibration shows σ > 0.01 on ≥ 5 dimensions
-- [ ] GRAFT on a NEW topic produces output rated "better than random" by human
-- [ ] At least 3 different hook types used in corpus
-- [ ] At least 3 different conflict types used in corpus
+---
+
+## 已知的、暂时接受的欠账
+
+不是不管，是**排在这三件事之后**：
+
+| 欠账 | 影响 | 什么时候修 |
+|------|------|-----------|
+| QualityGate 从未给出 ACCEPT，权重未标定 | 质量分不可信，但不阻塞交付 | 有付费客户后 |
+| FP3 只有约 20 条手写演示数据 | 换话题后结果雷同 | 有付费客户后，用真实交付内容反哺 |
+| Docker 内缺 ffmpeg/字体，音频拼接失败 | 容器内跑不通 | 本地跑不受影响，定型后再说 |
+
+细节见 [commercialization_playbook.zh.md](commercialization_playbook.zh.md) Part 0。
 
 ---
 
 ## Reference Documents
 
-- `.ai/milestones/v0.6.0-corpus-30.md` — Detailed sprint tracker
-- `.ai/reports/001_corpus_factory.md` — Full audit + schema analysis
-- `.ai/reports/002_gold_standard_vocab.md` — Controlled vocabularies
-- `.ai/reports/003_human_annotation_checklist.md` — Step-by-step annotation guide
-- `.ai/reports/004_corpus_quality_criteria.md` — GOLD/SILVER/BRONZE/REJECT scoring
-- `.ai/content_strategy.md` — Corpus strategy + tiers
-- `.ai/decisions/002_what_we_do_not_do.md` — Hard boundaries
+- [commercialization_playbook.zh.md](commercialization_playbook.zh.md) — 商业化手册（**先读这份**）
+- [status.md](status.md) — 代码现状：能跑的 vs 桩的
+- [roadmap.md](roadmap.md) — 阶段路线图
+- [decisions/001_project_positioning.md](decisions/001_project_positioning.md) — 定位决策记录
+- [decisions/002_what_we_do_not_do.md](decisions/002_what_we_do_not_do.md) — 硬边界

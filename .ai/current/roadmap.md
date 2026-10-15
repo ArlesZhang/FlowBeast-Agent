@@ -1,152 +1,77 @@
 # FlowBeast Roadmap
 
-## Phase 0: Viral Knowledge Base (Content Operations)
-
-**Goal:** Build the Viral Knowledge Base — the real moat of FlowBeast.
-
-**Why this matters:** Phase 2 (GRAFT/PARASITE) is blocked by corpus quality, not code quality. With 2 demo samples, GRAFT/PARASITE = garbage output. With 30+ real samples, the operators work.
-
-**Current state:** 0 real reverse-engineered scripts. ~20 hand-written demo hooks.
-
-**Sprint model:**
-- **Sprint 1 (Weeks 1-2):** 15 scripts, pipeline validation + initial diversity
-- **Sprint 2 (Weeks 3-4):** 15 scripts, reach Phase 2 entry gate (30 total)
-- **Maintenance (Weeks 5+):** 1-2 scripts/week, grow to 100+ for Phase 2 MVP
-
-**Corpus tiers:**
-- **30 scripts:** Phase 2 validation ("can we even run GRAFT?")
-- **100 scripts:** Phase 2 MVP ("GRAFT produces reliably good output")
-- **300 scripts:** Phase 2 complete ("cross-genre, statistically significant")
-
-**🔴 Hard constraint:** No Phase 0 optimization before 30 real samples. See `.ai/decisions/002_what_we_do_not_do.md` #8.
-
-**Key files:**
-- `.ai/tasks/000_viral_corpus_building.md` — Sprint tracker
-- `.ai/content_strategy.md` — Full strategy
-- `flowbeast/reverse/reverse_engineer.py` — CLI tool (477 lines, ready to use)
-- `flowbeast/data/raw/` — Human-curated samples
-- `flowbeast/data/reverse_engineered/` — Agent-produced ViralScripts
-
-**Division of labor:**
-- Human: watch, judge, curate (30 min/script)
-- Agent: extract, structure, validate, inject (5 min/script)
-
-**Status:** 🟡 Sprint 1 not started — **CORPUS IS STILL 0 REAL SCRIPTS**
+> **⚠️ 商业化定位（2026-10-15）。** 完整论证见
+> [commercialization_playbook.zh.md](commercialization_playbook.zh.md)。
+>
+> 市场反馈表明，静态语料壁垒、低价抽取服务、特定品牌命名以及提示词包等四条早期创业路径已被证伪。
+> AI 2.0 时代轻资产模式已难以为继，从业者需要转向更深层的系统级工作流集成与业务结果交付。
+>
+> **唯一验收标准：有真实付费证据。**
+>
+> **旧路线图（Phase 0 语料库 → Phase 2 VTO 算子 → Phase 3 飞轮）已作废**，相关代码
+> （`flowbeast/vto/`、`flowbeast/reverse/`、`flowbeast/hooks/`、QualityGate 校准器）已删除。
 
 ---
 
-## Phase 1: Demo System ✅ COMPLETE (v0.5.0-mvp)
+## Phase A: 交付路径（进行中）
 
-**Goal:** End-to-end web demo (topic → script → shots → audio → browser)
+**目标：** 一个真实话题进去，一份可以交给客户的成片包出来。
 
-**Status:** ✅ Shipped 2026-05-31
+**现状：** 本地端到端跑得通。`python main.py --topic "..."` 产出
+`script.json` / `shot_list.json` / `episode_audio.mp3` / `prompt_package.json`。
 
-**What was delivered:**
-- ✅ FastAPI: 4 endpoints (`/health`, `POST /api/v1/generate`, `GET /api/v1/tasks/{task_id}`, `GET /api/v1/download/{file_type}/{run_id}`)
-- ✅ Async job handling via `BackgroundTasks` + in-memory state + JSON persistence
-- ✅ Streamlit demo UI (`flowbeast/demo/app.py`) — topic input, status polling, GRAFT structure visualization, script display, audio player, downloads
-- ✅ 5 successful GRAFT runs with different topics (evidence package)
-- ✅ 67 tests passing (includes 9 GRAFT tests)
-- ✅ 17 production runs total
+**缺口：**
 
-**Key files:**
-- `flowbeast/api/main.py` — 4 endpoints
-- `flowbeast/demo/app.py` — Streamlit single-page UI
-- `flowbeast/vto/graft.py` — GRAFT v0 operator
-- `tests/test_graft.py` — 9 GRAFT tests
+| 缺口 | 状态 |
+|------|------|
+| 容器内音频拼接（缺 ffmpeg/字体） | 🔴 暂不修 —— 本地跑不受影响 |
+| 质量分不可信（QualityGate 从未 ACCEPT） | 🟡 接受 —— 靠人耳听 + 人眼过 |
+| 换话题后结果雷同（FP3 只有演示数据） | 🟡 接受 —— 靠人工改稿补齐 |
+
+**准入下一阶段的信号：** 连续 3 个不同话题，产物无需我手动解释即可交付。
 
 ---
 
-## Phase 2: VTO Operators 🟡 GRAFT v0 Complete, PARASITE Pending
+## Phase B: 第一个付费客户（最高优先级）
 
-**Goal:** GRAFT/PARASITE operators produce structurally novel scripts with proven viral DNA.
+**目标：** 有人为一个成片付钱。
 
-**Status:** 🟡 GRAFT v0 shipped (seed data). PARASITE not started. Blocked by corpus quality.
+**打法：** 面向已经在做短剧、卡在产能或成本上的小团队。**不做公开 SaaS，不谈 API。**
+谈的是「你给我一个方向，我给你一集成片」。
 
-**What exists:**
-- ✅ `flowbeast/vto/graft.py` — GRAFT v0 (231 lines, working)
-- ✅ Extracts hook_structure + conflict_pattern from FP3 ViralScripts
-- ✅ Builds structural transfer prompt with 5 migration instructions
-- ✅ 5 evidence runs prove the operator works end-to-end
-- ✅ 9 tests passing
+**为什么是这个打法：** 静态语料壁垒和提示词包都已被证伪 —— 能被轻易复制的东西撑不起定价。
+能定价的是**交付结果**，而交付结果必须绑定人（陪跑），这也是为什么它是服务而不是工具。
 
-**What's missing:**
-- 🔴 Real reverse-engineered scripts in FP3 (0 real, ~20 seed)
-- 🔴 All 5 evidence runs use same hook_type (冲突爆发) + conflict_type (权力碾压)
-- 🔴 PARASITE operator: no code
-- 🔴 DISTORT/MISDIRECT/THEFT: no code
-
-**Entry gate:**
-- ✅ Phase 1 demo complete
-- ❌ Phase 0 corpus: 0/30 real reverse-engineered scripts
-- ❌ QualityGate calibration: meaningless with seed data
-
-**Key files:**
-- `flowbeast/vto/graft.py` — GRAFT v0 (complete)
-- `flowbeast/fp3/injector.py` — RAG injection (working)
-- `flowbeast/fp3/retriever.py` — k-NN retrieval (working)
+**准入信号：** 一次真实报价被接受，且不是「先免费试用看看」。
 
 ---
 
-## Phase 3: Feedback Flywheel (Blocked by Phase 1 + Phase 2)
+## Phase C: 免费评分器作为获客入口
 
-**Goal:** Real users + real engagement data → FP3 atom weights → better generations.
+**目标：** 用公开、可解释的短剧开场评分器换对话，而不是换流量。
 
-**Why this matters:** This is the self-reinforcing loop that makes the system improve over time.
+**它不赚钱，它是漏斗顶。**
 
-**Entry gate:**
-- ✅ Phase 1 demo live (real users generating scripts)
-- ✅ Phase 2 operators working (quality output)
-- ✅ Real engagement data (views/likes/shares from published content)
-
-**Status:** 🔴 Blocked (Phase 1: not started, Phase 2: not started)
+**准入信号：** 有陌生人用过并留下联系方式。
 
 ---
 
-## Execution Strategy (Updated 2026-06-01)
+## Phase D: 规模化（有付费客户之后才讨论）
 
-**Phase 1 is complete.** The only remaining blocker is Phase 0 (corpus).
+只有 Phase B 拿到真实付费证据后，才讨论：
 
-**Current focus:**
-- Phase 0 (corpus): Sprint 1 → 15 scripts in 2 weeks → Phase 2 entry gate
-- Phase 1 (demo): Maintenance only — bug fixes, not new features
-- Phase 2 (VTO): Blocked until 30 real scripts. PARASITE design can start but implementation waits.
+- 把交付过程里重复的部分产品化
+- 用真实交付内容反哺 FP3（这才是语料该有的来源 —— 不是逆向别人的爆款）
+- 修 QualityGate 的测量问题（见 playbook Part 0）
+- 补测试 / 可观测性 / 部署
 
-**Timeline:**
-- **Weeks 1-2 (June 1-14):** Phase 0 Sprint 1 — 15 real reverse-engineered scripts
-- **Weeks 3-4 (June 15-28):** Phase 0 Sprint 2 — reach 30 scripts → Phase 2 entry gate
-- **Week 5+:** Phase 2 GRAFT with real corpus + PARASITE v0
-
-**Key insight:** Phase 1 was the easy part. Phase 0 is the hard part — it requires human curation, not code. Every day of watching and reverse-engineering viral scripts is more valuable than a week of building infrastructure.
+**在此之前，不做。**
 
 ---
 
-## Success Criteria
+## 「不做什么」硬约束
 
-**Phase 0 (corpus) success:**
-- 30 real reverse-engineered scripts (not demo hooks)
-- 5+ genres represented
-- Quality distribution: 60% viral, 20% average, 20% failed
-- QualityGate calibration meaningful (σ > 0.01)
+见 [decisions/002_what_we_do_not_do.md](decisions/002_what_we_do_not_do.md)。
 
-**Phase 1 (demo) success:** ✅ COMPLETE
-- ✅ User can type topic → see script + shots + audio in Streamlit UI
-- ✅ 5 successful GRAFT runs with different topics
-- ✅ Error handling works (LLM failures, parse errors)
-- ✅ 67 tests passing
-- ✅ FastAPI server with 4 endpoints
-
-**Phase 2 (VTO) success:**
-- GRAFT on NEW topic produces output rated "better than random"
-- PARASITE on TRENDING topic references trend naturally
-- Cross-genre GRAFT works (CEO hook → xianxia topic)
-
----
-
-## Key Documents
-
-- `.ai/tasks/000_viral_corpus_building.md` — Phase 0 sprint tracker
-- `.ai/tasks/001_demo_system.md` — Phase 1 requirements
-- `.ai/content_strategy.md` — Corpus strategy + tiers
-- `.ai/decisions/002_what_we_do_not_do.md` — Hard constraints (including Phase 0 freeze)
-- `.ai/status/current_status.md` — Current state + blockers
+核心一条：**不重复造轮子。** 市场上找得到替代的，一律集成或借鉴 —— 稀缺资源是集成+交付，不是代码。
+详见 [CLAUDE.md](../../CLAUDE.md) 规则 0。

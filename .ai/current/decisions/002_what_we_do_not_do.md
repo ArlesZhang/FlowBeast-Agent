@@ -6,9 +6,9 @@ This document exists to prevent scope creep and architectural drift. Every time 
 
 ### 1. No Video Generation Code
 
-We do NOT call video APIs (Runway, Kling, Seedance, HeyGen). We output `prompt_package.json` — a structured recipe that a human (or future MCP layer) feeds to those tools.
+We do NOT build our own video generation models, and we do NOT hand-roll API clients for Runway, Kling, Seedance or HeyGen. We orchestrate the ones that already exist, and we hand over `prompt_package.json` — a structured recipe a human or an existing tool feeds in.
 
-**Why:** Video generation is a commodity. The APIs change every 6 months. Our moat is the prompt structure, not the rendering pipeline. Building video generation code is a distraction from the core product.
+**Why:** Video generation is a commodity. The APIs change every 6 months and someone else maintains them. Our scarce resource is integration + orchestration + commercial delivery, not rendering. Writing a client for an API that has an official SDK is Rule 0 violation.
 
 **Exception:** If MCP integration becomes trivial (< 1 day of work) and a specific tool's API is stable, we might add it in Phase 4. Not before.
 
@@ -47,17 +47,16 @@ There is no need for agents, tool use, or orchestration. Adding agents would:
 
 ---
 
-### 4. No Content Publishing or Analytics
+### 4. No Content Publishing Platform
 
-We stop at `prompt_package.json`. We do NOT:
-- Publish to Douyin/Kuaishou/RedNote
-- Schedule posts
-- Collect engagement metrics (views/likes/shares)
-- Build dashboards
+We deliver finished episodes to the customer. We do NOT build:
+- A publisher to Douyin/Kuaishou/RedNote
+- Post scheduling
+- A metrics dashboard
 
-**Why:** Publishing and analytics are solved problems (use platform APIs or third-party tools). Our product is the prompt compiler, not the distribution layer.
+**Why:** Publishing and analytics are solved problems. If a customer needs publishing, we use the platform's own tooling or an existing third-party tool.
 
-**Exception:** `feedback_ingest.py` accepts engagement data as input (for Phase 3 flywheel), but we don't collect it ourselves.
+**Not a boundary:** collecting the customer's engagement numbers *by hand* and feeding them to `feedback_ingest.py` is part of delivery, and it is how we learn whether the output works.
 
 ---
 
@@ -76,7 +75,7 @@ We do NOT:
 
 ### 6. No New Abstractions Without Working Code First
 
-Before building any new abstraction (PromptAtom composition, VTO operator base class, agent framework):
+Before building any new abstraction (PromptAtom composition, operator base classes, agent framework):
 1. Implement the specific case as a function
 2. Prove it works in the pipeline
 3. Only then extract the abstraction
@@ -90,45 +89,47 @@ Before building any new abstraction (PromptAtom composition, VTO operator base c
 **This is the #1 risk in the project.** We have layers (FP3, IP2, IP1, OBS) that look impressive on paper but produce zero user-visible output without data.
 
 **Symptoms of over-architecture:**
-- Designing VTO operators when FP3 has < 10 samples
+- Building operators/abstractions when FP3 has < 10 real samples
 - Building PromptAtom composition when shot_director already works
-- Writing calibrator logic when reference distribution has < 5 samples
+- Writing calibration logic when there is no ground truth to calibrate against
 - Creating schemas for systems that don't exist yet
+- Writing our own version of something an existing library already does (see Rule 0 in CLAUDE.md)
 
 **The rule:** If a module doesn't produce user-visible output in the current Phase, it shouldn't exist. Working code > elegant architecture.
 
-**The only architecture that matters:** Can a user type a topic and get a prompt package? Everything else is decoration.
+**The only architecture that matters:** Can a customer hand us a topic and receive a finished episode? Everything else is decoration.
 
-## 8. No Phase 0 Optimization (Until 30 Real Samples)
+## 8. No Infrastructure Work Before Payment Evidence
 
 **This is a hard constraint, not a guideline.**
 
-Before reaching 30 real reverse-engineered viral scripts:
+Before the first real payment:
 
-- ❌ Do NOT redesign the corpus system
-- ❌ Do NOT introduce new metadata systems
-- ❌ Do NOT introduce new databases
-- ❌ Do NOT introduce new ingestion frameworks
-- ❌ Do NOT introduce new taxonomy layers
-- ❌ Do NOT optimize the schema
-- ❌ Do NOT build automation
+- ❌ Do NOT redesign the corpus or memory system
+- ❌ Do NOT introduce new metadata systems, databases or ingestion frameworks
+- ❌ Do NOT introduce new taxonomy layers or optimize the schema
+- ❌ Do NOT build automation for a workflow nobody has run twice
+- ❌ Do NOT add a scoring/quality layer that has no ground truth to fit to
 
 **Focus exclusively on:**
-1. ✅ Acquiring samples (watch, judge, curate)
-2. ✅ Reverse engineering samples (run CLI, verify output)
-3. ✅ Building the first 30 ViralScript assets
+1. ✅ Making the delivery path work end to end on a real topic, by hand if necessary
+2. ✅ Finding one customer and delivering one finished episode
+3. ✅ Getting paid
 
-**Why this exists:** Building better infrastructure when you have 2 samples is the same as building a factory when you have 2 customers. The most dangerous form of over-architecture is optimizing a system that has no data yet.
+**Why this exists:** Building better infrastructure before you have a customer is the same as
+building a factory before you have a product. Every hour spent on the memory system is an hour not
+spent finding out whether anyone will pay.
 
-**Lifting the constraint:** After 30 real samples are collected and validated, you may optimize the corpus system. Not before.
+**Lifting the constraint:** After the first real payment, the constraint is replaced by whatever the
+paying customer's actual complaints are. Not before.
 
 ---
 
 ## How to Use This Document
 
 When Claude proposes building something new, ask:
-1. Is it on the "Not Built" list in `status/current_status.md`?
+1. Does an existing library, CLI, Skill or MCP already do this? (Rule 0 in CLAUDE.md) If yes, integrate it.
 2. Is it blocked by this document's hard boundaries?
-3. If yes to either, don't build it.
+3. Does it move us toward a finished episode for a paying customer? If not, don't build it.
 
 When in doubt, the answer is "don't build it."

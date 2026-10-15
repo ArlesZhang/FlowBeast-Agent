@@ -1,15 +1,19 @@
 # FlowBeast AI Agent Rules
 
 > AI agent design and implementation guidelines
-> NOTE: Rules below apply to Phase 1 (current). Phase 2+ goals override these when reached.
+> NOTE: Rules below apply to the current phase. Revisit when the commercial phase changes.
 
 ## Phase Context
 
-**Phase 1 (v0.3.x — NOW):** Human-curated data injection. All quality data comes from real viral dramas analyzed by a human via `reverse_engineer` CLI. No autonomous self-improvement.
+**Current — Delivery validation:** Land the first paying customer for a delivered episode.
+Human judgment decides what ships; AI assists. No autonomous self-improvement.
 
-**Phase 2 (v0.6+ — FUTURE):** Topic Discovery Engine, real-time streams (Kafka/Qdrant), automated feedback loops. Rules in this file will be updated at that time.
+**Later — Automation:** Only after there is real payment evidence. Topic discovery,
+automated feedback loops, trend sensing. Rules in this file get updated then.
 
-**Phase 3 (Endgame):** Fully autonomous pipeline: trend sensing → viral modeling → content generation → video production → auto-distribution. This is the goal, not a constraint.
+**Note:** the earlier "reverse-engineer viral dramas into a corpus" phase was falsified and its
+tooling removed. The *principle* below still holds — AI still cannot self-evaluate content quality
+without a ground-truth anchor; the anchor is now customer feedback, not a scraped corpus.
 
 ## Agent Philosophy
 
@@ -45,41 +49,40 @@ Tool interfaces should:
 - Be explicit
 - Return structured data
 
-## Human-in-the-Loop Workflows (Phase 1)
+## Human-in-the-Loop Workflows
 
 > These rules apply while the knowledge base is small and calibration is manual.
-> Revisit when Phase 2 automated data pipelines are online.
+> Revisit when automated data pipelines are actually online.
 
-FlowBeast relies on human curation for quality data injection, not autonomous AI self-improvement:
+FlowBeast relies on human judgment for quality, not autonomous AI self-improvement:
 
-- **Reverse Engineering**: The `reverse_engineer` CLI requires a human to watch and analyze real dramas,
-  then provide structured judgments (hook type, conflict pattern, emotional curve, quality label).
-  This is intentional — AI cannot reliably self-evaluate content quality without a ground-truth anchor.
+- **Ground truth comes from delivery.** A human (the operator, then the customer) decides whether
+  an episode is good. AI cannot reliably self-evaluate content quality without an external anchor —
+  and the only anchors that count are **a human's judgment** and **real engagement data**.
 
-- **QualityGate Calibration**: Scores are anchored against a human-curated reference distribution.
-  The calibrator computes z-scores from real viral samples, not theoretical ideals.
-  When sample count < 5, σ=0 cold-start protection prevents meaningless z-score computation.
+- **QualityGate is uncalibrated.** Its 9 dimensions have never produced an ACCEPT, and the weights
+  were never fitted to outcomes. Treat the score as a weak signal. The deleted calibrator was
+  circular (weights derived from scores derived from the same weights) — do not rebuild that shape.
 
-- **Negative Samples**: `quality_label` ("viral" / "average" / "failed") allows boundary learning.
-  The system must learn what to reject as much as what to accept.
+- **Negative Samples**: knowing what to reject matters as much as what to accept. Record rejected
+  and failed deliveries, not just successful ones.
 
 ## MCP Integration (Production Pipeline)
 
-> Current phase: integrate commodity tools, don't reinvent. Phase 2+ may change this.
+> This section is Rule 0 applied to production. It does not expire.
 
-The production pipeline (script → audio → video) is solved via MCP/Skills integration with third-party tools (Runway, Kling, HeyGen, etc.).
+The production pipeline (script → audio → video) is solved via MCP/Skills integration with third-party tools (Runway, Kling, HeyGen, Seedance, etc.).
 
 Principles:
 - MCP endpoints should be stable, explicit, and observable
 - FlowBeast decides WHAT to produce; MCP tools handle HOW to render it
 - Production capacity is horizontally scalable and replaceable
 - No need to build custom audio/video generation — integrate, don't reinvent
+- **Before writing any module, search for an existing tool first** (see CLAUDE.md Rule 0)
 
-Avoid (Phase 1):
+Avoid:
 - Recursive uncontrolled agent loops
-- Excessive autonomy in production pipeline
-- Autonomous self-calibration without human-curated reference data
+- Excessive autonomy in the production pipeline
+- Self-calibration against your own scores (circular — this was already tried and deleted)
 - Over-investing in production pipeline sophistication
-
-> When Phase 2 is reached, revisit: automated calibration and autonomous feedback
-> loops become goals, not anti-patterns.
+- Writing our own version of something a library already does
